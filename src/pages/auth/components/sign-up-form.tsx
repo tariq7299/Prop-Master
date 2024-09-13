@@ -15,8 +15,11 @@ import { Button } from '@/components/custom/button'
 import { PasswordInput } from '@/components/custom/password-input'
 import { cn } from '@/lib/utils'
 import { PhoneInput } from '@/components/custom/phone-input'
+import axios from 'axios'
+import { handleApiError } from '@/helper/api-requests/handleApiError'
+import { useToast } from '@/components/ui/use-toast'
 
-interface SignUpFormProps extends HTMLAttributes<HTMLDivElement> {}
+interface SignUpFormProps extends HTMLAttributes<HTMLDivElement> { }
 
 const newAdminUserSchema = z
   .object({
@@ -30,7 +33,7 @@ const newAdminUserSchema = z
       .email({ message: 'Invalid email address' }),
     phone_number: z
       .string()
-      .min(12, { message: 'Please enter a valid phone number' }),
+      .length(13, { message: 'Please enter a valid phone number' }),
     company: z
       .string()
       .optional(),
@@ -57,10 +60,13 @@ const newAdminUserSchema = z
     message: "Passwords don't match.",
     path: ['password_confirmation'],
   })
-  
+
 
 export function SignUpForm({ className, ...props }: SignUpFormProps) {
   const [isLoading, setIsLoading] = useState(false)
+
+
+  const { toast } = useToast()
 
   const form = useForm<z.infer<typeof newAdminUserSchema>>({
     resolver: zodResolver(newAdminUserSchema),
@@ -77,6 +83,44 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
   function onSubmit(data: z.infer<typeof newAdminUserSchema>) {
     setIsLoading(true)
     console.log("data", data)
+
+    const signUpHandler = async (authData: z.infer<typeof newAdminUserSchema>) => {
+
+      try {
+
+
+        // console.log("import.meta.env.development.VITE_API_URL", import.meta.env.development.VITE_API_URL)
+        console.log("authData", authData)
+
+        const response = await axios.post(
+          `${import.meta.env.VITE_API_URL}/auth/admin/register`,
+          authData
+        );
+
+        console.log("response", response)
+
+        // const res = response.data;
+
+        // Cookies.set('token', res.token);
+
+
+      } catch (error: unknown) {
+
+        if (axios.isAxiosError(error)) {
+          // Now TypeScript knows this is an AxiosError
+          handleApiError(error, toast);
+        } else {
+          // Handle non-Axios errors
+          console.error('An unexpected error occurred:', error);
+        }
+      } finally {
+        setIsLoading(false)
+      }
+
+    };
+
+    signUpHandler(data)
+
 
     setTimeout(() => {
       setIsLoading(false)
@@ -102,32 +146,32 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
                 </FormItem>
               )}
             />
-              <FormField
-                control={form.control}
-                name='email'
-                render={({ field }) => (
-                  <FormItem className='space-y-1'>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder='tariq.7299@example.com' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='phone_number'
-                render={({ field }) => (
-                  <FormItem className='space-y-1'>
-                    <FormLabel>Phone Number</FormLabel>
-                    <FormControl>
-                    <PhoneInput defaultCountry='SA' placeholder='331 766 152' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            <FormField
+              control={form.control}
+              name='email'
+              render={({ field }) => (
+                <FormItem className='space-y-1'>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input placeholder='tariq.7299@example.com' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='phone_number'
+              render={({ field }) => (
+                <FormItem className='space-y-1'>
+                  <FormLabel>Phone Number</FormLabel>
+                  <FormControl>
+                    <PhoneInput defaultCountry='EG' placeholder='331 766 152' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name='company'
@@ -172,7 +216,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
               Create Account
             </Button>
 
-          
+
           </div>
         </form>
       </Form>

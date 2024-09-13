@@ -1,0 +1,73 @@
+import type { ToastActionElement, ToastProps } from '@/components/ui/toast'
+import { AxiosError } from 'axios';
+import { toastErrors } from './toastErrors';
+
+type ToasterToast = ToastProps & {
+    id: string
+    title?: React.ReactNode
+    description?: React.ReactNode
+    action?: ToastActionElement
+}
+type Toast = Omit<ToasterToast, 'id'>
+
+type ErrorCallback = () => void;
+
+function handleApiError(
+    errResponse: AxiosError,
+    toast: (props: Toast) => void,
+    customErrorMsg?: "string",
+    errorCallback?: ErrorCallback
+) {
+    const statusCode = errResponse.response?.status;
+    let errorMessage = customErrorMsg || (errResponse.response?.data as any)?.errors || '';
+
+    if (statusCode === 401 || statusCode === 419 || statusCode === 403) {
+        errorMessage = errorMessage || 'Unauthorized: Please log in! Redirecting to login page...';
+        toastErrors(errorMessage, toast);
+        setTimeout(() => {
+            window.location.href = '/login';
+        }, 4000);
+        errorCallback?.();
+        return; // Exit the function early
+    }
+
+    switch (statusCode) {
+        case 400:
+            errorMessage = errorMessage || 'Bad Request: The server could not understand the request';
+            break;
+        case 404:
+            errorMessage = errorMessage || 'Not Found: The requested resource could not be found';
+            break;
+        case 405:
+            errorMessage = errorMessage || 'Method Not Allowed: The method specified in the request is not allowed';
+            break;
+        case 409:
+            errorMessage = errorMessage || 'Conflict: The request could not be completed due to a conflict with the current state of the resource';
+            break;
+        case 422:
+            errorMessage = errorMessage || 'Unprocessable Entity: The request was well-formed but was unable to be followed due to semantic errors';
+            break;
+        case 500:
+            errorMessage = errorMessage || 'Internal Server Error: The server encountered an unexpected condition';
+            break;
+        case 502:
+            errorMessage = errorMessage || 'Bad Gateway: The server received an invalid response from the upstream server';
+            break;
+        case 503:
+            errorMessage = errorMessage || 'Service Unavailable: The server is currently unable to handle the request';
+            break;
+        default:
+            if (statusCode && statusCode >= 400 && statusCode < 500) {
+                errorMessage = errorMessage || 'Client Error: The request contains bad syntax or cannot be fulfilled';
+            } else if (statusCode && statusCode >= 500) {
+                errorMessage = errorMessage || 'Server Error: The server failed to fulfill a valid request';
+            } else {
+                errorMessage = errorMessage || 'An unknown error occurred, Please contact support!';
+            }
+    }
+
+    toastErrors(errorMessage, toast);
+    errorCallback?.();
+}
+
+export { handleApiError }
