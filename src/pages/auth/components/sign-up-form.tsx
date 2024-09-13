@@ -1,7 +1,6 @@
 import { HTMLAttributes, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { IconBrandFacebook, IconBrandGithub } from '@tabler/icons-react'
 import { z } from 'zod'
 import {
   Form,
@@ -15,6 +14,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/custom/button'
 import { PasswordInput } from '@/components/custom/password-input'
 import { cn } from '@/lib/utils'
+import { PhoneInput } from '@/components/custom/phone-input'
 
 interface SignUpFormProps extends HTMLAttributes<HTMLDivElement> {}
 
@@ -30,7 +30,7 @@ const newAdminUserSchema = z
       .email({ message: 'Invalid email address' }),
     phone_number: z
       .string()
-      .min(1, { message: 'Please enter your phone nubmer' }),
+      .min(12, { message: 'Please enter a valid phone number' }),
     company: z
       .string()
       .optional(),
@@ -96,7 +96,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
                 <FormItem className='space-y-1'>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder='Ahmed Maher...' {...field} />
+                    <Input placeholder='Tariq Sarhan...' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -109,7 +109,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
                   <FormItem className='space-y-1'>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input placeholder='name@example.com' {...field} />
+                      <Input placeholder='tariq.7299@example.com' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -122,7 +122,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
                   <FormItem className='space-y-1'>
                     <FormLabel>Phone Number</FormLabel>
                     <FormControl>
-                      <Input placeholder='+201099133377...' {...field} />
+                    <PhoneInput defaultCountry='SA' placeholder='331 766 152' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -135,7 +135,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
                 <FormItem className='space-y-1'>
                   <FormLabel>Company</FormLabel>
                   <FormControl>
-                    <Input placeholder='Storage Station...' {...field} />
+                    <Input placeholder='Prop Master...' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
