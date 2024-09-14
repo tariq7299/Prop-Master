@@ -14,8 +14,22 @@ import { TopNav } from '@/components/top-nav'
 import { UserNav } from '@/components/user-nav'
 import { RecentSales } from './components/recent-sales'
 import { Overview } from './components/overview'
+import { useAuth } from '@/hooks/Auth/auth-provider'
+import useLocalStorage from '@/hooks/use-local-storage'
 
 export default function Dashboard() {
+
+  const { user } = useAuth();
+  const [token, setToken] = useLocalStorage({
+    key: "token",
+    defaultValue: ""
+  });
+
+  console.log("user", user)
+  console.log("tokennn", token)
+
+
+
   return (
     <Layout>
       {/* ===== Top Heading ===== */}
@@ -27,6 +41,8 @@ export default function Dashboard() {
           <UserNav />
         </div>
       </Layout.Header>
+
+      test
 
       {/* ===== Main ===== */}
       <Layout.Body>

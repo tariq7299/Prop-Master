@@ -62,3 +62,21 @@ export type IsLoadingCustom<type> = {
     message: string,
     type: type
 }
+
+export type Admin = {
+        name: string,
+        phone_number: string,
+        email: string,
+        company: string | null,
+        device_id: number | null,
+        role_id: number | null,
+        updated_at?: string,
+        created_at?: string,
+        id: number | null,
+        role: {
+          id: number |  null,
+          name: "Admin" | null,
+          created_at?: string,
+        updated_at?: string
+        }
+}
