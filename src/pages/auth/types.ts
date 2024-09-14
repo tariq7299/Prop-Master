@@ -38,20 +38,24 @@ export const newAdminSignUpSchema = z
   .refine((data) => data.password === data.password_confirmation, {
     message: "Passwords don't match.",
     path: ['password_confirmation'],
-  })
+})
 
-export const adminLoginSchema = z
-  .object({
-    email: z
-      .string()
-      .min(1, { message: 'Please enter your email' })
-      .email({ message: 'Invalid email address' }),
-    password: z
-      .string()
-      .min(1, {
-        message: 'Please enter your password',
-      })
-  })
+export const adminLoginSchema =  z.object({
+   email: z
+   .string()
+   .min(1, { message: 'Please enter your email' })
+   .email({ message: 'Invalid email address' }),
+ password: z
+   .string()
+   .min(1, {
+     message: 'Please enter your password',
+   })
+   .min(7, {
+     message: 'Password must be at least 7 characters long',
+   }),
+})
+
+
 
 export type IsLoadingCustom<type> = {
     status: boolean,

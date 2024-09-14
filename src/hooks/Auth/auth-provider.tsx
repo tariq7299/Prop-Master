@@ -12,7 +12,7 @@ import { IsLoadingCustom } from '@/pages/auth/types';
 
 type AuthContext = {
   signUp: (authData: z.infer<typeof newAdminSignUpSchema>, setIsLoading: (arg0: IsLoadingCustom<"signing up" | "signing in" | ''>) => void) => void
-  signIn: (authData: z.infer<typeof adminLoginSchema>, setIsLoading: (arg0: IsLoadingCustom<"signing up" | "signing in" | ''>) => void) => void
+  signIn: (authData: z.infer<typeof adminLoginSchema>, setIsLoading: (arg0: IsLoadingCustom<"signing up" | "signing in" | ''>) => void, loadingMessage?: string) => void
 }
 
 const initialAuthContext = {
@@ -27,10 +27,11 @@ const AuthContext = createContext<AuthContext>(initialAuthContext);
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { toast } = useToast()
 
-  const signInHandler = async (authData: z.infer<typeof adminLoginSchema>, setIsLoading: (arg0: IsLoadingCustom<"signing up" | "signing in" | ''>) => void) => {
-    // console.log("LogInauthData", authData)
+  const signInHandler = async (authData: z.infer<typeof adminLoginSchema>, setIsLoading: (arg0: IsLoadingCustom<"signing up" | "signing in" | ''>) => void, loadingMessage?: string) => {
 
-    setIsLoading({ status: true, message: "Redirecting to your dashboard...", type: "signing in" })
+    console.log("LogInauthData", authData)
+
+    setIsLoading({ status: true, message: loadingMessage || "Checking...", type: "signing in" })
 
     try {
 
@@ -38,6 +39,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         `${import.meta.env.VITE_API_URL}/auth/admin/login`,
         authData
       );
+
+      setIsLoading({ status: true, message: loadingMessage || "Redirecting to your dashboard...", type: "signing in" })
 
       handleApiSuccess(response?.data, toast, '', () => setTimeout(() => {
         window.location.href = '/'
@@ -72,7 +75,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       // setIsLoading({ status: true, message: "Redirecting to your dashboard...", type: "signing in" })
 
-      handleApiSuccess(response?.data, toast, '', () => signInHandler(logInCredentials, setIsLoading))
+      handleApiSuccess(response?.data, toast, '', () => signInHandler(logInCredentials, setIsLoading, "Redirecting to your dashboard..."))
 
 
     } catch (error: unknown) {
