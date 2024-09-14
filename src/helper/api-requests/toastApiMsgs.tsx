@@ -1,7 +1,6 @@
 
 import type { ToastActionElement, ToastProps } from '@/components/ui/toast'
-import { error } from 'console'
-import { title } from 'process'
+import { Messages } from './types';
 
 type ToasterToast = ToastProps & {
     id: string
@@ -11,7 +10,7 @@ type ToasterToast = ToastProps & {
 }
 type Toast = Omit<ToasterToast, 'id'>
 
-type Messages = string | string[] | { [key: string]: string | string[] };
+// type Messages = string | string[] | { [key: string]: string | string[] };
 type ToastType = 'destructive' | 'success' | 'info' | 'warning';
 type ToastVariant = 'default' | 'destructive' | 'success' | 'info' | 'warning';
 
@@ -74,7 +73,7 @@ function toastApiMsgs(messages: Messages, toast: (props: Toast) => void, toastTy
                 // Handle single string within the object
                 toast({
                     title: randomTitle,
-                    description: message,
+                    description: messageValue,
                     variant: toastVariant || defaultVariant
                 });
             }

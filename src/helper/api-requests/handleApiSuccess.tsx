@@ -1,6 +1,8 @@
 import type { ToastActionElement, ToastProps } from '@/components/ui/toast'
-import { AxiosError } from 'axios';
-import { toastErrors } from './toastApiMsgs';
+import { SuccessApiResponse } from './types';
+import { toastApiMsgs } from './toastApiMsgs';
+
+// import { Toast } from '@/components/ui/toast';
 
 type ToasterToast = ToastProps & {
     id: string
@@ -13,41 +15,34 @@ type Toast = Omit<ToasterToast, 'id'>
 type SuccessCallback = () => void;
 
 function handleApiSuccess(
-    // Change this type to successResponse
-    successResponse: AxiosError,
+    successResponse: SuccessApiResponse,
     toast: (props: Toast) => void,
-    customSuccessMsg?: "string",
+    customSuccessMsg?: string,
     successCallback?: SuccessCallback
-) {
-    const statusCode = successResponse?.status;
-    let successMessage = customSuccessMsg || (successResponse?.data as any)?.msg || '';
+): void {
+    const { code: statusCode, success, msg } = successResponse;
+    let successMessage = customSuccessMsg || msg || '';
 
-    if (successResponse?.success) {
-        switch (statusCode) {
-            case 200 || 204:
-                successMessage = successMessage || 'Successful! your request has successedded';
-                break;
-            case 201:
-                successMessage = successMessage || 'Created: The resource was successfully created';
-                break;
-            case 202:
-                successMessage = successMessage || 'Successful! your request is processing';
-                break;
-            default:
-                if (statusCode && statusCode >= 200 && statusCode < 304) {
-                    successMessage = successMessage || 'Successful! your request has successedded';
-                } else {
-                    threw Error(successMessage || 'An unknown error occurred, Please contact support!')
-                }
-        }
-    } else {
-        threw Error(successMessage || 'An unknown error occurred, Please contact support!')
+    if (!success) {
+        throw new Error(successMessage || 'An unknown error occurred. Please contact support!');
     }
 
+    const defaultMessages: Record<number, string> = {
+        200: 'Successful! Your request has succeeded.',
+        201: 'Created: The resource was successfully created.',
+        202: 'Accepted: Your request is being processed.',
+        204: 'Successful! The request was processed with no content to return.',
+    };
 
+    successMessage = successMessage || defaultMessages[statusCode] || 'Successful! Your request has succeeded.';
 
-    toastErrors(successMessage, toast);
+    if (statusCode < 200 || statusCode >= 300) {
+        throw new Error(successMessage || 'An unexpected status code was received. Please contact support!');
+    }
+
+    toastApiMsgs(successMessage, toast, "success");
     successCallback?.();
 }
 
-export { handleApiSuccess }
+
+export { handleApiSuccess };

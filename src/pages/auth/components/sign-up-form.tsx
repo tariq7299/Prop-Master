@@ -18,6 +18,7 @@ import { PhoneInput } from '@/components/custom/phone-input'
 import axios from 'axios'
 import { handleApiError } from '@/helper/api-requests/handleApiError'
 import { useToast } from '@/components/ui/use-toast'
+import { handleApiSuccess } from '@/helper/api-requests/handleApiSuccess'
 
 interface SignUpFormProps extends HTMLAttributes<HTMLDivElement> { }
 
@@ -99,19 +100,21 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
 
         console.log("response", response)
 
+        handleApiSuccess(response?.data, toast)
+
         // const res = response.data;
 
         // Cookies.set('token', res.token);
 
 
       } catch (error: unknown) {
-
         if (axios.isAxiosError(error)) {
-          // Now TypeScript knows this is an AxiosError
+          // console.error('An unexpected error occurred:', error)
           handleApiError(error, toast);
-        } else {
+        } else if ((error instanceof Error)) {
+          handleApiError(error, toast);
           // Handle non-Axios errors
-          console.error('An unexpected error occurred:', error);
+          // console.error('An unexpected error occurred:', error);
         }
       } finally {
         setIsLoading(false)
