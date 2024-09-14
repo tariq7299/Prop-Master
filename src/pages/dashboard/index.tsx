@@ -14,17 +14,9 @@ import { TopNav } from '@/components/top-nav'
 import { UserNav } from '@/components/user-nav'
 import { RecentSales } from './components/recent-sales'
 import { Overview } from './components/overview'
-import { useAuth } from '@/hooks/Auth/auth-provider'
-import SecureLS from 'secure-ls';
-
-// const token = localStorage.getItem("token")
 
 
 export default function Dashboard() {
-  // const ls = new SecureLS();
-  // const token = ls.get('token');
-  // console.log("tokennn", token)
-  // const { user } = useAuth();
 
 
 
