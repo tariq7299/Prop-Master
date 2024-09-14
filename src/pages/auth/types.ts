@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-const newAdminUserSchema = z
+export const newAdminSignUpSchema = z
   .object({
     name: z
       .string()
@@ -40,5 +40,21 @@ const newAdminUserSchema = z
     path: ['password_confirmation'],
   })
 
+export const adminLoginSchema = z
+  .object({
+    email: z
+      .string()
+      .min(1, { message: 'Please enter your email' })
+      .email({ message: 'Invalid email address' }),
+    password: z
+      .string()
+      .min(1, {
+        message: 'Please enter your password',
+      })
+  })
 
-  export {newAdminUserSchema}
+export type IsLoadingCustom<type> = {
+    status: boolean,
+    message: string,
+    type: type
+}

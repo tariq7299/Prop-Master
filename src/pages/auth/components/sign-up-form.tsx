@@ -15,21 +15,23 @@ import { Button } from '@/components/custom/button'
 import { PasswordInput } from '@/components/custom/password-input'
 import { cn } from '@/lib/utils'
 import { PhoneInput } from '@/components/custom/phone-input'
-import { newAdminUserSchema } from '../types'
+import { newAdminSignUpSchema } from '../types'
 import { useAuth } from '@/hooks/Auth/auth-provider'
-
 
 interface SignUpFormProps extends HTMLAttributes<HTMLDivElement> { }
 
 
 
 
+
 export function SignUpForm({ className, ...props }: SignUpFormProps) {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState({ status: false, message: "", type: "" })
   const { signUp } = useAuth();
 
-  const form = useForm<z.infer<typeof newAdminUserSchema>>({
-    resolver: zodResolver(newAdminUserSchema),
+  console.log("isLoading", isLoading)
+
+  const form = useForm<z.infer<typeof newAdminSignUpSchema>>({
+    resolver: zodResolver(newAdminSignUpSchema),
     defaultValues: {
       name: '',
       email: '',
@@ -40,7 +42,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
     },
   })
 
-  function onSubmit(data: z.infer<typeof newAdminUserSchema>) {
+  function onSubmit(data: z.infer<typeof newAdminSignUpSchema>) {
     console.log("data", data)
 
     signUp(data, setIsLoading)
@@ -132,8 +134,10 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
               )}
             />
 
-            <Button className='mt-2' loading={isLoading}>
-              Create Account
+            <Button className='mt-2' loading={isLoading?.status}>
+
+              {(isLoading.type === "signing up" && isLoading.status) ? isLoading.message : (isLoading.type === "signing in" && isLoading.status) ? isLoading.message : "Create Account"}
+
             </Button>
 
 
