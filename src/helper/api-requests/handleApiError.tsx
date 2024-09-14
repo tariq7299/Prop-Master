@@ -1,6 +1,6 @@
 import type { ToastActionElement, ToastProps } from '@/components/ui/toast'
 import { AxiosError } from 'axios';
-import { toastErrors } from './toastErrors';
+import { toastApiMsgs } from './toastApiMsgs';
 
 type ToasterToast = ToastProps & {
     id: string
@@ -23,7 +23,7 @@ function handleApiError(
 
     if (statusCode === 401 || statusCode === 419 || statusCode === 403) {
         errorMessage = errorMessage || 'Unauthorized: Please log in! Redirecting to login page...';
-        toastErrors(errorMessage, toast);
+        toastApiMsgs(errorMessage, toast, "destructive");
         setTimeout(() => {
             window.location.href = '/login';
         }, 4000);
@@ -66,7 +66,7 @@ function handleApiError(
             }
     }
 
-    toastErrors(errorMessage, toast);
+    toastApiMsgs(errorMessage, toast, "destructive");
     errorCallback?.();
 }
 

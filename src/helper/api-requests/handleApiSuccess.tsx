@@ -1,6 +1,6 @@
 import type { ToastActionElement, ToastProps } from '@/components/ui/toast'
 import { AxiosError } from 'axios';
-import { toastErrors } from './toastErrors';
+import { toastErrors } from './toastApiMsgs';
 
 type ToasterToast = ToastProps & {
     id: string
