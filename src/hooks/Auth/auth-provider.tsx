@@ -1,7 +1,5 @@
 import React, { useContext, createContext } from 'react';
 import axios from 'axios';
-// import Cookies from 'js-cookie';
-// import { useNavigate } from 'react-router-dom';
 import { newAdminSignUpSchema, adminLoginSchema } from '@/pages/auth/types';
 import { z } from 'zod'
 import { handleApiSuccess } from '@/helper/api-requests/handleApiSuccess';
@@ -9,6 +7,7 @@ import { handleApiError } from '@/helper/api-requests/handleApiError';
 import { useToast } from '@/components/ui/use-toast';
 import { IsLoadingCustom, Admin } from '@/pages/auth/types';
 import useLocalStorage from '../use-local-storage';
+import SecureLS from 'secure-ls';
 
 
 
@@ -44,16 +43,13 @@ const AuthContext = createContext<AuthContext>(initialAuthContext);
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { toast } = useToast()
-
+  const ls = new SecureLS();
   const [user, setUser] = useLocalStorage<Admin>({
     key: 'user',
     defaultValue: defaultUserValue
   })
 
-  const [token, setToken] = useLocalStorage<string>({
-    key: 'token',
-    defaultValue: ""
-  })
+
 
   const signInHandler = async (authData: z.infer<typeof adminLoginSchema>, setIsLoading: (arg0: IsLoadingCustom<"signing up" | "signing in" | ''>) => void, loadingMessage?: string) => {
 
@@ -73,8 +69,10 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       handleApiSuccess(response?.data, toast, '', () => setTimeout(() => {
         window.location.href = '/'
         // setUser(response?.data?.data?.user || {})
-        setToken((response?.data?.data?.token))
+        ls.set('token', response?.data?.data?.token);
       }, 3000))
+      const token = ls.get('token');
+      console.log("tokennnINAUth", token)
 
 
     } catch (error: unknown) {

@@ -15,18 +15,16 @@ import { UserNav } from '@/components/user-nav'
 import { RecentSales } from './components/recent-sales'
 import { Overview } from './components/overview'
 import { useAuth } from '@/hooks/Auth/auth-provider'
-import useLocalStorage from '@/hooks/use-local-storage'
+import SecureLS from 'secure-ls';
+
+// const token = localStorage.getItem("token")
+
 
 export default function Dashboard() {
-
-  const { user } = useAuth();
-  const [token, setToken] = useLocalStorage({
-    key: "token",
-    defaultValue: ""
-  });
-
-  console.log("user", user)
-  console.log("tokennn", token)
+  // const ls = new SecureLS();
+  // const token = ls.get('token');
+  // console.log("tokennn", token)
+  // const { user } = useAuth();
 
 
 
