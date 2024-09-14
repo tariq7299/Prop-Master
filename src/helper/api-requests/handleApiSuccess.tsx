@@ -1,18 +1,9 @@
-import type { ToastActionElement, ToastProps } from '@/components/ui/toast'
 import { SuccessApiResponse } from './types';
 import { toastApiMsgs } from './toastApiMsgs';
+import { Toast } from './types';
+import { SuccessCallback } from './types';
 
-// import { Toast } from '@/components/ui/toast';
 
-type ToasterToast = ToastProps & {
-    id: string
-    title?: React.ReactNode
-    description?: React.ReactNode
-    action?: ToastActionElement
-}
-type Toast = Omit<ToasterToast, 'id'>
-
-type SuccessCallback = () => void;
 
 function handleApiSuccess(
     successResponse: SuccessApiResponse,

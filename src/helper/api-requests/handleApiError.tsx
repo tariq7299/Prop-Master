@@ -1,17 +1,11 @@
-import type { ToastActionElement, ToastProps } from '@/components/ui/toast'
 import { AxiosError } from 'axios';
 import { toastApiMsgs } from './toastApiMsgs';
 import axios from 'axios';
+import { Toast } from './types';
+import { ErrorCallback } from './types';
 
-type ToasterToast = ToastProps & {
-    id: string
-    title?: React.ReactNode
-    description?: React.ReactNode
-    action?: ToastActionElement
-}
-type Toast = Omit<ToasterToast, 'id'>
 
-type ErrorCallback = () => void;
+
 
 function handleApiError(
     errResponse: AxiosError | Error,
