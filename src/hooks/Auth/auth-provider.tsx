@@ -8,12 +8,15 @@ import { useToast } from '@/components/ui/use-toast';
 import { IsLoadingCustom, Admin } from '@/pages/auth/types';
 import useLocalStorage from '../use-local-storage';
 import SecureLS from 'secure-ls';
+import { axiosPrivate } from '@/helper/axiosInstances';
+
 
 
 
 type AuthContext = {
-  signUp: (authData: z.infer<typeof newAdminSignUpSchema>, setIsLoading: (arg0: IsLoadingCustom<"signing up" | "signing in" | ''>) => void) => void
-  signIn: (authData: z.infer<typeof adminLoginSchema>, setIsLoading: (arg0: IsLoadingCustom<"signing up" | "signing in" | ''>) => void, loadingMessage?: string) => void,
+  signUp: (authData: z.infer<typeof newAdminSignUpSchema>, setIsLoading: (arg0: IsLoadingCustom<"signing up" | "signing in" | 'signing out' | ''>) => void) => void
+  signIn: (authData: z.infer<typeof adminLoginSchema>, setIsLoading: (arg0: IsLoadingCustom<"signing up" | "signing in" | 'signing out' | ''>) => void, loadingMessage?: string) => void,
+  signOut: (setIsLoading: (arg0: IsLoadingCustom<"signing up" | "signing in" | 'signing out' | ''>) => void,) => void,
   user: Admin
 }
 
@@ -34,6 +37,7 @@ const defaultUserValue = {
 const initialAuthContext = {
   signUp: () => { },
   signIn: () => { },
+  signOut: () => { },
   user: defaultUserValue,
 }
 
@@ -51,7 +55,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
 
 
-  const signInHandler = async (authData: z.infer<typeof adminLoginSchema>, setIsLoading: (arg0: IsLoadingCustom<"signing up" | "signing in" | ''>) => void, loadingMessage?: string) => {
+  const signInHandler = async (authData: z.infer<typeof adminLoginSchema>, setIsLoading: (arg0: IsLoadingCustom<"signing up" | "signing in" | 'signing out' | ''>) => void, loadingMessage?: string) => {
 
     console.log("LogInauthData", authData)
 
@@ -68,12 +72,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       handleApiSuccess(response?.data, toast, '', () => setTimeout(() => {
         window.location.href = '/'
-        // setUser(response?.data?.data?.user || {})
         ls.set('token', response?.data?.data?.token);
       }, 3000))
-      const token = ls.get('token');
-      console.log("tokennnINAUth", token)
-
 
     } catch (error: unknown) {
       setIsLoading({ status: false, message: "", type: "" })
@@ -86,26 +86,41 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   };
 
-  const signUpHandler = async (authData: z.infer<typeof newAdminSignUpSchema>, setIsLoading: (arg0: IsLoadingCustom<"signing up" | "signing in" | "">) => void) => {
+  const signOutHandler = async (setIsLoading: (arg0: IsLoadingCustom<"signing up" | "signing in" | 'signing out' | ''>) => void,) => {
+
+    setIsLoading({ status: true, message: "Logging out...", type: "signing out" })
+
+
+    try {
+
+      const response = await axiosPrivate.post("/auth/admin/logout");
+      handleApiSuccess(response?.data, toast, '', () => {
+        window.location.href = '/sign-in';
+        ls.remove('token');
+      })
+
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        setIsLoading({ status: false, message: "", type: "" })
+        handleApiError(error, toast);
+      } else if ((error instanceof Error)) {
+        handleApiError(error, toast);
+      }
+    }
+
+  };
+
+  const signUpHandler = async (authData: z.infer<typeof newAdminSignUpSchema>, setIsLoading: (arg0: IsLoadingCustom<"signing up" | "signing in" | 'signing out' | ''>) => void) => {
 
     setIsLoading({ status: true, message: "Registering new Admin...", type: "signing up" })
 
     try {
-      // console.log("authData", authData)
-
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/auth/admin/register`,
         authData
       );
-      // console.log("response", response)
-
       const logInCredentials = { "email": authData?.email || 'wrong@gmail.com', "password": authData?.password || 'wrong' }
-
-      // setIsLoading({ status: true, message: "Redirecting to your dashboard...", type: "signing in" })
-
       handleApiSuccess(response?.data, toast, '', () => signInHandler(logInCredentials, setIsLoading, "Redirecting to your dashboard..."))
-
-
     } catch (error: unknown) {
       setIsLoading({ status: false, message: "", type: "" })
       if (axios.isAxiosError(error)) {
@@ -121,6 +136,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const value = {
     signUp: signUpHandler,
     signIn: signInHandler,
+    signOut: signOutHandler,
     user: user,
   }
 

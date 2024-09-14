@@ -55,8 +55,6 @@ export const adminLoginSchema =  z.object({
    }),
 })
 
-
-
 export type IsLoadingCustom<type> = {
     status: boolean,
     message: string,

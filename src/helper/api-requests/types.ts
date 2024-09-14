@@ -17,6 +17,7 @@ export type ToasterToast = ToastProps & {
     description?: React.ReactNode
     action?: ToastActionElement
 }
+
 export type Toast = Omit<ToasterToast, 'id'>
 
 export type ErrorCallback = () => void;

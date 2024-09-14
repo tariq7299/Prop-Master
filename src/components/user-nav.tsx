@@ -10,8 +10,16 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { useAuth } from '@/hooks/Auth/auth-provider'
+import { useState } from 'react'
 
 export function UserNav() {
+
+  const [isLoading, setIsLoading] = useState({ status: false, message: "", type: "" })
+
+  const { signOut } = useAuth();
+
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -48,8 +56,8 @@ export function UserNav() {
           <DropdownMenuItem>New Team</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          Log out
+        <DropdownMenuItem onClick={() => signOut(setIsLoading)} disabled={isLoading.status}>
+          {isLoading.type === "signing out" && isLoading.status ? isLoading.message : "Log out"}
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>

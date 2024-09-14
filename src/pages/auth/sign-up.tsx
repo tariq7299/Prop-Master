@@ -39,9 +39,9 @@ export default function SignUp() {
                 </Link>
               </p>
             </div>
-            
+
             <SignUpForm />
-      
+
           </Card>
         </div>
       </div>
