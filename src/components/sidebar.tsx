@@ -5,7 +5,9 @@ import { Button } from './custom/button'
 import Nav from './nav'
 import { cn } from '@/lib/utils'
 import { sidelinks } from '@/data/sidelinks'
-import PropMasterLogo from '@/assets/prop-master-high-resolution-logo-white-transparent.svg'
+import PropMasterLogo from './custom/PropMasterLogo'
+
+
 
 interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
   isCollapsed: boolean
@@ -47,20 +49,13 @@ export default function Sidebar({
           sticky
           className='z-50 flex justify-between px-4 py-3 shadow-sm md:px-4'
         >
-          <div className={`flex items-center ${!isCollapsed ? 'gap-4' : ''}`}>
-
-            <img
-              src={PropMasterLogo}
-              className=''
-              width={60}
-              height={60}
-              alt='real state'
-            />
-
+          <div className={`flex items-center ${!isCollapsed ? 'gap-2' : ''}`}>
+            <PropMasterLogo className='' />
             <div
               className={`flex flex-col justify-end truncate ${isCollapsed ? 'invisible w-0' : 'visible w-auto'}`}
             >
-              <span className='font-medium'>Prop Master</span>
+              <span className='font-medium'>Shadcn Admin</span>
+              <span className='text-xs'>Vite + ShadcnUI</span>
             </div>
           </div>
 

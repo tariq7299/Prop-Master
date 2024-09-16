@@ -14,10 +14,12 @@ import { TopNav } from '@/components/top-nav'
 import { UserNav } from '@/components/user-nav'
 import { RecentSales } from './components/recent-sales'
 import { Overview } from './components/overview'
+import { useAuth } from '@/hooks/Auth/auth-provider'
 
 
 export default function Dashboard() {
-
+  const { user } = useAuth()
+  console.log("userrrr", user)
 
 
   return (

@@ -123,6 +123,9 @@ importers:
         specifier: ^3.22.4
         version: 3.22.4
     devDependencies:
+      '@faker-js/faker':
+        specifier: ^9.0.1
+        version: 9.0.1
       '@types/node':
         specifier: ^20.12.7
         version: 20.12.7
@@ -156,6 +159,9 @@ importers:
       eslint-plugin-react-refresh:
         specifier: ^0.4.5
         version: 0.4.5(eslint@8.56.0)
+      install:
+        specifier: ^0.13.0
+        version: 0.13.0
       postcss:
         specifier: ^8.4.38
         version: 8.4.38
@@ -348,6 +354,10 @@ packages:
   '@eslint/js@8.56.0':
     resolution: {integrity: sha512-gMsVel9D7f2HLkBma9VbtzZRehRogVRfbr++f06nL2vnCGCNlzOD+/MUov/F4p8myyAHspEhVobgjpX64q5m6A==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+
+  '@faker-js/faker@9.0.1':
+    resolution: {integrity: sha512-4mDeYIgM3By7X6t5E6eYwLAa+2h4DeZDF7thhzIg6XB76jeEvMwadYAMCFJL/R4AnEBcAUO9+gL0vhy3s+qvZA==}
+    engines: {node: '>=18.0.0', npm: '>=9.0.0'}
 
   '@floating-ui/core@1.6.0':
     resolution: {integrity: sha512-PcF++MykgmTj3CIyOQbKA/hDzOAiqI3mhuoN44WRCopIs1sgoDoU4oty4Jtqaj/y3oDU6fnVSm4QG0a3t5i0+g==}
@@ -1753,6 +1763,10 @@ packages:
   input-format@0.3.10:
     resolution: {integrity: sha512-5cFv/kOZD7Ch0viprVkuYPDkAU7HBZYBx8QrIpQ6yXUWbAQ0+RQ8IIojDJOf/RO6FDJLL099HDSK2KoVZ2zevg==}
 
+  install@0.13.0:
+    resolution: {integrity: sha512-zDml/jzr2PKU9I8J/xyZBQn8rPCAY//UOYNmR01XwNwyfhEWObo2SWfSl1+0tm1u6PhxLwDnfsT/6jB7OUxqFA==}
+    engines: {node: '>= 0.10'}
+
   internmap@2.0.3:
     resolution: {integrity: sha512-5Hh7Y1wQbvY5ooGgPbDaL5iYLAPzMTUrjMulskHLH6wnv/A+1q5rgEaiuqEjB+oxGXIVZs1FF+R/KPN3ZSQYYg==}
     engines: {node: '>=12'}
@@ -2592,6 +2606,8 @@ snapshots:
       - supports-color
 
   '@eslint/js@8.56.0': {}
+
+  '@faker-js/faker@9.0.1': {}
 
   '@floating-ui/core@1.6.0':
     dependencies:
@@ -4028,6 +4044,8 @@ snapshots:
   input-format@0.3.10:
     dependencies:
       prop-types: 15.8.1
+
+  install@0.13.0: {}
 
   internmap@2.0.3: {}
 

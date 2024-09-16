@@ -23,6 +23,17 @@ import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { PasswordInput } from '@/components/custom/password-input'
+import { useLoaderData } from 'react-router-dom'
+import { handleApiError } from '@/helper/api-requests/handleApiError'
+import { handleApiSuccess } from '@/helper/api-requests/handleApiSuccess'
+import axios from 'axios'
+import GeneralError from '@/pages/errors/general-error'
+import { SuccessApiResponse } from '@/helper/api-requests/types'
+import useLocalStorage from '@/hooks/use-local-storage'
+import { Admin } from '@/pages/auth/types'
+import { useEffect, useMemo } from 'react'
+
 
 const profileFormSchema = z.object({
   username: z
@@ -59,12 +70,56 @@ const defaultValues: Partial<ProfileFormValues> = {
   ],
 }
 
+const defaultUserValue = {
+  name: "",
+  phone_number: "",
+  email: "",
+  company: null,
+  device_id: null,
+  role_id: null,
+  id: null,
+  role: {
+    id: null,
+    name: null,
+  }
+}
+
+
 export default function ProfileForm() {
+  const adminDataResponse = useLoaderData() as { response: SuccessApiResponse, success: boolean };
+  console.log("adminDataResponse", adminDataResponse);
+
+  if (!adminDataResponse.success) {
+    return <GeneralError />;
+  }
+
+
+  const [user, setUser] = useLocalStorage<Admin>({
+    key: 'user',
+    defaultValue: defaultUserValue
+  })
+
+  useEffect(() => {
+    setUser(adminDataResponse?.response?.data?.data?.user)
+    console.log("userds", user);
+  }, [adminDataResponse.response])
+
+  // useMemo
+
+
+  // cosnt useMemo(() => {
+
+  // setUser(adminDataResponse?.response?.data?.data?.user)
+  // })
+
+
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues,
     mode: 'onChange',
   })
+
+
 
   const { fields, append } = useFieldArray({
     name: 'urls',
@@ -82,106 +137,125 @@ export default function ProfileForm() {
     })
   }
 
+
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
-        <FormField
-          control={form.control}
-          name='username'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder='shadcn' {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name. It can be your real name or a
-                pseudonym. You can only change this once every 30 days.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='email'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+      <form onSubmit={form.handleSubmit(onSubmit)} >
+
+        <div className='space-y-8 pb-8'>
+
+          <FormField
+            control={form.control}
+            name='name'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder='Select a verified email to display' />
-                  </SelectTrigger>
+                  {/* value={adminDataResponse?.response?.data?.data?.user?.name} */}
+                  <Input placeholder='Your name' {...field} />
                 </FormControl>
-                <SelectContent>
-                  <SelectItem value='m@example.com'>m@example.com</SelectItem>
-                  <SelectItem value='m@google.com'>m@google.com</SelectItem>
-                  <SelectItem value='m@support.com'>m@support.com</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormDescription>
-                You can manage verified email addresses in your{' '}
-                <Link to='/examples/forms'>email settings</Link>.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='bio'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Bio</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder='Tell us a little bit about yourself'
-                  className='resize-none'
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>
-                You can <span>@mention</span> other users and organizations to
-                link to them.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div>
-          {fields.map((field, index) => (
-            <FormField
-              control={form.control}
-              key={field.id}
-              name={`urls.${index}.value`}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className={cn(index !== 0 && 'sr-only')}>
-                    URLs
-                  </FormLabel>
-                  <FormDescription className={cn(index !== 0 && 'sr-only')}>
-                    Add links to your website, blog, or social media profiles.
-                  </FormDescription>
+                <FormDescription>
+                  This is the name that will be displayed on your profile and in
+                  emails.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name='email'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
-                    <Input {...field} />
+                    <SelectTrigger>
+                      <SelectValue placeholder='Select a verified email to display' />
+                    </SelectTrigger>
                   </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          ))}
-          <Button
-            type='button'
-            variant='outline'
-            size='sm'
-            className='mt-2'
-            onClick={() => append({ value: '' })}
-          >
-            Add URL
-          </Button>
+                  <SelectContent>
+                    <SelectItem value='m@example.com'>m@example.com</SelectItem>
+                    <SelectItem value='m@google.com'>m@google.com</SelectItem>
+                    <SelectItem value='m@support.com'>m@support.com</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormDescription>
+                  You can manage verified email addresses in your{' '}
+                  <Link to='/examples/forms'>email settings</Link>.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='company'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Company</FormLabel>
+                <FormControl>
+                  <Input placeholder='Prop Master...' {...field} />
+                </FormControl>
+                <FormDescription>
+                  This is the name that will be displayed on your profile and in
+                  emails.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
-        <Button type='submit'>Update profile</Button>
+        <Button type='submit'>Update personal info</Button>
+      </form>
+
+      <form onSubmit={form.handleSubmit(() => { })} className='  pt-8 pb-6'>
+
+        <div className="space-y-5 pb-8">
+          <FormField
+            control={form.control}
+            name='password'
+            render={({ field }) => (
+              <FormItem className='space-y-1'>
+                <FormLabel>Current Password</FormLabel>
+                <FormControl>
+                  <PasswordInput placeholder='********' {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='password'
+            render={({ field }) => (
+              <FormItem className='space-y-1'>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <PasswordInput placeholder='********' {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='password_confirmation'
+            render={({ field }) => (
+              <FormItem className='space-y-1'>
+                <FormLabel>Confirm Password</FormLabel>
+                <FormControl>
+                  <PasswordInput placeholder='********' {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <Button type='submit'>Change password</Button>
       </form>
     </Form>
   )

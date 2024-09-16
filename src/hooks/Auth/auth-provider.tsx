@@ -4,12 +4,12 @@ import { newAdminSignUpSchema, adminLoginSchema } from '@/pages/auth/types';
 import { z } from 'zod'
 import { handleApiSuccess } from '@/helper/api-requests/handleApiSuccess';
 import { handleApiError } from '@/helper/api-requests/handleApiError';
-import { useToast } from '@/components/ui/use-toast';
 import { IsLoadingCustom, Admin } from '@/pages/auth/types';
 import useLocalStorage from '../use-local-storage';
 import SecureLS from 'secure-ls';
 import { axiosPrivate } from '@/helper/axiosInstances';
 
+import { toast } from '@/components/ui/use-toast'
 
 
 
@@ -46,7 +46,6 @@ const AuthContext = createContext<AuthContext>(initialAuthContext);
 
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const { toast } = useToast()
   const ls = new SecureLS();
   const [user, setUser] = useLocalStorage<Admin>({
     key: 'user',
@@ -73,13 +72,12 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       handleApiSuccess(response?.data, toast, '', () => setTimeout(() => {
         window.location.href = '/'
         ls.set('token', response?.data?.data?.token);
+        setUser(response?.data?.data?.data)
       }, 3000))
 
     } catch (error: unknown) {
       setIsLoading({ status: false, message: "", type: "" })
-      if (axios.isAxiosError(error)) {
-        handleApiError(error, toast);
-      } else if ((error instanceof Error)) {
+      if (axios.isAxiosError(error) || (error instanceof Error)) {
         handleApiError(error, toast);
       }
     }
@@ -100,10 +98,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       })
 
     } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        setIsLoading({ status: false, message: "", type: "" })
-        handleApiError(error, toast);
-      } else if ((error instanceof Error)) {
+      if (axios.isAxiosError(error) || (error instanceof Error)) {
         handleApiError(error, toast);
       }
     }
@@ -111,9 +106,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const signUpHandler = async (authData: z.infer<typeof newAdminSignUpSchema>, setIsLoading: (arg0: IsLoadingCustom<"signing up" | "signing in" | 'signing out' | ''>) => void) => {
-
     setIsLoading({ status: true, message: "Registering new Admin...", type: "signing up" })
-
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/auth/admin/register`,
@@ -123,9 +116,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       handleApiSuccess(response?.data, toast, '', () => signInHandler(logInCredentials, setIsLoading, "Redirecting to your dashboard..."))
     } catch (error: unknown) {
       setIsLoading({ status: false, message: "", type: "" })
-      if (axios.isAxiosError(error)) {
-        handleApiError(error, toast);
-      } else if ((error instanceof Error)) {
+      if (axios.isAxiosError(error) || (error instanceof Error)) {
         handleApiError(error, toast);
       }
     }
