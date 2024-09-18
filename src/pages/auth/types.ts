@@ -65,7 +65,7 @@ export type Admin = {
         name: string,
         phone_number: string,
         email: string,
-        company: string | null,
+        company: string,
         device_id: number | null,
         role_id: number | null,
         updated_at?: string,
@@ -78,3 +78,19 @@ export type Admin = {
         updated_at?: string
         }
 }
+
+const defaultUserValue = {
+  name: "",
+  phone_number: "",
+  email: "",
+  company: "",
+  device_id: null,
+  role_id: null,
+  id: null,
+  role: {
+    id: null,
+    name: null,
+  }
+}
+
+export {defaultUserValue}

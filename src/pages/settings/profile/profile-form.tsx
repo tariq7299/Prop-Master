@@ -1,6 +1,5 @@
 import { z } from 'zod'
-import { Link } from 'react-router-dom'
-import { useFieldArray, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { Button } from '@/components/custom/button'
 import {
   Form,
@@ -12,79 +11,63 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
-import { cn } from '@/lib/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PasswordInput } from '@/components/custom/password-input'
 import { useLoaderData } from 'react-router-dom'
-import { handleApiError } from '@/helper/api-requests/handleApiError'
-import { handleApiSuccess } from '@/helper/api-requests/handleApiSuccess'
-import axios from 'axios'
 import GeneralError from '@/pages/errors/general-error'
 import { SuccessApiResponse } from '@/helper/api-requests/types'
 import useLocalStorage from '@/hooks/use-local-storage'
 import { Admin } from '@/pages/auth/types'
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
+import { defaultUserValue } from '@/pages/auth/types'
 
 
-
-const profileFormSchema = z.object({
-  username: z
+const personalInfoFormSchema = z.object({
+  name: z
     .string()
-    .min(2, {
-      message: 'Username must be at least 2 characters.',
-    })
-    .max(30, {
-      message: 'Username must not be longer than 30 characters.',
-    }),
+    .min(5, { message: 'Your name must be at least 5 characters long' }),
   email: z
-    .string({
-      required_error: 'Please select an email to display.',
-    })
-    .email(),
-  bio: z.string().max(160).min(4),
-  urls: z
-    .array(
-      z.object({
-        value: z.string().url({ message: 'Please enter a valid URL.' }),
-      })
-    )
+    .string()
+    .min(1, { message: 'Please enter your email' })
+    .email({ message: 'Invalid email address' }),
+  company: z
+    .string()
     .optional(),
+  phone_number: z
+    .string()
+    .length(13, { message: 'Please enter a valid phone number' }),
 })
 
-type ProfileFormValues = z.infer<typeof profileFormSchema>
+const passwordFormSchema = z.object({
+  current_password: z
+    .string()
+    .min(1, {
+      message: 'Please enter your password',
+    }),
+  password: z
+    .string()
+    .min(1, {
+      message: 'Please enter your password',
+    })
+    .min(7, {
+      message: 'Password must be at least 7 characters long',
+    }).refine((password) => /[A-Z]/.test(password), {
+      message: "Password must contain at least one uppercase character",
+    })
+    .refine((password) => /[a-z]/.test(password), {
+      message: "",
+    })
+    .refine((password) => /[0-9]/.test(password), { message: "Password must contain at least one number" })
+    .refine((password) => /[!@#$%^&*]/.test(password), {
+      message: "Password must contain at least on special character like '!', '@' or '#' ",
+    }),
 
-// This can come from your database or API.
-const defaultValues: Partial<ProfileFormValues> = {
-  bio: 'I own a computer.',
-  urls: [
-    { value: 'https://shadcn.com' },
-    { value: 'http://twitter.com/shadcn' },
-  ],
-}
+  password_confirmation: z.string(),
+})
 
-const defaultUserValue = {
-  name: "",
-  phone_number: "",
-  email: "",
-  company: null,
-  device_id: null,
-  role_id: null,
-  id: null,
-  role: {
-    id: null,
-    name: null,
-  }
-}
-
+type PersonalFormValues = z.infer<typeof personalInfoFormSchema>
+type PasswordFormValues = z.infer<typeof passwordFormSchema>
 
 export default function ProfileForm() {
 
@@ -92,6 +75,7 @@ export default function ProfileForm() {
 
   console.log("adminDataResponse", adminDataResponse);
 
+  // If the response wasn't succesfull then render an Error Page
   if (!('success' in adminDataResponse)) {
     return <GeneralError />;
   }
@@ -103,34 +87,32 @@ export default function ProfileForm() {
 
   useEffect(() => {
     if (('user' in adminDataResponse.data)) {
-      setUser(adminDataResponse?.data?.user)
+      setUser({ ...adminDataResponse?.data?.user, company: adminDataResponse.data.user.company || "" })
     }
     console.log("userds", user);
   }, [adminDataResponse])
 
-  // useMemo
+  // This can come from your database or API.
+  const defaultValues: PersonalFormValues = {
+    name: user.name,
+    email: user.email,
+    phone_number: user.phone_number,
+    company: user.company,
+  }
 
-
-  // cosnt useMemo(() => {
-
-  // setUser(adminDataResponse?.response?.data?.data?.user)
-  // })
-
-
-  const form = useForm<ProfileFormValues>({
-    resolver: zodResolver(profileFormSchema),
+  const personalInfoForm = useForm<PersonalFormValues>({
+    resolver: zodResolver(personalInfoFormSchema),
     defaultValues,
     mode: 'onChange',
   })
 
-
-
-  const { fields, append } = useFieldArray({
-    name: 'urls',
-    control: form.control,
+  const passwordInfoForm = useForm<PasswordFormValues>({
+    resolver: zodResolver(passwordFormSchema),
+    mode: 'onChange',
   })
 
-  function onSubmit(data: ProfileFormValues) {
+
+  function onSubmit(data: PersonalFormValues) {
     toast({
       title: 'You submitted the following values:',
       description: (
@@ -144,13 +126,13 @@ export default function ProfileForm() {
 
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} >
+    <Form {...personalInfoForm}>
+      <form onSubmit={personalInfoForm.handleSubmit(onSubmit)} >
 
         <div className='space-y-8 pb-8'>
 
           <FormField
-            control={form.control}
+            control={personalInfoForm.control}
             name='name'
             render={({ field }) => (
               <FormItem>
@@ -160,8 +142,7 @@ export default function ProfileForm() {
                   <Input placeholder='Your name' {...field} />
                 </FormControl>
                 <FormDescription>
-                  This is the name that will be displayed on your profile and in
-                  emails.
+                  Your Name which appear in your info
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -169,33 +150,39 @@ export default function ProfileForm() {
           />
 
           <FormField
-            control={form.control}
+            control={personalInfoForm.control}
             name='email'
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Email</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder='Select a verified email to display' />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value='m@example.com'>m@example.com</SelectItem>
-                    <SelectItem value='m@google.com'>m@google.com</SelectItem>
-                    <SelectItem value='m@support.com'>m@support.com</SelectItem>
-                  </SelectContent>
-                </Select>
+                <FormControl>
+                  <Input placeholder='name@example.com...' {...field} />
+                </FormControl>
                 <FormDescription>
-                  You can manage verified email addresses in your{' '}
-                  <Link to='/examples/forms'>email settings</Link>.
+                  You can change your email address from here
                 </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
           <FormField
-            control={form.control}
+            control={personalInfoForm.control}
+            name='phone_number'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Phone Number</FormLabel>
+                <FormControl>
+                  <Input placeholder='01099122332..' {...field} />
+                </FormControl>
+                <FormDescription>
+                  You can change your phone number from here
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={personalInfoForm.control}
             name='company'
             render={({ field }) => (
               <FormItem>
@@ -204,8 +191,7 @@ export default function ProfileForm() {
                   <Input placeholder='Prop Master...' {...field} />
                 </FormControl>
                 <FormDescription>
-                  This is the name that will be displayed on your profile and in
-                  emails.
+                  You can change your company from here
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -215,11 +201,11 @@ export default function ProfileForm() {
         <Button type='submit'>Update personal info</Button>
       </form>
 
-      <form onSubmit={form.handleSubmit(() => { })} className='  pt-8 pb-6'>
+      <form onSubmit={passwordInfoForm.handleSubmit(() => { })} className='  pt-8 pb-6'>
 
         <div className="space-y-5 pb-8">
           <FormField
-            control={form.control}
+            control={passwordInfoForm.control}
             name='password'
             render={({ field }) => (
               <FormItem className='space-y-1'>
@@ -232,7 +218,7 @@ export default function ProfileForm() {
             )}
           />
           <FormField
-            control={form.control}
+            control={passwordInfoForm.control}
             name='password'
             render={({ field }) => (
               <FormItem className='space-y-1'>
@@ -245,7 +231,7 @@ export default function ProfileForm() {
             )}
           />
           <FormField
-            control={form.control}
+            control={passwordInfoForm.control}
             name='password_confirmation'
             render={({ field }) => (
               <FormItem className='space-y-1'>
@@ -261,6 +247,7 @@ export default function ProfileForm() {
 
         <Button type='submit'>Change password</Button>
       </form>
+
     </Form>
   )
 }

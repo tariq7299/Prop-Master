@@ -5,7 +5,7 @@ export default function SettingsProfile() {
   return (
     <ContentSection
       title='Profile'
-      desc='This is how others will see you on the site.'
+      desc='This is your personal and login info'
     >
       <ProfileForm />
     </ContentSection>

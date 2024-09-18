@@ -21,9 +21,6 @@ import { useAuth } from '@/hooks/Auth/auth-provider'
 interface SignUpFormProps extends HTMLAttributes<HTMLDivElement> { }
 
 
-
-
-
 export function SignUpForm({ className, ...props }: SignUpFormProps) {
   const [isLoading, setIsLoading] = useState({ status: false, message: "", type: "" })
   const { signUp } = useAuth();
@@ -44,10 +41,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
 
   function onSubmit(data: z.infer<typeof newAdminSignUpSchema>) {
     console.log("data", data)
-
     signUp(data, setIsLoading)
-
-
   }
 
   return (
