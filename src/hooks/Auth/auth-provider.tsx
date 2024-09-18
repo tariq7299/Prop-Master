@@ -63,7 +63,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
 
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/auth/admin/login`,
+        `${import.meta.env.VITE_API_URL}/auth/admin/subadmin/login`,
         authData
       );
 
@@ -91,7 +91,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     try {
 
-      const response = await axiosPrivate.post("/auth/admin/logout");
+      const response = await axiosPrivate.post("/auth/logout");
       handleApiSuccess(response?.data, toast, '', () => {
         window.location.href = '/sign-in';
         ls.remove('token');

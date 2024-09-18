@@ -35,6 +35,7 @@ import { Admin } from '@/pages/auth/types'
 import { useEffect, useMemo } from 'react'
 
 
+
 const profileFormSchema = z.object({
   username: z
     .string()
@@ -86,13 +87,14 @@ const defaultUserValue = {
 
 
 export default function ProfileForm() {
-  const adminDataResponse = useLoaderData() as { response: SuccessApiResponse, success: boolean };
+
+  const adminDataResponse = useLoaderData() as SuccessApiResponse | Error;
+
   console.log("adminDataResponse", adminDataResponse);
 
-  if (!adminDataResponse.success) {
+  if (!('success' in adminDataResponse)) {
     return <GeneralError />;
   }
-
 
   const [user, setUser] = useLocalStorage<Admin>({
     key: 'user',
@@ -100,9 +102,11 @@ export default function ProfileForm() {
   })
 
   useEffect(() => {
-    setUser(adminDataResponse?.response?.data?.data?.user)
+    if (('user' in adminDataResponse.data)) {
+      setUser(adminDataResponse?.data?.user)
+    }
     console.log("userds", user);
-  }, [adminDataResponse.response])
+  }, [adminDataResponse])
 
   // useMemo
 

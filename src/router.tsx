@@ -7,10 +7,9 @@ import PrivateRoute from './components/private-route.tsx'
 import { axiosPrivate } from './helper/axiosInstances.tsx'
 import { handleApiError } from './helper/api-requests/handleApiError.tsx'
 import { handleApiSuccess } from './helper/api-requests/handleApiSuccess.tsx'
-import { useToast } from './components/ui/use-toast.ts'
 import axios from 'axios'
 import { toast } from '@/components/ui/use-toast'
-
+import { handleGettingRouteData } from './helper/api-requests/handleGettingRouteData.ts'
 const router = createBrowserRouter([
 
   // Auth routes
@@ -110,18 +109,7 @@ const router = createBrowserRouter([
                 lazy: async () => ({
                   Component: (await import('./pages/settings/profile')).default,
                 }),
-                loader: async () => {
-                  try {
-                    const response = await axiosPrivate.get("/auth/admin/get-user-data")
-                    handleApiSuccess(response?.data, toast)
-                    return { "response": response, "success": true }
-                  } catch (error: unknown) {
-                    if (axios.isAxiosError(error) || (error instanceof Error)) {
-                      handleApiError(error, toast);
-                      return { "response": error, "success": false }
-                    }
-                  }
-                },
+                loader: async () => await handleGettingRouteData("/sauth/get-user-data")
               },
               {
                 path: 'account',
