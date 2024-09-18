@@ -24,55 +24,9 @@ import { defaultUserValue } from '@/pages/auth/types'
 import { PhoneInput } from '@/components/custom/phone-input'
 import { axiosPrivate } from '@/helper/axiosInstances'
 import { handleApiSuccess } from '@/helper/api-requests/handleApiSuccess'
-import { AxiosError } from 'axios'
 import { handleApiError } from '@/helper/api-requests/handleApiError'
 import axios from 'axios'
-
-
-const personalInfoFormSchema = z.object({
-  name: z
-    .string()
-    .min(5, { message: 'Your name must be at least 5 characters long' }),
-  email: z
-    .string()
-    .min(1, { message: 'Please enter your email' })
-    .email({ message: 'Invalid email address' }),
-  company: z
-    .string()
-    .optional(),
-  phone_number: z
-    .string()
-    .length(13, { message: 'Please enter a valid phone number' }),
-})
-
-const passwordFormSchema = z.object({
-  current_password: z
-    .string()
-    .min(1, {
-      message: 'Please enter your password',
-    }),
-  password: z
-    .string()
-    .min(1, {
-      message: 'Please enter your password',
-    })
-    .min(7, {
-      message: 'Password must be at least 7 characters long',
-    }).refine((password) => /[A-Z]/.test(password), {
-      message: "Password must contain at least one uppercase character",
-    })
-    .refine((password) => /[a-z]/.test(password), {
-      message: "",
-    })
-    .refine((password) => /[0-9]/.test(password), { message: "Password must contain at least one number" })
-    .refine((password) => /[!@#$%^&*]/.test(password), {
-      message: "Password must contain at least on special character like '!', '@' or '#' ",
-    }),
-  password_confirmation: z.string(),
-}).refine((data) => data.password === data.password_confirmation, {
-  message: "Passwords don't match.",
-  path: ['password_confirmation'],
-})
+import { personalInfoFormSchema, passwordFormSchema } from './types'
 
 type PersonalFormValues = z.infer<typeof personalInfoFormSchema>
 type PasswordFormValues = z.infer<typeof passwordFormSchema>
@@ -121,7 +75,6 @@ export default function ProfileForm() {
     mode: 'onChange',
   })
 
-
   function handleSubmittingPersonalInfo(data: PersonalFormValues) {
 
     console.log("dataaa", data)
@@ -152,17 +105,6 @@ export default function ProfileForm() {
 
   }
 
-
-  // toast({
-  //   title: 'You submitted the following values:',
-  //   description: (
-  //     <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-  //       <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
-  //     </pre>
-  //   ),
-  // })
-  // }
-
   function handleSubmittingNewPassword(data: PasswordFormValues) {
     console.log("dataaa", data)
 
@@ -186,8 +128,6 @@ export default function ProfileForm() {
     changePersonalInfo(data)
 
   }
-
-
 
   return (
     <>
@@ -316,8 +256,6 @@ export default function ProfileForm() {
           <Button type='submit'>Change password</Button>
         </form>
       </Form>
-
-
     </>
   )
 }
