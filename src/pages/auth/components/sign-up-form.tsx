@@ -82,7 +82,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
                 <FormItem className='space-y-1'>
                   <FormLabel>Phone Number</FormLabel>
                   <FormControl>
-                    <PhoneInput defaultCountry='EG' placeholder='331 766 152' {...field} />
+                    <PhoneInput defaultCountry='EG' placeholder='01099133377' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

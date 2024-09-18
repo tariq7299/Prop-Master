@@ -21,6 +21,12 @@ import useLocalStorage from '@/hooks/use-local-storage'
 import { Admin } from '@/pages/auth/types'
 import { useEffect } from 'react'
 import { defaultUserValue } from '@/pages/auth/types'
+import { PhoneInput } from '@/components/custom/phone-input'
+import { axiosPrivate } from '@/helper/axiosInstances'
+import { handleApiSuccess } from '@/helper/api-requests/handleApiSuccess'
+import { AxiosError } from 'axios'
+import { handleApiError } from '@/helper/api-requests/handleApiError'
+import axios from 'axios'
 
 
 const personalInfoFormSchema = z.object({
@@ -62,8 +68,10 @@ const passwordFormSchema = z.object({
     .refine((password) => /[!@#$%^&*]/.test(password), {
       message: "Password must contain at least on special character like '!', '@' or '#' ",
     }),
-
   password_confirmation: z.string(),
+}).refine((data) => data.password === data.password_confirmation, {
+  message: "Passwords don't match.",
+  path: ['password_confirmation'],
 })
 
 type PersonalFormValues = z.infer<typeof personalInfoFormSchema>
@@ -88,6 +96,8 @@ export default function ProfileForm() {
   useEffect(() => {
     if (('user' in adminDataResponse.data)) {
       setUser({ ...adminDataResponse?.data?.user, company: adminDataResponse.data.user.company || "" })
+    } else {
+      setUser(defaultUserValue)
     }
     console.log("userds", user);
   }, [adminDataResponse])
@@ -112,142 +122,202 @@ export default function ProfileForm() {
   })
 
 
-  function onSubmit(data: PersonalFormValues) {
-    toast({
-      title: 'You submitted the following values:',
-      description: (
-        <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-          <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    })
+  function handleSubmittingPersonalInfo(data: PersonalFormValues) {
+
+    console.log("dataaa", data)
+
+    const changePersonalInfo = async (data: PersonalFormValues) => {
+
+      try {
+        let res = await axiosPrivate.post("/auth/update-profile", data)
+
+        console.log("res", res)
+        handleApiSuccess(res?.data, toast, '', () => {
+          if (('user' in res.data.data)) {
+            setUser({ ...res?.data?.data?.user, company: res?.data.data.user.company || "" })
+          } else {
+            setUser(defaultUserValue)
+          }
+        })
+
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error) || error instanceof Error) {
+          handleApiError(error, toast)
+        }
+      }
+    }
+
+
+    changePersonalInfo(data)
+
+  }
+
+
+  // toast({
+  //   title: 'You submitted the following values:',
+  //   description: (
+  //     <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
+  //       <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
+  //     </pre>
+  //   ),
+  // })
+  // }
+
+  function handleSubmittingNewPassword(data: PasswordFormValues) {
+    console.log("dataaa", data)
+
+    const changePersonalInfo = async (data: PasswordFormValues) => {
+
+      try {
+        let res = await axiosPrivate.post("/auth/change-password", data)
+        console.log("res", res)
+        handleApiSuccess(res?.data, toast)
+
+      } catch (error: unknown) {
+
+        if (axios.isAxiosError(error) || error instanceof Error) {
+          handleApiError(error, toast)
+        }
+
+      }
+    }
+
+
+    changePersonalInfo(data)
+
   }
 
 
 
   return (
-    <Form {...personalInfoForm}>
-      <form onSubmit={personalInfoForm.handleSubmit(onSubmit)} >
+    <>
+      <Form {...personalInfoForm}>
+        <form onSubmit={personalInfoForm.handleSubmit(handleSubmittingPersonalInfo)} >
 
-        <div className='space-y-8 pb-8'>
+          <div className='space-y-8 pb-8'>
 
-          <FormField
-            control={personalInfoForm.control}
-            name='name'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  {/* value={adminDataResponse?.response?.data?.data?.user?.name} */}
-                  <Input placeholder='Your name' {...field} />
-                </FormControl>
-                <FormDescription>
-                  Your Name which appear in your info
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={personalInfoForm.control}
+              name='name'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    {/* value={adminDataResponse?.response?.data?.data?.user?.name} */}
+                    <Input placeholder='Your name' {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    Your Name which appear in your info
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={personalInfoForm.control}
-            name='email'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input placeholder='name@example.com...' {...field} />
-                </FormControl>
-                <FormDescription>
-                  You can change your email address from here
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={personalInfoForm.control}
-            name='phone_number'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Phone Number</FormLabel>
-                <FormControl>
-                  <Input placeholder='01099122332..' {...field} />
-                </FormControl>
-                <FormDescription>
-                  You can change your phone number from here
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={personalInfoForm.control}
-            name='company'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Company</FormLabel>
-                <FormControl>
-                  <Input placeholder='Prop Master...' {...field} />
-                </FormControl>
-                <FormDescription>
-                  You can change your company from here
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <Button type='submit'>Update personal info</Button>
-      </form>
+            <FormField
+              control={personalInfoForm.control}
+              name='email'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input placeholder='name@example.com...' {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    You can change your email address from here
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={personalInfoForm.control}
+              name='phone_number'
+              render={({ field }) => (
+                <FormItem className='space-y-1'>
+                  <FormLabel>Phone Number</FormLabel>
+                  <FormControl>
+                    <PhoneInput defaultCountry='EG' placeholder='01099133377' {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    You can change your phone number from here
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-      <form onSubmit={passwordInfoForm.handleSubmit(() => { })} className='  pt-8 pb-6'>
+            <FormField
+              control={personalInfoForm.control}
+              name='company'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Company</FormLabel>
+                  <FormControl>
+                    <Input placeholder='Prop Master...' {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    You can change your company from here
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <Button type='submit'>Update personal info</Button>
+        </form>
+      </Form>
 
-        <div className="space-y-5 pb-8">
-          <FormField
-            control={passwordInfoForm.control}
-            name='password'
-            render={({ field }) => (
-              <FormItem className='space-y-1'>
-                <FormLabel>Current Password</FormLabel>
-                <FormControl>
-                  <PasswordInput placeholder='********' {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={passwordInfoForm.control}
-            name='password'
-            render={({ field }) => (
-              <FormItem className='space-y-1'>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <PasswordInput placeholder='********' {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={passwordInfoForm.control}
-            name='password_confirmation'
-            render={({ field }) => (
-              <FormItem className='space-y-1'>
-                <FormLabel>Confirm Password</FormLabel>
-                <FormControl>
-                  <PasswordInput placeholder='********' {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+      <Form {...passwordInfoForm}>
+        <form onSubmit={passwordInfoForm.handleSubmit(handleSubmittingNewPassword)} className='  pt-8 pb-6'>
 
-        <Button type='submit'>Change password</Button>
-      </form>
+          <div className="space-y-5 pb-8">
+            <FormField
+              control={passwordInfoForm.control}
+              name='current_password'
+              render={({ field }) => (
+                <FormItem className='space-y-1'>
+                  <FormLabel>Current Password</FormLabel>
+                  <FormControl>
+                    <PasswordInput placeholder='********' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={passwordInfoForm.control}
+              name='password'
+              render={({ field }) => (
+                <FormItem className='space-y-1'>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <PasswordInput placeholder='********' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={passwordInfoForm.control}
+              name='password_confirmation'
+              render={({ field }) => (
+                <FormItem className='space-y-1'>
+                  <FormLabel>Confirm Password</FormLabel>
+                  <FormControl>
+                    <PasswordInput placeholder='********' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
-    </Form>
+          <Button type='submit'>Change password</Button>
+        </form>
+      </Form>
+
+
+    </>
   )
 }

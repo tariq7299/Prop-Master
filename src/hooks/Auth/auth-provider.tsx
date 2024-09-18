@@ -24,7 +24,7 @@ const defaultUserValue = {
   name: "",
   phone_number: "",
   email: "",
-  company: null,
+  company: "",
   device_id: null,
   role_id: null,
   id: null,
@@ -72,7 +72,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       handleApiSuccess(response?.data, toast, '', () => setTimeout(() => {
         window.location.href = '/'
         ls.set('token', response?.data?.data?.token);
-        setUser(response?.data?.data?.data)
+        setUser({ ...response?.data?.data?.data, company: response?.data.data.data.company || "" })
       }, 3000))
 
     } catch (error: unknown) {

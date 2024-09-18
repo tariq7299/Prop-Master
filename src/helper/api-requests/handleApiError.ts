@@ -17,7 +17,7 @@ function handleApiError(
     if (axios.isAxiosError(errResponse)) {
 
         const statusCode = errResponse.response?.status;
-        let errorMessage = customErrorMsg || (errResponse.response?.data as any)?.errors || '';
+        let errorMessage = customErrorMsg || (errResponse.response?.data as any)?.errors || null;
 
         if (statusCode === 401 || statusCode === 419 || statusCode === 403) {
             errorMessage = errorMessage || 'Unauthorized: Please log in! Redirecting to login page...';
