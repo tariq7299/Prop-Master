@@ -7,11 +7,13 @@ function FullPageLoading() {
     const { appState, appDispatch } = useApp()
 
     return (
-        <div className="w-full h-full bg-slate-300">
+        <div className="fixed top-0 left-0 w-full h-full bg-slate-600 z-50 flex flex-col justify-center items-center bg-opacity-80">
+            {/* // <div className="fixed inset-0 flex items-center justify-center bg-slate-300 bg-opacity-75 z-50"> */}
             {appState.loadingIconName === "progressBar" && (
                 <>
-                    <h1>{appState.loadingMsg}</h1>
-                    <Progress className="w-[60vw]" value={progressValue} >
+                    <h1 className="mb-4 text-xl font-bold">{appState.loadingMsg}</h1>
+                    {/* Add max width to progress bar */}
+                    <Progress className="w-[50vw] h-6" value={progressValue} >
                     </Progress>
                 </>
             )}

@@ -1,7 +1,9 @@
 export type AppState = {
     isLoading: boolean,
     loadingMsg: string,
-    loadingIconName: string
+    loadingIconName: string,
+    
+
 }
 
 export type AppContext = {
