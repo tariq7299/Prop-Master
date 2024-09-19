@@ -2,8 +2,7 @@ export type AppState = {
     isLoading: boolean,
     loadingMsg: string,
     loadingIconName: string,
-    
-
+    progressBarValue?: number
 }
 
 export type AppContext = {
@@ -13,9 +12,10 @@ export type AppContext = {
 
 
 const initialAppState = {
-    isLoading: true,
+    isLoading: false,
     loadingMsg: 'Processing...',
-    loadingIconName: "progressBar", // Add default Icon name that will render a default icon
+    loadingIconName: "3dLoader",
+    progressBarValue: 10
 }
 
 
