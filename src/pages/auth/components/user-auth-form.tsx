@@ -16,7 +16,7 @@ import { Button } from '@/components/custom/button'
 import { PasswordInput } from '@/components/custom/password-input'
 import { cn } from '@/lib/utils'
 import { adminLoginSchema } from '../types'
-import { useAuth } from '@/hooks/Auth/auth-provider'
+import { useAuth } from '@/hooks/auth/auth-provider'
 
 
 interface UserAuthFormProps extends HTMLAttributes<HTMLDivElement> { }

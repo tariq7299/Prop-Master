@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '@/hooks/Auth/auth-provider';
+import { useAuth } from '@/hooks/auth/auth-provider';
 import React, { useState, useEffect } from 'react';
 import SecureLS from 'secure-ls';
 

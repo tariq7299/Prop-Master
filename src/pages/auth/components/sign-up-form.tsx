@@ -16,7 +16,7 @@ import { PasswordInput } from '@/components/custom/password-input'
 import { cn } from '@/lib/utils'
 import { PhoneInput } from '@/components/custom/phone-input'
 import { newAdminSignUpSchema } from '../types'
-import { useAuth } from '@/hooks/Auth/auth-provider'
+import { useAuth } from '@/hooks/auth/auth-provider'
 
 interface SignUpFormProps extends HTMLAttributes<HTMLDivElement> { }
 

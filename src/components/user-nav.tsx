@@ -10,7 +10,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { useAuth } from '@/hooks/Auth/auth-provider'
+import { useAuth } from '@/hooks/auth/auth-provider'
 import { useState } from 'react'
 
 export function UserNav() {

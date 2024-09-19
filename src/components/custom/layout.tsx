@@ -1,5 +1,7 @@
 import * as React from 'react'
 import { cn } from '@/lib/utils'
+import FullPageLoading from './full-page-loading'
+import { useApp } from '@/hooks/app/app-provider'
 
 const LayoutContext = React.createContext<{
   offset: number
@@ -85,17 +87,23 @@ const Body = React.forwardRef<
     throw new Error(`Layout.Body must be used within ${Layout.displayName}.`)
   }
 
+  const { appState } = useApp();
+
   return (
-    <div
-      ref={ref}
-      data-layout='body'
-      className={cn(
-        'px-4 py-6 md:overflow-hidden md:px-8',
-        contextVal && contextVal.fixed && 'flex-1',
-        className
-      )}
-      {...props}
-    />
+    <>
+      <div
+        ref={ref}
+        data-layout='body'
+        className={cn(
+          'px-4 py-6 md:overflow-hidden md:px-8',
+          contextVal && contextVal.fixed && 'flex-1',
+          className
+        )}
+        {...props}
+      />
+      {/* Add if isLoading from mainPageLoading provider/context is true then show FullPageLoading */}
+      {appState.isLoading && <FullPageLoading></FullPageLoading>}
+    </>
   )
 })
 Body.displayName = 'Body'
