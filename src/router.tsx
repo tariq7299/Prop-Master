@@ -4,12 +4,9 @@ import NotFoundError from './pages/errors/not-found-error'
 import MaintenanceError from './pages/errors/maintenance-error'
 import UnauthorisedError from './pages/errors/unauthorised-error.tsx'
 import PrivateRoute from './components/private-route.tsx'
-import { axiosPrivate } from './helper/axiosInstances.tsx'
-import { handleApiError } from './helper/api-requests/handleApiError.tsx'
-import { handleApiSuccess } from './helper/api-requests/handleApiSuccess.tsx'
-import axios from 'axios'
-import { toast } from '@/components/ui/use-toast'
 import { handleGettingRouteData } from './helper/api-requests/handleGettingRouteData.ts'
+
+
 const router = createBrowserRouter([
 
   // Auth routes
@@ -109,7 +106,8 @@ const router = createBrowserRouter([
                 lazy: async () => ({
                   Component: (await import('./pages/settings/profile')).default,
                 }),
-                loader: async () => await handleGettingRouteData("/auth/get-user-data")
+                loader: async () => await
+                  handleGettingRouteData("/auth/get-user-data", false)
               },
               {
                 path: 'account',

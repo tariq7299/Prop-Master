@@ -11,7 +11,6 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { toast } from '@/components/ui/use-toast'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PasswordInput } from '@/components/custom/password-input'
 import { useLoaderData } from 'react-router-dom'
@@ -47,15 +46,17 @@ export default function ProfileForm() {
     defaultValue: defaultUserValue
   })
 
+  console.log("userss", user)
   useEffect(() => {
     if (('user' in adminDataResponse.data)) {
-      setUser({ ...adminDataResponse?.data?.user, company: adminDataResponse.data.user.company || "" })
+      setUser({ ...adminDataResponse?.data?.user })
     } else {
       setUser(defaultUserValue)
     }
     console.log("userds", user);
   }, [adminDataResponse])
 
+  console.log("user?.company", user.company)
   // This can come from your database or API.
   const defaultValues: PersonalFormValues = {
     name: user.name,
@@ -85,9 +86,9 @@ export default function ProfileForm() {
         let res = await axiosPrivate.post("/auth/update-profile", data)
 
         console.log("res", res)
-        handleApiSuccess(res?.data, toast, '', () => {
+        handleApiSuccess(res?.data, true, '', () => {
           if (('user' in res.data.data)) {
-            setUser({ ...res?.data?.data?.user, company: res?.data.data.user.company || "" })
+            setUser({ ...res?.data?.data?.user })
           } else {
             setUser(defaultUserValue)
           }
@@ -95,7 +96,7 @@ export default function ProfileForm() {
 
       } catch (error: unknown) {
         if (axios.isAxiosError(error) || error instanceof Error) {
-          handleApiError(error, toast)
+          handleApiError(error)
         }
       }
     }
@@ -113,12 +114,12 @@ export default function ProfileForm() {
       try {
         let res = await axiosPrivate.post("/auth/change-password", data)
         console.log("res", res)
-        handleApiSuccess(res?.data, toast)
+        handleApiSuccess(res?.data)
 
       } catch (error: unknown) {
 
         if (axios.isAxiosError(error) || error instanceof Error) {
-          handleApiError(error, toast)
+          handleApiError(error)
         }
 
       }

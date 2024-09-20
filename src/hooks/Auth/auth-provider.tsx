@@ -8,7 +8,6 @@ import { IsLoadingCustom, Admin } from '@/pages/auth/types';
 import useLocalStorage from '../use-local-storage';
 import SecureLS from 'secure-ls';
 import { axiosPrivate } from '@/helper/axiosInstances';
-import { toast } from '@/components/ui/use-toast'
 
 
 
@@ -68,7 +67,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       setIsLoading({ status: true, message: loadingMessage || "Redirecting to your dashboard...", type: "signing in" })
 
-      handleApiSuccess(response?.data, toast, '', () => setTimeout(() => {
+      handleApiSuccess(response?.data, true, '', () => setTimeout(() => {
         window.location.href = '/'
         ls.set('token', response?.data?.data?.token);
         setUser({ ...response?.data?.data?.data, company: response?.data.data.data.company || "" })
@@ -77,7 +76,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (error: unknown) {
       setIsLoading({ status: false, message: "", type: "" })
       if (axios.isAxiosError(error) || (error instanceof Error)) {
-        handleApiError(error, toast);
+        handleApiError(error);
       }
     }
 
@@ -91,14 +90,14 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
 
       const response = await axiosPrivate.post("/auth/logout");
-      handleApiSuccess(response?.data, toast, '', () => {
+      handleApiSuccess(response?.data, false, '', () => {
         window.location.href = '/sign-in';
         ls.remove('token');
       })
 
     } catch (error: unknown) {
       if (axios.isAxiosError(error) || (error instanceof Error)) {
-        handleApiError(error, toast);
+        handleApiError(error);
       }
     }
 
@@ -112,11 +111,11 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         authData
       );
       const logInCredentials = { "email": authData?.email || 'wrong@gmail.com', "password": authData?.password || 'wrong' }
-      handleApiSuccess(response?.data, toast, '', () => signInHandler(logInCredentials, setIsLoading, "Redirecting to your dashboard..."))
+      handleApiSuccess(response?.data, true, '', () => signInHandler(logInCredentials, setIsLoading, "Redirecting to your dashboard..."))
     } catch (error: unknown) {
       setIsLoading({ status: false, message: "", type: "" })
       if (axios.isAxiosError(error) || (error instanceof Error)) {
-        handleApiError(error, toast);
+        handleApiError(error);
       }
     }
 

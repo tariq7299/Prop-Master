@@ -10,6 +10,7 @@ const personalInfoFormSchema = z.object({
       .email({ message: 'Invalid email address' }),
     company: z
       .string()
+      .nullable()
       .optional(),
     phone_number: z
       .string()

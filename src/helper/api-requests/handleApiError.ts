@@ -3,13 +3,14 @@ import { toastApiMsgs } from './toastApiMsgs';
 import axios from 'axios';
 import { Toast } from './types';
 import { ErrorCallback } from './types';
+import { toast } from '@/components/ui/use-toast'
 
 
 
 
 function handleApiError(
     errResponse: AxiosError | Error,
-    toast: (props: Toast) => void,
+    // toast: (props: Toast) => void,
     customErrorMsg?: "string",
     errorCallback?: ErrorCallback
 ) {

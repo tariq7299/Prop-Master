@@ -5,7 +5,7 @@
 @layer base {
   :root {
     /* Custom CSS Variables */
-    /* --header-height: 4rem; */
+    --header-height: 4rem;
 
     /* CSS Variables for light theme */
     /* --background: 0 0% 100%;
@@ -207,7 +207,7 @@
   content: "";
   width: 200%;
   background:
-    linear-gradient(90deg,#ff1818 50%,#0000 0),
+    linear-gradient(90deg,hsl(var(--primary)) 50%,#0000 0),
     conic-gradient(from -90deg at var(--s) calc(0.353*var(--s)),
       #fff 135deg,#666 0 270deg,#aaa 0); 
   background-blend-mode: multiply;
