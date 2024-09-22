@@ -7,7 +7,7 @@ import { toast } from '@/components/ui/use-toast'
 function handleApiSuccess(
     successResponse: SuccessApiResponse,
     showToast: boolean = true,
-    customSuccessMsg?: string,
+    customSuccessMsg: string | null = null,
     successCallback?: SuccessCallback,
 ): void {
 
@@ -20,7 +20,7 @@ function handleApiSuccess(
     
     if (showToast) {
 
-        let successMessage = customSuccessMsg || msg || null;
+        let successMessage = customSuccessMsg || msg;
         const defaultMessages: Record<number, string> = {
             200: 'Successful! Your request has succeeded.',
             201: 'Created: The resource was successfully created.',

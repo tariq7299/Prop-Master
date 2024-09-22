@@ -26,11 +26,17 @@ import { handleApiSuccess } from '@/helper/api-requests/handleApiSuccess'
 import { handleApiError } from '@/helper/api-requests/handleApiError'
 import axios from 'axios'
 import { personalInfoFormSchema, passwordFormSchema } from './types'
+import useSendRequest from '@/hooks/api/use-send-request'
+import { ApiResFuncArgs, ReqOptions } from '@/helper/api-requests/types'
+import { FullPageLoader } from '@/hooks/app/types'
+
 
 type PersonalFormValues = z.infer<typeof personalInfoFormSchema>
 type PasswordFormValues = z.infer<typeof passwordFormSchema>
 
 export default function ProfileForm() {
+
+  const { resData, isLoading, sendRequest } = useSendRequest();
 
   const adminDataResponse = useLoaderData() as SuccessApiResponse | Error;
 
@@ -80,29 +86,49 @@ export default function ProfileForm() {
 
     console.log("dataaa", data)
 
-    const changePersonalInfo = async (data: PersonalFormValues) => {
+    const reqOptions = { url: "/auth/update-profile", data: data }
 
-      try {
-        let res = await axiosPrivate.post("/auth/update-profile", data)
-
-        console.log("res", res)
-        handleApiSuccess(res?.data, true, '', () => {
-          if (('user' in res.data.data)) {
-            setUser({ ...res?.data?.data?.user })
-          } else {
-            setUser(defaultUserValue)
-          }
-        })
-
-      } catch (error: unknown) {
-        if (axios.isAxiosError(error) || error instanceof Error) {
-          handleApiError(error)
+    const apiResFuncArgs = {
+      successCallback: (res: any) => {
+        if (('user' in res.data)) {
+          setUser({ ...res?.data?.user })
+        } else {
+          setUser(defaultUserValue)
         }
       }
     }
 
+    const fullPageLoader = { loadingIconName: "progressBar" }
 
-    changePersonalInfo(data)
+    sendRequest({ reqOptions, apiResFuncArgs, fullPageLoader })
+
+    // const changePersonalInfo = async (data: PersonalFormValues) => {
+
+    // try {
+
+
+    // const fullPageLoader: Partial<FullPageLoader> = {}
+
+    // let res = await axiosPrivate.post("/auth/update-profile", data)
+
+    // console.log("res", res)
+    // handleApiSuccess(res?.data, true, '', () => {
+    // if (('user' in res.data.data)) {
+    // setUser({ ...res?.data?.data?.user })
+    // } else {
+    // setUser(defaultUserValue)
+    // }
+    // })
+
+    // } catch (error: unknown) {
+    // if (axios.isAxiosError(error) || error instanceof Error) {
+    // handleApiError(error)
+    // }
+    // }
+    // }
+
+
+    // changePersonalInfo(data)
 
   }
 

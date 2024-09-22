@@ -1,7 +1,6 @@
 import { AxiosError } from 'axios';
 import { toastApiMsgs } from './toastApiMsgs';
 import axios from 'axios';
-import { Toast } from './types';
 import { ErrorCallback } from './types';
 import { toast } from '@/components/ui/use-toast'
 
@@ -11,14 +10,14 @@ import { toast } from '@/components/ui/use-toast'
 function handleApiError(
     errResponse: AxiosError | Error,
     // toast: (props: Toast) => void,
-    customErrorMsg?: "string",
+    customErrorMsg: string | null = null,
     errorCallback?: ErrorCallback
 ) {
 
     if (axios.isAxiosError(errResponse)) {
 
         const statusCode = errResponse.response?.status;
-        let errorMessage = customErrorMsg || (errResponse.response?.data as any)?.errors || null;
+        let errorMessage = customErrorMsg || (errResponse.response?.data as any)?.errors 
 
         if (statusCode === 401 || statusCode === 419 || statusCode === 403) {
             errorMessage = errorMessage || 'Unauthorized: Please log in! Redirecting to login page...';

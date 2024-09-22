@@ -5,7 +5,7 @@ function FullPageLoading() {
     const { appState } = useApp()
 
     return (
-        <div className="fixed top-0 left-0 w-full h-full bg-neutral-900 z-50 flex flex-col justify-center items-center bg-opacity-90 ">
+        <div className="fixed top-0 left-0 w-full bg-background h-full z-50  flex flex-col justify-center items-center ">
             {/* // <div className="fixed inset-0 flex items-center justify-center bg-slate-300 bg-opacity-75 z-50"> */}
             {appState.loadingIconName === "progressBar" ? (
                 <>
