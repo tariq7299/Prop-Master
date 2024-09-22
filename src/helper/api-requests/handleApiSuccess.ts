@@ -11,16 +11,16 @@ function handleApiSuccess(
     successCallback?: SuccessCallback,
 ): void {
 
-    
-    const { code: statusCode, success, msg } = successResponse;
-    
+
+    const { code: statusCode, success, message } = successResponse;
+
     if (!success) {
         throw new Error('An unknown error occurred. Please contact support!');
     }
-    
+
     if (showToast) {
 
-        let successMessage = customSuccessMsg || msg;
+        let successMessage = customSuccessMsg || message;
         const defaultMessages: Record<number, string> = {
             200: 'Successful! Your request has succeeded.',
             201: 'Created: The resource was successfully created.',
@@ -33,7 +33,6 @@ function handleApiSuccess(
         if (statusCode < 200 || statusCode >= 300) {
             throw new Error('An unexpected status code was received. Please contact support!');
         }
-        console.log("successMessage", successMessage)
         toastApiMsgs(successMessage, toast, "success");
     }
 

@@ -15,7 +15,8 @@ type AuthContext = {
   signUp: (authData: z.infer<typeof newAdminSignUpSchema>, setIsLoading: (arg0: IsLoadingCustom<"signing up" | "signing in" | 'signing out' | ''>) => void) => void
   signIn: (authData: z.infer<typeof adminLoginSchema>, setIsLoading: (arg0: IsLoadingCustom<"signing up" | "signing in" | 'signing out' | ''>) => void, loadingMessage?: string) => void,
   signOut: (setIsLoading: (arg0: IsLoadingCustom<"signing up" | "signing in" | 'signing out' | ''>) => void,) => void,
-  user: Admin
+  user: Admin,
+  setUser: (user?: any) => void
 }
 
 const defaultUserValue = {
@@ -39,9 +40,7 @@ const initialAuthContext = {
   user: defaultUserValue,
 }
 
-
 const AuthContext = createContext<AuthContext>(initialAuthContext);
-
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const ls = new SecureLS();
@@ -49,8 +48,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     key: 'user',
     defaultValue: defaultUserValue
   })
-
-
 
   const signInHandler = async (authData: z.infer<typeof adminLoginSchema>, setIsLoading: (arg0: IsLoadingCustom<"signing up" | "signing in" | 'signing out' | ''>) => void, loadingMessage?: string) => {
 
@@ -127,6 +124,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     signIn: signInHandler,
     signOut: signOutHandler,
     user: user,
+    setUser: setUser
   }
 
 

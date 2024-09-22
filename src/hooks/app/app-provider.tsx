@@ -2,8 +2,14 @@ import { useContext } from "react"
 import AppContext from "./app-context"
 // import { appState, appDispatch } from "./app-reducer"
 import { useReducer } from "react"
-import { initialAppState } from "./types"
 import { appReducer } from "./app-reducer"
+
+const initialAppState = {
+    isLoading: false,
+    loadingMsg: 'Processing...',
+    loadingIconName: "3dLoader",
+}
+
 
 const AppProvider = ({ children }: { children: React.ReactNode }) => {
 

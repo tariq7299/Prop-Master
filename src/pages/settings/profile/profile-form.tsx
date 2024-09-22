@@ -16,51 +16,36 @@ import { PasswordInput } from '@/components/custom/password-input'
 import { useLoaderData } from 'react-router-dom'
 import GeneralError from '@/pages/errors/general-error'
 import { SuccessApiResponse } from '@/helper/api-requests/types'
-import useLocalStorage from '@/hooks/use-local-storage'
-import { Admin } from '@/pages/auth/types'
 import { useEffect } from 'react'
 import { defaultUserValue } from '@/pages/auth/types'
 import { PhoneInput } from '@/components/custom/phone-input'
-import { axiosPrivate } from '@/helper/axiosInstances'
-import { handleApiSuccess } from '@/helper/api-requests/handleApiSuccess'
-import { handleApiError } from '@/helper/api-requests/handleApiError'
-import axios from 'axios'
 import { personalInfoFormSchema, passwordFormSchema } from './types'
 import useSendRequest from '@/hooks/api/use-send-request'
-
+import { useAuth } from '@/hooks/auth/auth-provider'
 
 type PersonalFormValues = z.infer<typeof personalInfoFormSchema>
 type PasswordFormValues = z.infer<typeof passwordFormSchema>
 
 export default function ProfileForm() {
-
-  const { sendRequest } = useSendRequest();
+  const { user, setUser } = useAuth()
+  const { isLoading: isSubmittingNewProfileInfo, sendRequest: changeProfileInfo } = useSendRequest();
+  const { isLoading: isSubmittingNewPassword, sendRequest: changePassword } = useSendRequest();
 
   const adminDataResponse = useLoaderData() as SuccessApiResponse | Error;
-
-  console.log("adminDataResponse", adminDataResponse);
 
   // If the response wasn't succesfull then render an Error Page
   if (!('success' in adminDataResponse)) {
     return <GeneralError />;
   }
 
-  const [user, setUser] = useLocalStorage<Admin>({
-    key: 'user',
-    defaultValue: defaultUserValue
-  })
-
-  console.log("userss", user)
   useEffect(() => {
     if (('user' in adminDataResponse.data)) {
       setUser({ ...adminDataResponse?.data?.user })
     } else {
       setUser(defaultUserValue)
     }
-    console.log("userds", user);
   }, [adminDataResponse])
 
-  console.log("user?.company", user.company)
   const defaultValues: PersonalFormValues = {
     name: user.name,
     email: user.email,
@@ -86,41 +71,21 @@ export default function ProfileForm() {
     const apiResFuncArgs = {
       successCallback: (res: any) => {
         if (('user' in res.data)) {
-          setUser({ ...res?.data?.user })
+          setUser(res?.data?.user)
+
         } else {
           setUser(defaultUserValue)
         }
       }
     }
 
-    const fullPageLoader = { loadingIconName: "progressBar" }
-
-    sendRequest({ reqOptions, apiResFuncArgs, fullPageLoader })
+    changeProfileInfo({ reqOptions, apiResFuncArgs })
 
   }
 
   function handleSubmittingNewPassword(data: PasswordFormValues) {
-    console.log("dataaa", data)
 
-    const changePersonalInfo = async (data: PasswordFormValues) => {
-
-      try {
-        let res = await axiosPrivate.post("/auth/change-password", data)
-        console.log("res", res)
-        handleApiSuccess(res?.data)
-
-      } catch (error: unknown) {
-
-        if (axios.isAxiosError(error) || error instanceof Error) {
-          handleApiError(error)
-        }
-
-      }
-    }
-
-
-    changePersonalInfo(data)
-
+    changePassword({ reqOptions: { url: "/auth/change-password", data } })
   }
 
   return (
@@ -197,7 +162,7 @@ export default function ProfileForm() {
               )}
             />
           </div>
-          <Button type='submit'>Update personal info</Button>
+          <Button loading={isSubmittingNewProfileInfo} type='submit'>Update personal info</Button>
         </form>
       </Form>
 
@@ -246,7 +211,7 @@ export default function ProfileForm() {
             />
           </div>
 
-          <Button type='submit'>Change password</Button>
+          <Button loading={isSubmittingNewPassword} type='submit'>Change password</Button>
         </form>
       </Form>
     </>

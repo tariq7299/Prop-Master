@@ -18,12 +18,8 @@ function useSendRequest() {
     // Add types to theeese parameters
     async function sendRequest({ reqOptions, apiResFuncArgs, fullPageLoader, finalCallback }: SendRequest) {
 
-        console.log("apiResFuncArgs", apiResFuncArgs)
-        console.log("reqOptions", reqOptions)
-        console.log("fullPageLoader", fullPageLoader)
-
         setIsLoading(true)
-        appDispatch({ type: "FULL_PAGE_LOADING", payload: { isLoading: true, loadingMsg: fullPageLoader?.loadingMsg || "Processing...", loadingIconName: fullPageLoader?.loadingIconName || "3dLoader" } })
+        appDispatch({ type: "FULL_PAGE_LOADING", payload: { isLoading: fullPageLoader?.isLoading || false, loadingMsg: fullPageLoader?.loadingMsg || "Processing...", loadingIconName: fullPageLoader?.loadingIconName || "3dLoader" } })
 
         try {
             const response = await axiosPrivate({
@@ -50,7 +46,6 @@ function useSendRequest() {
             finalCallback && finalCallback()
             setIsLoading(false)
             appDispatch({ type: "FULL_PAGE_LOADING", payload: { ...appState, isLoading: false } })
-            console.log("appState", appState)
         }
     }
 

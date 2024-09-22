@@ -12,35 +12,6 @@ const PrivateRoute = () => {
 
   const ls = new SecureLS();
   const token = ls.get('token');
-  // ls.removeAll();
-  // ls.remove('token');
-  console.log("token", token)
-  // This funciton provided by CONTEXT API to check whether the current user is authenticated or not
-  //   const {  } = useAuth();
-
-  // It will set a loading indecator untill the server responded with user auth state and tell us whether he is authenticated or not
-  //   const [isLoading, setIsLoading] = useState(true);
-
-  //   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  //   useEffect(() => {
-  //     const checkAuthentication = async () => {
-  //       try {
-  //         const isAuthenticatedResult = await checkIfAuthenticated();
-
-  //         setIsAuthenticated(isAuthenticatedResult);
-  //         setIsLoading(false);
-  //       } catch (error) {
-  //         console.error('Error checking authentication:', error);
-  //         setIsAuthenticated(false);
-  //         setIsLoading(false);
-  //       }
-  //     };
-
-  //     checkAuthentication();
-  //   }, []);
-
-
 
   return token ? <Outlet /> : <Navigate to="/sign-in" replace />;
 };

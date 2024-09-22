@@ -19,8 +19,6 @@ import { useAuth } from '@/hooks/auth/auth-provider'
 
 export default function Dashboard() {
   const { user } = useAuth()
-  console.log("userrrr", user)
-
 
   return (
     <Layout>

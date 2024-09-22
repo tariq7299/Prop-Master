@@ -15,12 +15,3 @@ export type AppContext = {
     appState: AppState
 }
 
-
-const initialAppState = {
-    isLoading: false,
-    loadingMsg: 'Processing...',
-    loadingIconName: "3dLoader",
-}
-
-
-export { initialAppState }
