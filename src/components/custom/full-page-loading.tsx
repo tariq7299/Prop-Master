@@ -11,7 +11,7 @@ function FullPageLoading() {
                 <>
                     <h1 className="mb-4 text-xl font-bold">{appState.loadingMsg}</h1>
                     {/* Add max width to progress bar */}
-                    <Progress className="w-[50vw] h-6 max-w-[450px] " value={appState?.progressBarValue} >
+                    <Progress className="w-[50vw] h-6 max-w-[450px] " value={85} >
                     </Progress>
                 </>
             ) : appState.loadingIconName === "3dLoader" ? (

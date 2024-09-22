@@ -5,11 +5,10 @@ import { useApp } from "../app/app-provider"
 import { axiosPrivate } from "@/helper/axiosInstances"
 import axios from "axios"
 import { SendRequest } from "@/helper/api-requests/types"
-import { FullPageLoader } from "../app/types"
 
 function useSendRequest() {
 
-    const { appDispatch } = useApp();
+    const { appDispatch, appState } = useApp();
 
     const [isLoading, setIsLoading] = useState(false)
 
@@ -24,12 +23,7 @@ function useSendRequest() {
         console.log("fullPageLoader", fullPageLoader)
 
         setIsLoading(true)
-
-        // Check if this will check if fullPageLoader is not empty of not
-        // check if loadingIconName is of type 'progressBar' and if yes then add the value of this key to appDispatch
-        // if (fullPageLoader) {
-        appDispatch({ type: "FULL_PAGE_LOADING", payload: { isLoading: true, loadingMsg: fullPageLoader?.loadingMsg || "Processing...", loadingIconName: fullPageLoader?.loadingIconName || "3dLoader", ...(fullPageLoader?.loadingIconName === "progressBar" ? { progressBarValue: 100 } : {}) } })
-        // }
+        appDispatch({ type: "FULL_PAGE_LOADING", payload: { isLoading: true, loadingMsg: fullPageLoader?.loadingMsg || "Processing...", loadingIconName: fullPageLoader?.loadingIconName || "3dLoader" } })
 
         try {
             const response = await axiosPrivate({
@@ -55,7 +49,8 @@ function useSendRequest() {
         } finally {
             finalCallback && finalCallback()
             setIsLoading(false)
-            appDispatch({ type: "FULL_PAGE_LOADING", payload: { isLoading: false, loadingMsg: '', loadingIconName: '' } })
+            appDispatch({ type: "FULL_PAGE_LOADING", payload: { ...appState, isLoading: false } })
+            console.log("appState", appState)
         }
     }
 

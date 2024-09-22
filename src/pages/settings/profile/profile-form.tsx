@@ -27,8 +27,6 @@ import { handleApiError } from '@/helper/api-requests/handleApiError'
 import axios from 'axios'
 import { personalInfoFormSchema, passwordFormSchema } from './types'
 import useSendRequest from '@/hooks/api/use-send-request'
-import { ApiResFuncArgs, ReqOptions } from '@/helper/api-requests/types'
-import { FullPageLoader } from '@/hooks/app/types'
 
 
 type PersonalFormValues = z.infer<typeof personalInfoFormSchema>
@@ -36,7 +34,7 @@ type PasswordFormValues = z.infer<typeof passwordFormSchema>
 
 export default function ProfileForm() {
 
-  const { resData, isLoading, sendRequest } = useSendRequest();
+  const { sendRequest } = useSendRequest();
 
   const adminDataResponse = useLoaderData() as SuccessApiResponse | Error;
 
@@ -63,7 +61,6 @@ export default function ProfileForm() {
   }, [adminDataResponse])
 
   console.log("user?.company", user.company)
-  // This can come from your database or API.
   const defaultValues: PersonalFormValues = {
     name: user.name,
     email: user.email,
@@ -84,8 +81,6 @@ export default function ProfileForm() {
 
   function handleSubmittingPersonalInfo(data: PersonalFormValues) {
 
-    console.log("dataaa", data)
-
     const reqOptions = { url: "/auth/update-profile", data: data }
 
     const apiResFuncArgs = {
@@ -101,34 +96,6 @@ export default function ProfileForm() {
     const fullPageLoader = { loadingIconName: "progressBar" }
 
     sendRequest({ reqOptions, apiResFuncArgs, fullPageLoader })
-
-    // const changePersonalInfo = async (data: PersonalFormValues) => {
-
-    // try {
-
-
-    // const fullPageLoader: Partial<FullPageLoader> = {}
-
-    // let res = await axiosPrivate.post("/auth/update-profile", data)
-
-    // console.log("res", res)
-    // handleApiSuccess(res?.data, true, '', () => {
-    // if (('user' in res.data.data)) {
-    // setUser({ ...res?.data?.data?.user })
-    // } else {
-    // setUser(defaultUserValue)
-    // }
-    // })
-
-    // } catch (error: unknown) {
-    // if (axios.isAxiosError(error) || error instanceof Error) {
-    // handleApiError(error)
-    // }
-    // }
-    // }
-
-
-    // changePersonalInfo(data)
 
   }
 
@@ -170,7 +137,6 @@ export default function ProfileForm() {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    {/* value={adminDataResponse?.response?.data?.data?.user?.name} */}
                     <Input placeholder='Your name' {...field} />
                   </FormControl>
                   <FormDescription>

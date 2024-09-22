@@ -2,14 +2,12 @@ export type AppState = {
     isLoading: boolean,
     loadingMsg: string,
     loadingIconName: string,
-    progressBarValue?: number
 }
 
 export type FullPageLoader = {
     isLoading?: boolean,
     loadingMsg?: string,
     loadingIconName?: string,
-    progressBarValue?: number
 }
 
 export type AppContext = {
@@ -22,7 +20,6 @@ const initialAppState = {
     isLoading: false,
     loadingMsg: 'Processing...',
     loadingIconName: "3dLoader",
-    progressBarValue: 70
 }
 
 
