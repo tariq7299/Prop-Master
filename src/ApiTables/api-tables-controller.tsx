@@ -56,18 +56,18 @@ function ApiTablesController({ table, params, customElement }: any) {
     // }, [accessibilitySettings.tablePageSize])
 
 
-    // useEffect(() => {
-    //     const controller = new AbortController();
-    //     if (tableName) {
-    //         tableFetchingHandler({
-    //             tableName, currentPage, pageSize, appliedFilters, tableSorting, signal: controller.signal, params
-    //         })
-    //     }
+    useEffect(() => {
+        const controller = new AbortController();
+        if (tableName) {
+            tableFetchingHandler({
+                tableName, currentPage, pageSize, appliedFilters, tableSorting, signal: controller.signal, params
+            })
+        }
 
-    //     return () => {
-    //         controller.abort()
-    //     }
-    // }, [/*appAuth*/, tableName, currentPage, pageSize, appliedFilters, tableSorting])
+        return () => {
+            controller.abort()
+        }
+    }, [/*appAuth*/, tableName, currentPage, pageSize, appliedFilters, tableSorting])
 
 
     return <ApiTablesComponent customElement={customElement} />

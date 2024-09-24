@@ -9,6 +9,28 @@ import { restructureSelectedFilters } from '../table-utils/utils.tsx'
 import { useTableCore } from '../table-providers/table-core-provider.tsx';
 // import useApp from "../../hooks/useApp"
 import AppliedFilters from "./applied-filters.tsx";
+import { DatePickerWithRange } from '../../components/custom/DatePickerWithRange.tsx';
+import { Label } from '@/components/ui/label.tsx';
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+import { Input } from '@/components/ui/input.tsx';
+import { Button } from '@/components/ui/button.tsx';
+import { CornerDownRight } from 'lucide-react';
+import {
+    Collapsible,
+    CollapsibleContent,
+    CollapsibleTrigger,
+} from "@/components/ui/collapsible"
+import { ChevronsUpDown, Plus, X } from "lucide-react"
+
+
 // import { useMemo } from "react";
 
 function TableFilters() {
@@ -17,6 +39,7 @@ function TableFilters() {
     // const { accessibilitySettings } = useApp()
     const { handleSubmit, register, control, setValue, resetField, watch, formState: { dirtyFields } } = useForm()
     const watchFields = watch();
+    const [isOpen, setIsOpen] = useState(false);
 
 
     useEffect(() => {
@@ -42,137 +65,76 @@ function TableFilters() {
 
 
     return (
-        <>
-            <button type='button'
-                className='btn btn-light dropdown-toggle isCollapseBtn text-dark fw-bold shadow-0 mb-4'
-                data-bs-toggle='collapse'
-                aria-expanded="true"
-                // aria-expanded={`${accessibilitySettings?.tablesFilterClosedByDef ? 'false' : 'true'}`}
-                data-bs-target={`#filterCollapseEl_${tableName}`}
+        <div className=''>
+
+            <Collapsible
+                open={isOpen}
+                onOpenChange={setIsOpen}
+                className="space-y-2"
             >
-                <RiFilter2Line className="ms-2" />
-                <span className="text-sm ms-3">تصفية النتائج</span>
-            </button>
+                <div className="flex items-center justify-start space-x-2" >
+                    <h4 className="text-sm font-semibold">
+                        Toggle Filters
+                    </h4>
+                    <CollapsibleTrigger asChild className='border shadow-sm'>
+                        <Button variant="ghost" size="sm" className="w-9 p-0">
+                            <ChevronsUpDown className="h-4 w-4" />
+                            <span className="sr-only">Toggle</span>
+                        </Button>
+                    </CollapsibleTrigger>
+                </div>
 
-            <div className="collapse true" id={`filterCollapseEl_${tableName}`}>
-                <form className="row g-3 align-items-end" onSubmit={handleSubmit(submitFiltersHandler)}>
-                    {/* ... Date Type Filters */}
-                    {structureFilters?.filter((filter: any) => filter?.type === 'date')?.map((filter: any) => (
-                        filter?.pair_with && (
-                            <div className="col-xl-3 col-lg-4 col-md-6" key={filter?.filter_name}>
-                                <div className="date-range-holder minimal-range" key={filter?.filter_name}>
-                                    <div className="range-separator">
-                                        <i className="fa-solid fa-right-left"></i>
+                <CollapsibleContent className="py-4">
+                    <form /*className="row g-3 align-items-end"*/ className="" onSubmit={handleSubmit(submitFiltersHandler)}>
+                        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6'>
+
+
+                            {/* ... Date Type Filters */}
+                            {structureFilters?.filter((filter: any) => filter?.type === 'date')?.map((filter: any) => (
+                                filter?.pair_with && (
+                                    <div className='' key={filter?.filter_name}>
+                                        <Label className='pb-3 block' htmlFor={filter?.filter_name}>{filter?.label}</Label>
+                                        <DatePickerWithRange className='w-full' from={filter?.min} to={filter?.max} id={filter?.filter_name} ></DatePickerWithRange>
                                     </div>
 
-                                    <div className="row g-0 align-items-end">
-                                        <div className="col-12">
-                                            <label className="form-label"><span className="text-sm"></span>{filter?.label}<span className="px-2 fw-bold text-xs">(من - إلى)</span></label>
-                                        </div>
-                                        <div className="col-6 position-relative">
-                                            <Controller
-                                                name={`${filter?.filter_name}.fieldValue`}
-                                                control={control}
-                                                render={({ field }) => (
-                                                    <CustomDatePicker
-                                                        field={field}
-                                                        min={filter?.min}
-                                                        max={filter?.max}
-                                                        selected={new Date(field?.value).getTime() || new Date(filter?.min).getTime()}
-                                                        onChange={(date: any) => {
-                                                            setValue(filter?.filter_name, new Date(date).getTime(), { shouldTouch: true });
-                                                            field.onChange(new Date(date).getTime())
-                                                        }}
-                                                        placement='bottom-end'
-                                                        placeholder={new Date(filter?.min).getTime()}
-                                                    />
-                                                )}
-                                            />
-                                        </div>
-                                        <div className="col-6 position-relative">
-                                            {structureFilters?.filter((fl: any) => filter?.pair_with === fl?.filter_name)?.map((fl: any) => (
-                                                <Controller
-                                                    key={fl?.filter_name}
-                                                    name={`${fl?.filter_name}.fieldValue`}
-                                                    control={control}
-                                                    render={({ field }) => (
-                                                        <CustomDatePicker
-                                                            placeholder={"testing"}
-                                                            field={field}
-                                                            min={filter?.min}
-                                                            max={filter?.max}
-                                                            selected={new Date(field?.value).getTime() || new Date(filter?.max).getTime()}
-                                                            onChange={(date: any) => {
-                                                                setValue(fl?.filter_name, new Date(date).getTime(), { shouldTouch: true });
-                                                                field.onChange(new Date(date).getTime())
-                                                            }}
-                                                            placement='bottom-start'
-                                                        />
-                                                    )}
-                                                />
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        )
-                    ))}
+                                )
+                            ))}
 
 
-                    {/* Other Filter Types */}
-                    {structureFilters?.filter((filter: any) => filter?.type !== 'date')?.map((filter: any) => (
-                        <div className="col-xl-3 col-lg-4 col-md-6" key={filter?.filter_name}>
-                            <div
-                                className={`${renderOperator(filter) ? 'filter-with-operator' : ''}`}
-                            >
-                                <label className="form-label">{filter?.label}</label>
-                                <div className="d-flex align-items-stretch">
-                                    <div className="m-0 w-100">
-                                        {// ... Select Type
-                                            (filter?.type === 'select' || filter?.type === 'boolean' || filter?.type === 'null') ? (
-                                                <select className="form-control mock-select"  {...register(`${filter.filter_name}.fieldValue`)} >
-                                                    <option value="">اختر</option>
-                                                    {objectToArrayKeyVal(filter?.props?.select_options)?.sort((a, b) => (a.value === '' ? -1 : b.value === '' ? 1 : 0))?.map(opt => (
-                                                        <option value={opt?.value} key={opt?.value}>{opt?.key}</option>
-                                                    ))}
-                                                </select>
+                            {/* Other Filter Types */}
+                            {structureFilters?.filter((filter: any) => filter?.type !== 'date')?.map((filter: any) => (
+                                <div
+                                    key={filter?.filter_name}
+                                // className={`${renderOperator(filter) ? 'filter-with-operator' : ''}`}
+                                >
+                                    <Label className='pb-3 block' htmlFor={filter?.filter_name}>{filter?.label}</Label>
+                                    {
+                                        // ... Select Type
+                                        (filter?.type === 'select' || filter?.type === 'boolean' || filter?.type === 'null') ? (
 
-                                                // ... Number Type
-                                            ) : filter?.type === 'number' ? (
-                                                <Controller
-                                                    name={`${filter?.filter_name}.fieldValue`}
-                                                    control={control}
-                                                    defaultValue=''
-                                                    render={({ field }) => (
-                                                        <input
-                                                            {...field}
-                                                            min='0' step='0.01' type='number'
-                                                            className={`form-control ${renderOperator(filter) ? 'no-gutter shadow-0' : ''}`}
-                                                            placeholder={filter?.label}
-                                                        />
-                                                    )}
-                                                />
-                                                // ... Text Type
-                                            ) : filter?.type === 'text' && (
-                                                <Controller
-                                                    name={`${filter?.filter_name}.fieldValue`}
-                                                    control={control}
-                                                    defaultValue=''
-                                                    render={({ field }) => (
-                                                        <input
-                                                            {...field}
-                                                            type={filter?.type}
-                                                            className={`form-control ${renderOperator(filter) ? 'no-gutter shadow-0' : ''}`}
-                                                            placeholder={filter?.label}
-                                                        />
-                                                    )}
-                                                />
-                                            )
-                                        }
-                                    </div>
+                                            <Select >
+                                                <SelectTrigger className="w-full">
+                                                    <SelectValue placeholder="Choose" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectGroup>
+                                                        <SelectLabel>{filter?.label}</SelectLabel>
+                                                        {objectToArrayKeyVal(filter?.props?.select_options)?.sort((a, b) => (a.value === '' ? -1 : b.value === '' ? 1 : 0))?.map(opt => (
+                                                            <SelectItem value={opt?.value} key={opt?.value}>{opt?.key}</SelectItem>
+                                                        ))}
+                                                    </SelectGroup>
+                                                </SelectContent>
+                                            </Select>
+                                            // ... Number Type
+                                        ) : filter?.type === 'number' ? (
+                                            <Input className="w-full" type="number" id={filter?.label} placeholder={filter?.label} />
+                                            // ... Text Type
+                                        ) : filter?.type === 'text' && (
+                                            <Input className="w-full" type="text" id={filter?.label} placeholder={filter?.label} />
+                                        )
+                                    }
 
-                                    <Controller
+                                    {/* <Controller
                                         name={`${filter?.filter_name}.operator`}
                                         control={control}
                                         defaultValue={getOperators(filter)[0]}
@@ -188,25 +150,30 @@ function TableFilters() {
                                                 ))}
                                             </select>
                                         )}
-                                    />
+                                    /> */}
+
                                 </div>
+                            ))}
+
+                            {/* Filters Submission */}
+                            <div className="flex justify-start items-end">
+                                {/* <button className="btn btn-sm px-4 btn-opac-primary" type='submit'
+                            disabled={!isSubmitEnabled}>تطبيق</button> */}
+                                <Button disabled={!isSubmitEnabled}>
+                                    <CornerDownRight className="mr-2 h-4 w-4" /> Apply
+                                </Button>
+
                             </div>
                         </div>
-                    ))}
+                    </form>
+                </CollapsibleContent>
+            </Collapsible>
 
-                    {/* Filters Submission */}
-                    <div className="col-auto">
-                        <button className="btn btn-sm px-4 btn-opac-primary" type='submit'
-                            disabled={!isSubmitEnabled}>تطبيق</button>
-                    </div>
-                </form>
-
-            </div>
 
             <div className="my-4">
                 <AppliedFilters setValue={setValue} resetField={resetField} />
             </div>
-        </>
+        </div>
     )
 }
 

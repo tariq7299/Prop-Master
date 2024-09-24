@@ -14,7 +14,9 @@ export default function Projects() {
 
             {/* ===== Main ===== */}
             <Layout.Body>
-                <ReactApiTable table={tables?.table_test}></ReactApiTable>
+                <div>
+                    <ReactApiTable table={tables?.table_test}></ReactApiTable>
+                </div>
             </Layout.Body>
         </Layout>
     )

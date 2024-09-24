@@ -15,7 +15,7 @@ const tables = {
             },
             {
                 "type": "text",
-                "label": "وقت/تاريخ الإصدار",
+                "label": "Creation Date",
                 "name": null,
                 "sortable": true,
                 "data_src": "created_date",
@@ -83,7 +83,7 @@ const tables = {
             {
                 "type": "date",
                 "filter_name": "created_at_from",
-                "label": "وقت/تاريخ الإصدار",
+                "label": "Creation Date From/to",
                 "loadIf": true,
                 "min": 1664312400000,
                 "max": 1721854799000,
@@ -99,7 +99,7 @@ const tables = {
             {
                 "type": "date",
                 "filter_name": "created_at_to",
-                "label": "وقت/تاريخ الإصدار",
+                "label": "Creation Date From/to",
                 "loadIf": true,
                 "min": 1664312400000,
                 "max": 1721854799000,
@@ -114,7 +114,7 @@ const tables = {
             {
                 "type": "select",
                 "filter_name": "shipping_company",
-                "label": "شركة الشحن",
+                "label": "Shipping Company",
                 "loadIf": true,
                 "props": {
                     "select_options": {
@@ -141,7 +141,7 @@ const tables = {
             {
                 "type": "number",
                 "filter_name": "id",
-                "label": "المعرف",
+                "label": "Id",
                 "loadIf": true,
                 "props": {
                     "operators": [
@@ -154,7 +154,7 @@ const tables = {
             {
                 "type": "text",
                 "filter_name": "user__email",
-                "label": "البريد الإلكتروني",
+                "label": "User Email",
                 "loadIf": true,
                 "props": {
                     "operators": [
@@ -166,7 +166,7 @@ const tables = {
             {
                 "type": "boolean",
                 "filter_name": "is_paid",
-                "label": "مدفوع",
+                "label": "Is Paid",
                 "loadIf": true,
                 "props": {
                     "default_selected": "all",
