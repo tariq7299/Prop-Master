@@ -335,13 +335,13 @@ const tables = {
         "bulkActions": {
             "export_excel": {
                 "action_key": "export_excel",
-                "label": "تصدير إكسل",
+                "label": "Export",
                 "action": {
                     "api": "/api/control-tables/bulk-table-action/shipping_awbs/export_excel",
                     "web": "/control-tables/bulk-table-action/shipping_awbs/export_excel"
                 },
                 "button": {
-                    "label": "تصدير إكسل",
+                    "label": "Export",
                     "btnClasses": []
                 },
                 "method": "post",
