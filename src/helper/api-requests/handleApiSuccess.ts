@@ -12,7 +12,7 @@ function handleApiSuccess(
 ): void {
 
 
-    const { code: statusCode, success, message } = successResponse;
+    const { code: statusCode, success, msg } = successResponse;
 
     if (!success) {
         throw new Error('An unknown error occurred. Please contact support!');
@@ -20,7 +20,7 @@ function handleApiSuccess(
 
     if (showToast) {
 
-        let successMessage = customSuccessMsg || message;
+        let successMessage = customSuccessMsg || msg;
         const defaultMessages: Record<number, string> = {
             200: 'Successful! Your request has succeeded.',
             201: 'Created: The resource was successfully created.',

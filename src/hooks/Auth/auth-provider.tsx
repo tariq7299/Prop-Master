@@ -38,6 +38,7 @@ const initialAuthContext = {
   signIn: () => { },
   signOut: () => { },
   user: defaultUserValue,
+  setUser: () => { }
 }
 
 const AuthContext = createContext<AuthContext>(initialAuthContext);

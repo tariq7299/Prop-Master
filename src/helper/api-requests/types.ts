@@ -7,7 +7,7 @@ export type Messages = string | string[] | { [key: string]: string | string[] };
 export type SuccessApiResponse = {
   success: boolean;
   code: number;
-  message?: string;
+  msg?: string;
   data: {
     [key: string]: any;
   };

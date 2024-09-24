@@ -104,6 +104,12 @@ export const sidelinks: SideLink[] = [
     icon: <IconUsers size={18} />,
   },
   {
+    title: 'Projects',
+    label: '',
+    href: '/projects',
+    icon: <IconUsers size={18} />,
+  },
+  {
     title: 'Requests',
     label: '10',
     href: '/requests',

@@ -1,6 +1,4 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '@/hooks/auth/auth-provider';
-import React, { useState, useEffect } from 'react';
 import SecureLS from 'secure-ls';
 
 // This will handle the authorization of my routes in the whole app
