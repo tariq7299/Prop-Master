@@ -35,7 +35,7 @@ function ColumnsVisibility() {
 
     return (
 
-        <div className="me-auto">
+        <div className="inline-flex">
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button size="sm" variant='outline' className='space-x-1'>

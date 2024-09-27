@@ -67,8 +67,8 @@ function TableBody() {
                                         }
                                     }
                                 },
-                                cells: { style: { justifyContent: 'center' } },
-                                headCells: { style: { justifyContent: 'center' } },
+                                cells: { style: { justifyContent: 'center', padding: "1.20rem" } },
+                                headCells: { style: { justifyContent: 'center', padding: "1.20rem" } },
 
                             }
                         }

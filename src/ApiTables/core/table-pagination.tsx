@@ -1,5 +1,9 @@
 import * as React from "react"
 import { useTableCore } from "../table-providers/table-core-provider.tsx";
+import { Button } from "@/components/custom/button.tsx";
+import { ChevronRight, ChevronLeft } from 'lucide-react';
+
+
 
 function TablePagination() {
 
@@ -17,48 +21,46 @@ function TablePagination() {
 
 
     return (
-        <div className="row mt-4 text-center text-lg-end">
-            <div className="col-lg-6">
+        <div className="flex flex-wrap items-center justify-center lg:justify-between gap-4 pt-7">
 
-                {tablePagination?.links?.length > 1 && (
-                    <nav aria-label="Page navigation" className="table-pagination">
-                        <ul className="pagination custom-pagination p-0">
-                            {
-                                tablePagination?.links?.map((link: any, index: any) => {
-                                    return (
-                                        <li className={`page-item ${link?.active ? 'active' : ''} ${!link?.url && 'disabled'}`} key={index}>
-                                            {link?.active ? (
-                                                <span className="page-link">
-                                                    <span aria-hidden="true">{link?.label?.includes('الصفحة السابقة') ? '«' : link?.label?.includes('الصفحة التالية') ? '»' : link?.label}</span>
-                                                </span>
-                                            ) : (
-                                                <button type="button" className="page-link"
-                                                    onClick={() => setCurrentPageHandler(link)}>
-                                                    <span aria-hidden="true">{link?.label?.includes('الصفحة السابقة') ? '«' : link?.label?.includes('الصفحة التالية') ? '»' : link?.label}</span>
-                                                    ""
-                                                </button>
-                                            )}
-
-                                        </li>
-                                    )
-                                })
-                            }
-                        </ul>
-                    </nav>
-                )}
-
-
-
-            </div>
-            <div className="col-lg-6 text-muted text-center text-lg-start text-sm">
-                <span> استعراض</span>
+            <div className="text-gray-400 text-sm order-last lg:order-1">
+                <span>Showing</span>
                 <strong className="mx-1">{tablePagination?.from || 0}</strong>
-                <span>إلى </span>
+                <span>to</span>
                 <strong className="mx-1">{tablePagination?.to || 0}</strong>
-                <span> من</span>
+                <span>from</span>
                 <strong className="mx-1">{tablePagination?.total || 0}</strong>
-                <span> النتائج</span>
+                <span>rows</span>
             </div>
+
+            {tablePagination?.links?.length > 1 && (
+                <div className="flex overflow-scroll flex-wrap items-center justify-center lg:order-2">
+                    {
+                        tablePagination?.links?.map((link: any, index: any) => {
+                            return (
+                                <div className={` ${link?.active ? '' : ''} ${!link?.url && 'disabled'}`} key={index}>
+                                    {link?.active ? (
+                                        <Button size="sm" className="rounded-2xl">
+                                            <span aria-hidden="true">{link?.label?.includes('Previous Page') ? (<ChevronLeft className="h-3.5 w-3.5" />) : link?.label?.includes('Next Page') ? (<ChevronRight className="h-3.5 w-3.5" />) : link?.label}</span>
+                                        </Button >
+                                    ) : (
+                                        <Button disabled={!link?.url} variant="ghost" size="sm"
+                                            onClick={() => setCurrentPageHandler(link)}>
+                                            <span aria-hidden="true">{link?.label?.includes('Previous Page') ? (<ChevronLeft className="h-3.5 w-3.5" />) : link?.label?.includes('Next Page') ? (<ChevronRight className="h-3.5 w-3.5" />) : link?.label}</span>
+
+                                        </Button>
+                                    )}
+
+                                </div>
+                            )
+                        })
+                    }
+                </div>
+            )}
+
+
+
+
         </div>
     );
 };

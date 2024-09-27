@@ -30,39 +30,42 @@ function ApiTablesComponent({ customElement }: any) {
 
             {/* <TableSorting /> */}
 
-            <div className="flex flex-row-reverse gap-2">
+            <div className="flex  gap-2 pb-1">
 
-                {/* NEW ROW ACTIONS */}
-                <Button size="sm" className=" gap-1 text-background bg-foreground"  ><CirclePlus className="h-4 w-4" /><span className="sr-only md:not-sr-only ">Add New Project</span></Button>
+                <div className="me-auto space-x-3 flex">
+                    {/* TABLE PAGE SIZE */}
+                    <TablePageSize />
+                    {/* COLUMNS VISIBILITY */}
+                    <ColumnsVisibility />
+                </div>
 
                 {/* BULK ACTIONS */}
                 {bulkActions?.length > 0 && (
                     <TableBulkActions />
                 )}
 
-                {/* COLUMNS VISIBILITY */}
-                <ColumnsVisibility />
 
+                {/* NEW ROW ACTIONS */}
+                <Button size="sm" className=" gap-1 text-background bg-foreground"  ><CirclePlus className="h-4 w-4" /><span className="sr-only md:not-sr-only ">Add New Project</span></Button>
 
 
             </div>
 
-            {customElement && (<div className="py-2"> {customElement} </div>)
-            }
-            {
-                selectedRows.length > 0 && (
-                    <p className="text-center text-sm text-muted mb-1">لقد قمت باختيار عدد <strong className="fw-bold text-dark mx-1">{selectedRows?.length}</strong> من الصفوف</p>
-                )
-            }
-            <ActionsOfSelections />
+            {customElement && (<div className="py-2"> {customElement} </div>)}
+
+            {/* Row(s) selected */}
+            <div className="flex flex-col justify-center items-center gap-3">
+                {selectedRows?.length > 0 && (<p className="text-gray-400"><span className="font-bold text-foreground">{selectedRows?.length || 0} </span>row(s) selected</p>)}
+                <ActionsOfSelections />
+            </div>
 
             <TableBody />
 
-            {/* <TablePagination /> */}
+            {/* <div className="flex flex-wrap items-center gap-3 justify-center py-6"> */}
 
+            {/* TABLE Pagenation */}
+            <TablePagination />
 
-            {/* TABLE PAGE SIZE */}
-            <TablePageSize />
 
             <ApiTablesModals />
         </>

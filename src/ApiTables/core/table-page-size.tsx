@@ -20,13 +20,11 @@ function TablePageSize() {
     }
 
 
-    console.log("pageSize", pageSize)
-
     return (
-        <div className="flex space-x-2 items-center">
-            <Label>Rows per page</Label>
+        <div className="space-x-2 items-center inline-flex">
+            {/* <Label className="text-sm">Rows per page</Label> */}
             <Select defaultValue={pageSize?.toString()} onValueChange={(value) => changePageSize(Number(value))}>
-                <SelectTrigger name="pageSize" className="w-max gap-1">
+                <SelectTrigger name="pageSize" className="h-8 gap-1 p-2">
                     <SelectValue placeholder="Select number of rows" />
                 </SelectTrigger>
                 <SelectContent>
@@ -38,14 +36,6 @@ function TablePageSize() {
                     </SelectGroup>
                 </SelectContent>
             </Select>
-            {/* 
-            <select title="select" name="pageSize" className="form-control px-2 px-lg-3 text-sm" value={pageSize} onChange={(e) => {
-                changePageSize(Number(e.target.value))
-            }}>
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-            </select> */}
         </div>
     )
 }

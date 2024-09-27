@@ -5,7 +5,7 @@ const tablesPagenation = {
     "links": [
         {
             "url": null,
-            "label": "&laquo; الصفحة السابقة",
+            "label": "&laquo; Previous Page",
             "active": false
         },
         {
@@ -75,7 +75,7 @@ const tablesPagenation = {
         },
         {
             "url": "http://127.0.0.1:8000/control-tables/query-table/shipping_awbs?page=2",
-            "label": "الصفحة التالية &raquo;",
+            "label": "Next Page &raquo;",
             "active": false
         }
     ],
