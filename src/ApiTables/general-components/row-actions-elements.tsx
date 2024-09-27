@@ -4,6 +4,9 @@ import * as React from "react"
 import { Link } from "react-router-dom"
 import { useTableRowActions } from "../table-providers/row-actions-provider.tsx"
 import { useTableColumns } from "../table-providers/table-columns-provider.tsx"
+import { Switch } from "@/components/ui/switch.tsx"
+import { Label } from "@/components/ui/label.tsx"
+import { Button } from "@/components/custom/button.tsx"
 
 
 // ... 🐼 Check if the bulk action needs a modal form
@@ -26,20 +29,17 @@ export const ToggleRowActionElement = ({ action, isBulk = false }: any) => {
     }
 
     return (
-        <div className={`form-check ${action?.toggle_current_value ? 'checked' : ''} form-switch d-flex align-items-center justify-content-center px-2`}>
-            <input id={`exp_${action?.action?.web}`} type="checkbox" checked={action?.toggle_current_value} className="form-check-input shadow-0"
-                onChange={() => { fireRowAction(action) }}
-            />
-            <label className="form-check-label text-sm" htmlFor={`exp_${action?.action?.web}`}>
-                {action?.button?.label}
-            </label>
+
+        <div className="flex space-x-2 w-full items-center">
+            <Switch id={`exp_${action?.action?.web}`} checked={action?.toggle_current_value} onCheckedChange={() => { fireRowAction(action) }} />
+            <Label htmlFor={`exp_${action?.action?.web}`} className="cursor-pointer w-full flex-grow">{action?.button?.label}</Label>
         </div>
     )
 }
 
 export const RedirectRowActionElement = ({ action }: any) => {
     return (
-        <Link to={action?.redirect_routes?.web} className={`btn btn-sm px-4 ${action?.button?.btnClasses?.join(' ') || 'btn-opac-primary'} w-100`}>
+        <Link to={action?.redirect_routes?.web} className={` ${action?.button?.btnClasses?.join(' ') || ''} w-full`}>
             {action?.button?.label}
         </Link>
     )
@@ -47,7 +47,7 @@ export const RedirectRowActionElement = ({ action }: any) => {
 
 export const ExternalRedirectRowActionElement = ({ action }: any) => {
     return (
-        <a href={action?.redirect_routes?.web} target='_blank' className={`btn btn-sm px-4 ${action?.button?.btnClasses?.join(' ') || 'btn-opac-primary'} w-100`}>
+        <a href={action?.redirect_routes?.web} target='_blank' className={` ${action?.button?.btnClasses?.join(' ') || ''} w-full`}>
             {action?.button?.label}
         </a>
     )
@@ -74,12 +74,13 @@ export const GeneralRowActionElement = ({ action, isBulk = false }: any) => {
     }
 
     return (
-        <button
-            className={`btn btn-sm ${action?.button?.btnClasses?.join(' ') || 'btn-opac-primary'} w-100`}
+        <Button
+            size="sm"
+            className={` ${action?.button?.btnClasses?.join(' ') || ''} w-full`}
             disabled={rowActionPostLoading}
             onClick={() => { fireRowAction(action) }}
         >
             {clickedRowAction?.action_key === action?.action_key ? 'برجاء الإنتظار...' : action?.button?.label}
-        </button>
+        </Button>
     )
 }

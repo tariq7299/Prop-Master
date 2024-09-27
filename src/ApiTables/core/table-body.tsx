@@ -45,8 +45,8 @@ function TableBody() {
                     <DataTable
                         columns={tableColumns}
                         data={tableData}
-                        expandableRows={true}
-                        expandableRowsComponent={ExpandedRow}
+                        // expandableRows={trsue}
+                        // expandableRowsComponent={ExpandedRow}
                         responsive
                         progressPending={tableFetchingLoading}
                         progressComponent={<TableLoader count={Number(pageSize)} />}

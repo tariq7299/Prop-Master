@@ -22,13 +22,13 @@ function ApiTablesComponent({ customElement }: any) {
     const { selectedRows } = useTableColumns()
 
     return (
+
         <>
             {structureFilters && structureFilters?.length > 0 && (
                 <TableFilters />
             )}
 
             {/* <TableSorting /> */}
-
 
             <div className="flex flex-row-reverse gap-2">
 
@@ -43,8 +43,8 @@ function ApiTablesComponent({ customElement }: any) {
                 {/* COLUMNS VISIBILITY */}
                 <ColumnsVisibility />
 
-                {/* TABLE PAGE SIZE */}
-                {/* <TablePageSize /> */}
+
+
             </div>
 
             {customElement && (<div className="py-2"> {customElement} </div>)
@@ -55,8 +55,14 @@ function ApiTablesComponent({ customElement }: any) {
                 )
             }
             <ActionsOfSelections />
+
             <TableBody />
+
             {/* <TablePagination /> */}
+
+
+            {/* TABLE PAGE SIZE */}
+            <TablePageSize />
 
             <ApiTablesModals />
         </>

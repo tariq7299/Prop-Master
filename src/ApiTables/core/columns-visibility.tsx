@@ -53,7 +53,7 @@ function ColumnsVisibility() {
                                 </Checkbox>
                                 <label
                                     htmlFor={`${col.data_src}ColVisibility${id}`}
-                                    className="h-full w-full text-sm"
+                                    className="h-full w-full text-sm cursor-pointer"
                                 >
                                     {col.name?.props?.children}
                                 </label>
