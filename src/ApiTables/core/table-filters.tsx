@@ -39,7 +39,7 @@ function TableFilters() {
     // const { accessibilitySettings } = useApp()
     const { handleSubmit, register, control, setValue, resetField, watch, formState: { dirtyFields } } = useForm()
     const watchFields = watch();
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(true);
 
 
     useEffect(() => {

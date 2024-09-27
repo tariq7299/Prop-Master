@@ -6,7 +6,7 @@ import { useTableColumns } from "../table-providers/table-columns-provider.tsx";
 import { useTableCore } from "../table-providers/table-core-provider.tsx";
 import { useTableBulkActions } from "../table-providers/bulk-actions-provider.tsx";
 import { downloadURL } from "../table-utils/utils.tsx";
-import { Button } from "@/components/ui/button.tsx";
+import { Button } from "@/components/custom/button.tsx";
 import { File } from 'lucide-react';
 // import { router } from "@inertiajs/react";
 
@@ -63,46 +63,17 @@ function TableBulkActions() {
 
             {bulkActions?.map((action: any, index: any) => {
                 return (
-                    <li key={index}>
-                        <Button variant="outline" disabled={disableBulkActions}
+                    <div key={index}>
+                        <Button size="sm" variant="outline" disabled={disableBulkActions}
                             className={`  gap-1 ${disableBulkActions ? 'disabled' : ''}`} onClick={() => fireBulkAction(action)}>
                             <File className="h-4 w-4" /> <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                                 {action?.label}
                             </span>
                         </Button>
-                    </li>
+                    </div>
                 )
             })}
 
-            <div ref={dropdownHolderRef}>
-                <div className="dropdown clickabke ms-1">
-                    <button
-                        type='button'
-                        className='btn btn-link p-0 btn-sm dropdown-toggle text-dark fw-bold shadow-0 pt-2 no-caret w-100' data-bs-toggle='dropdown' aria-expanded='false' data-bs-auto-close='outside'
-                    >
-                        <VscSettingsGear className='mx-1' size='1rem' />
-                        الإجراءات
-                        <CgChevronDown size={13} className='me-1' />
-                    </button>
-
-                    <ul
-                        className='dropdown-menu end animate slideIn mt-lg-5'
-                        style={{ minWidth: '10rem', top: '3rem' }}
-                    >
-                        {bulkActions?.map((action: any, index: any) => {
-                            return (
-                                <li key={index}>
-                                    <button type='button'
-                                        disabled={disableBulkActions}
-                                        className={`dropdown-item text-sm text-end ${disableBulkActions ? 'disabled' : ''}`} onClick={() => fireBulkAction(action)}>
-                                        {action?.label}
-                                    </button>
-                                </li>
-                            )
-                        })}
-                    </ul>
-                </div>
-            </div>
             {/* <div ref={dropdownHolderRef}>
                 <div className="dropdown clickabke ms-1">
                     <button

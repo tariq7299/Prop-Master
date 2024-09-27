@@ -22,7 +22,7 @@ const tablesItems = [
                     "web": "/control-tables/row-table-action/shipping_awbs/toggle_awb_activation/65678"
                 },
                 "button": {
-                    "label": "حالة التفعيل",
+                    "label": "Status",
                     "btnClasses": []
                 },
                 "method": "post",
@@ -43,7 +43,7 @@ const tablesItems = [
                     "web": "/control-tables/row-table-action/shipping_awbs/show_details/65678"
                 },
                 "button": {
-                    "label": "عرض",
+                    "label": "View",
                     "btnClasses": [
                         "btn-opac-info"
                     ]
@@ -65,7 +65,7 @@ const tablesItems = [
                     "web": "/control-tables/row-table-action/shipping_awbs/update_track_status/65678"
                 },
                 "button": {
-                    "label": "تحديث حالة الشحن",
+                    "label": "Update Tracking Status",
                     "btnClasses": [
                         "btn-opac-success"
                     ]
@@ -92,7 +92,7 @@ const tablesItems = [
                     "web": "/control-tables/row-table-action/shipping_awbs/mark_as_delivered/65678"
                 },
                 "button": {
-                    "label": "تم التوصيل",
+                    "label": "Deliverd",
                     "btnClasses": []
                 },
                 "method": "post",
@@ -117,7 +117,7 @@ const tablesItems = [
                     "web": "/control-tables/row-table-action/shipping_awbs/cod_withdrawal_allowed/65678"
                 },
                 "button": {
-                    "label": "إمكانية السحب",
+                    "label": "Ability to withdrawl",
                     "btnClasses": []
                 },
                 "method": "post",
@@ -138,7 +138,7 @@ const tablesItems = [
                     "web": "/control-tables/row-table-action/shipping_awbs/toggle_prevent_tracking_on_delete/65678"
                 },
                 "button": {
-                    "label": "منع التتبع التلقائي عند الإلغاء",
+                    "label": "Prevent tracking",
                     "btnClasses": []
                 },
                 "method": "post",
@@ -172,7 +172,7 @@ const tablesItems = [
                     "web": "/control-tables/row-table-action/shipping_awbs/toggle_awb_activation/65678"
                 },
                 "button": {
-                    "label": "حالة التفعيل",
+                    "label": "Status",
                     "btnClasses": []
                 },
                 "method": "post",
@@ -193,7 +193,7 @@ const tablesItems = [
                     "web": "/control-tables/row-table-action/shipping_awbs/show_details/65678"
                 },
                 "button": {
-                    "label": "عرض",
+                    "label": "View",
                     "btnClasses": [
                         "btn-opac-info"
                     ]
@@ -215,7 +215,7 @@ const tablesItems = [
                     "web": "/control-tables/row-table-action/shipping_awbs/update_track_status/65678"
                 },
                 "button": {
-                    "label": "تحديث حالة الشحن",
+                    "label": "Update Tracking",
                     "btnClasses": [
                         "btn-opac-success"
                     ]
@@ -242,7 +242,7 @@ const tablesItems = [
                     "web": "/control-tables/row-table-action/shipping_awbs/mark_as_delivered/65678"
                 },
                 "button": {
-                    "label": "تم التوصيل",
+                    "label": "Mark as deliverd",
                     "btnClasses": []
                 },
                 "method": "post",
@@ -267,7 +267,7 @@ const tablesItems = [
                     "web": "/control-tables/row-table-action/shipping_awbs/cod_withdrawal_allowed/65678"
                 },
                 "button": {
-                    "label": "إمكانية السحب",
+                    "label": "Withdrawl request",
                     "btnClasses": []
                 },
                 "method": "post",
@@ -288,7 +288,7 @@ const tablesItems = [
                     "web": "/control-tables/row-table-action/shipping_awbs/toggle_prevent_tracking_on_delete/65678"
                 },
                 "button": {
-                    "label": "منع التتبع التلقائي عند الإلغاء",
+                    "label": "Prevent tracking",
                     "btnClasses": []
                 },
                 "method": "post",

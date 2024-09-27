@@ -46,7 +46,7 @@ function tableColumnsReducer(state: any, action: any) {
             ...state,
             tableColumns: action?.payload?.filter((col: any) => col?.showable)?.map((col: any) => {
                 return {
-                    name: col?.label,
+                    name: <span className="text-gray-500  text-wrap lg:text-base font-semibold">{col?.label}</span>,
                     // minWidth: '150px',
                     // minWidth: (col?.type === 'actions' && col?.minWidth === '200px') ? '120px' : col?.minWidth === '50px' ? '200px' : col?.minWidth,
                     sortable: col?.sortable,
@@ -57,7 +57,7 @@ function tableColumnsReducer(state: any, action: any) {
                     cell: (row: any) => {
                         return (
                             // <div row={row} className='text-sm tabel-col-cell w-100'>
-                            <div className='text-sm tabel-col-cell w-100'>
+                            <div className='w-full flex justify-center'>
                                 {row[col?.data_src] === null ? (
                                     <p className="mb-0">-</p>
                                 ) : row[col?.data_src] !== null && (

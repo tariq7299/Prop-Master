@@ -1,10 +1,19 @@
 import * as React from "react"
 import { useId } from 'react';
-import { AiOutlineEye } from 'react-icons/ai';
-import { CgChevronDown } from 'react-icons/cg'
 useTableColumns
 import { useTableCore } from "../table-providers/table-core-provider.tsx";
 import { useTableColumns } from "../table-providers/table-columns-provider.tsx";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+
+import { Binoculars } from 'lucide-react';
+import { Checkbox } from "@/components/ui/checkbox.tsx";
+
+import { Button } from "@/components/custom/button.tsx";
 
 function ColumnsVisibility() {
     const id = useId();
@@ -22,48 +31,42 @@ function ColumnsVisibility() {
         localStorage.setItem(`${tableName}_tb`, JSON.stringify(columns));
     }
 
+    // console.log("tableColumns", tableColumns)
 
     return (
-        <div className='dropdown clickable ms-1'>
-            <button
-                type='button'
-                className='btn btn-link p-0 btn-sm dropdown-toggle text-dark fw-bold shadow-0 pt-2 no-caret w-100'
-                data-bs-toggle='dropdown'
-                aria-expanded='false'
-                data-bs-auto-close='outside'
-            >
-                <AiOutlineEye className='mx-1' size='1rem' />
-                ظهور الأعمدة
-                <CgChevronDown size={13} className='me-1' />
-            </button>
-            <form
-                className='dropdown-menu end animate slideIn mt-lg-5'
-                style={{ minWidth: '13rem', maxWidth: '15rem', top: '3rem' }}
-            >
-                {tableColumns?.map((col: any, index: any) => {
-                    return (
-                        <div className='form-check' key={index}>
-                            <input
-                                className='form-check-input'
-                                type='checkbox'
-                                id={`${col.data_src}ColVisibility${id}`}
-                                checked={visibleColumns?.indexOf(col?.data_src) !== -1 ? true : false}
-                                onChange={(e) => {
-                                    toggleColumnVisibility(e.target.checked, col?.data_src, tableName)
-                                }}
-                            />
-                            <label
-                                className='form-check-label text-end'
-                                style={{ fontSize: '.85rem' }}
-                                htmlFor={`${col.data_src}ColVisibility${id}`}
-                            >
-                                {col.name}
-                            </label>
-                        </div>
-                    );
-                })}
-            </form>
-        </div>
+
+        <div className="me-auto">
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button size="sm" variant='outline' className='space-x-1'>
+                        <Binoculars className="w-4 h-4" /> <span className="sr-only md:not-sr-only">View</span>
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className='w-max flex-col justify-center' align='end' forceMount>
+                    {tableColumns?.map((col: any, index: any) => {
+                        return (
+                            <DropdownMenuItem key={index} onSelect={(e) => e.preventDefault()} className="w-full gap-2 ">
+                                <Checkbox id={`${col.data_src}ColVisibility${id}`} onCheckedChange={(checked) => toggleColumnVisibility(checked, col?.data_src, tableName)}
+                                    checked={visibleColumns?.indexOf(col?.data_src) !== -1 ? true : false}
+                                    key={index}
+                                >
+                                </Checkbox>
+                                <label
+                                    htmlFor={`${col.data_src}ColVisibility${id}`}
+                                    className="h-full w-full text-sm"
+                                >
+                                    {col.name?.props?.children}
+                                </label>
+
+
+                            </DropdownMenuItem>
+                        );
+                    })}
+                </DropdownMenuContent>
+            </DropdownMenu>
+        </div >
+
+
     );
 }
 

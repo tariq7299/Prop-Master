@@ -2,8 +2,8 @@ import * as React from "react"
 import { useEffect } from "react"
 import { HiArrowsUpDown } from 'react-icons/hi2';
 import DataTable from 'react-data-table-component';
-import { Checkbox } from "../general-components/checkbox.tsx";
-// import { Checkbox } from "@/components/ui/checkbox.tsx";
+// import { Checkbox } from "../general-components/checkbox.tsx";
+import { Checkbox } from "@/components/ui/checkbox.tsx";
 import { TableLoader } from "../general-components/loaders.tsx";
 import { useTableColumns } from "../table-providers/table-columns-provider.tsx";
 import { useTableCore } from "../table-providers/table-core-provider.tsx";
@@ -57,11 +57,26 @@ function TableBody() {
                         noDataComponent={(<div className="py-4"> لا توجد نتائج. الرجاء توسيع نطاق البحث </div>)}
                         persistTableHead={true}
                         selectableRows={!tableFetchingLoading && (bulkActions.length > 0 || (structureRowActions?.filter((action: any) => action?.applicableAsBulkAction)?.length > 0)) ? true : false}
-                        customStyles={{ cells: { style: { justifyContent: 'center' } }, headCells: { style: { justifyContent: 'center' } } }}
+                        customStyles={
+                            {
+                                rows: {
+                                    style: {
+                                        '&:hover': {
+                                            backgroundColor: '#f1f1f1',
+                                            cursor: 'pointer',
+                                        }
+                                    }
+                                },
+                                cells: { style: { justifyContent: 'center' } },
+                                headCells: { style: { justifyContent: 'center' } },
+
+                            }
+                        }
                         onSelectedRowsChange={({ selectedRows }) => tableColumnsDispatcher({
                             type: 'SET_SELECTED_ROWS',
                             payload: selectedRows
-                        })}
+                        })
+                        }
                         clearSelectedRows={!toggledClearRows}
                     />
                 </div>

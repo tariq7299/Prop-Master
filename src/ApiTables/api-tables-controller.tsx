@@ -33,6 +33,7 @@ function ApiTablesController({ table, params, customElement }: any) {
     }
 
     useEffect(() => {
+        bulkActionsDispatcher({ type: 'GET_STRUCTURE_BULK_ACTIONS', payload: table?.bulkActions })
         tableCoreDispatcher({ type: 'GET_TABLE_COMPONENTS', payload: { ...table } })
         bulkActionsDispatcher({ type: 'GET_STRUCTURE_BULK_ACTIONS', payload: table?.bulkActions })
         rowActionsDispatcher({ type: 'GET_STRUCTURE_ROW_ACTIONS', payload: flattenMultiCellsActions(table?.rowActions) })

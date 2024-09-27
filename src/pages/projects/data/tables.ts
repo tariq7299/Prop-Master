@@ -4,7 +4,7 @@ const tables = {
         "columns": [
             {
                 "type": "text",
-                "label": "المعرف",
+                "label": "ID",
                 "name": null,
                 "sortable": true,
                 "data_src": "id",
@@ -26,7 +26,7 @@ const tables = {
             },
             {
                 "type": "text",
-                "label": "شركة الشحن",
+                "label": "Shipping Company",
                 "name": null,
                 "sortable": false,
                 "data_src": "shipping_company",
@@ -37,7 +37,7 @@ const tables = {
             },
             {
                 "type": "link",
-                "label": "رقم التتبع",
+                "label": "Tracking Number",
                 "name": null,
                 "sortable": false,
                 "data_src": "tracking_number",
@@ -69,7 +69,7 @@ const tables = {
             },
             {
                 "type": "actions",
-                "label": "الإجراءات",
+                "label": "Actions",
                 "name": null,
                 "sortable": false,
                 "data_src": "NA",
@@ -194,7 +194,7 @@ const tables = {
                     "web": "/control-tables/row-table-action/shipping_awbs/toggle_awb_activation/ROWID"
                 },
                 "button": {
-                    "label": "حالة التفعيل",
+                    "label": "Status",
                     "btnClasses": []
                 },
                 "method": "post",
@@ -213,7 +213,7 @@ const tables = {
                     "web": "/control-tables/row-table-action/shipping_awbs/show_details/ROWID"
                 },
                 "button": {
-                    "label": "عرض",
+                    "label": "View",
                     "btnClasses": [
                         "btn-opac-info"
                     ]
@@ -234,7 +234,7 @@ const tables = {
                     "web": "/control-tables/row-table-action/shipping_awbs/update_track_status/ROWID"
                 },
                 "button": {
-                    "label": "تحديث حالة الشحن",
+                    "label": "Update Shipping Status",
                     "btnClasses": [
                         "btn-opac-success"
                     ]
@@ -260,7 +260,7 @@ const tables = {
                     "web": "/control-tables/row-table-action/shipping_awbs/mark_as_delivered/ROWID"
                 },
                 "button": {
-                    "label": "تم التوصيل",
+                    "label": "Deliverd",
                     "btnClasses": []
                 },
                 "method": "post",
@@ -284,7 +284,7 @@ const tables = {
                     "web": "/control-tables/row-table-action/shipping_awbs/cod_withdrawal_allowed/ROWID"
                 },
                 "button": {
-                    "label": "إمكانية السحب",
+                    "label": "Ablility to withdrawl",
                     "btnClasses": []
                 },
                 "method": "post",
@@ -303,7 +303,7 @@ const tables = {
                     "web": "/control-tables/row-table-action/shipping_awbs/create_return_awb/ROWID"
                 },
                 "button": {
-                    "label": "إصدار بوليصة استرجاع",
+                    "label": "Refund",
                     "btnClasses": [
                         "btn-opac-danger"
                     ]
@@ -324,7 +324,7 @@ const tables = {
                     "web": "/control-tables/row-table-action/shipping_awbs/toggle_prevent_tracking_on_delete/ROWID"
                 },
                 "button": {
-                    "label": "منع التتبع التلقائي عند الإلغاء",
+                    "label": "Auto Tracking",
                     "btnClasses": []
                 },
                 "method": "post",
@@ -353,6 +353,25 @@ const tables = {
                 "action_response": "instant",
                 "onSuccess": "no_action",
                 "callBack": "exportToExcel"
+            }
+        },
+        "newRowActions": {
+            "addNewProject": {
+                "action_key": "addNewProject",
+                "label": "Add New Project",
+                "action": {
+                    "api": "/api/control-tables/bulk-table-action/shipping_awbs/export_excel",
+                },
+                "button": {
+                    "label": "Add New Project",
+                    "btnClasses": []
+                },
+                "method": "post",
+                "payload_keys": [],
+                "need_confirmation": false,
+                "action_response": "instant",
+                "onSuccess": "OpenModalForm",
+                "callBack": ""
             }
         }
     }

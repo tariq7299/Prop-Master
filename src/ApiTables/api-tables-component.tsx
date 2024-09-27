@@ -11,7 +11,9 @@ import ApiTablesModals from "./table-modals/api-tables-modals";
 import { useTableBulkActions } from "./table-providers/bulk-actions-provider";
 import { useTableColumns } from "./table-providers/table-columns-provider";
 import { useTableCore } from "./table-providers/table-core-provider";
-
+import { Button } from "@/components/ui/button";
+import { CirclePlus } from 'lucide-react';
+import { PlusCircle } from 'lucide-react';
 
 
 function ApiTablesComponent({ customElement }: any) {
@@ -24,41 +26,37 @@ function ApiTablesComponent({ customElement }: any) {
             {structureFilters && structureFilters?.length > 0 && (
                 <TableFilters />
             )}
-            <TableSorting />
 
-            <div className="row g-3 mb-4 align-items-end justify-content-center justify-content-lg-between">
-                <div className="col-xl-2 col-lg-5">
-                </div>
-                <div className="col-xl-5 col-lg-7">
-                    <ul className="list-inline mb-0 p-0 d-flex justify-content-lg-end">
+            {/* <TableSorting /> */}
 
-                        {/* BULK ACTIONS */}
-                        {bulkActions?.length > 0 && (
-                            <li className="list-inline-item me-0">
-                                <TableBulkActions />
-                            </li>
-                        )}
 
-                        {/* COLUMNS VISIBILITY */}
-                        <li className="list-inline-item ps-2 me-0">
-                            <ColumnsVisibility />
-                        </li>
+            <div className="flex flex-row-reverse gap-2">
 
-                        {/* TABLE PAGE SIZE */}
-                        <li className="list-inline-item">
-                            <TablePageSize />
-                        </li>
-                    </ul>
-                </div>
+                {/* NEW ROW ACTIONS */}
+                <Button size="sm" className=" gap-1 text-background bg-foreground"  ><CirclePlus className="h-4 w-4" /><span className="sr-only md:not-sr-only ">Add New Project</span></Button>
+
+                {/* BULK ACTIONS */}
+                {bulkActions?.length > 0 && (
+                    <TableBulkActions />
+                )}
+
+                {/* COLUMNS VISIBILITY */}
+                <ColumnsVisibility />
+
+                {/* TABLE PAGE SIZE */}
+                {/* <TablePageSize /> */}
             </div>
 
-            {customElement && (<div className="py-2"> {customElement} </div>)}
-            {selectedRows.length > 0 && (
-                <p className="text-center text-sm text-muted mb-1">لقد قمت باختيار عدد <strong className="fw-bold text-dark mx-1">{selectedRows?.length}</strong> من الصفوف</p>
-            )}
+            {customElement && (<div className="py-2"> {customElement} </div>)
+            }
+            {
+                selectedRows.length > 0 && (
+                    <p className="text-center text-sm text-muted mb-1">لقد قمت باختيار عدد <strong className="fw-bold text-dark mx-1">{selectedRows?.length}</strong> من الصفوف</p>
+                )
+            }
             <ActionsOfSelections />
             <TableBody />
-            <TablePagination />
+            {/* <TablePagination /> */}
 
             <ApiTablesModals />
         </>
