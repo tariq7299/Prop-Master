@@ -68,8 +68,16 @@ function TableBody() {
                                         }
                                     }
                                 },
-                                cells: { style: { justifyContent: 'center', padding: "1rem" } },
-                                headCells: { style: { justifyContent: 'center', padding: "1rem" } },
+                                cells: {
+                                    style: {
+                                        justifyContent: 'center',
+                                    }
+                                },
+                                headCells: {
+                                    style: {
+                                        justifyContent: 'center', padding: "1rem"
+                                    }
+                                },
 
                             }
                         }

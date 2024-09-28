@@ -2,10 +2,102 @@ import * as React from "react"
 import { useTableCore } from "../table-providers/table-core-provider"
 import { formatDateNoTime } from "../table-utils/utils.tsx"
 import { RiCloseCircleFill } from "react-icons/ri";
+import { Button } from "@/components/custom/button.tsx";
+import { Badge } from "@/components/ui/badge.tsx";
+import { CircleX } from 'lucide-react';
+
 
 function AppliedFilters({ setValue, resetField }: any) {
-    const { renderedFilters, tableCoreDispatcher } = useTableCore()
+    const { /*renderedFilters*/ tableCoreDispatcher } = useTableCore()
 
+    const renderedFilters = [
+        {
+            "key": "shipping_company",
+            "value": "bolesa",
+            "label": "Shipping Company",
+            "type": "select",
+            "valueLable": "Bolesa",
+            "operator": "=",
+            "props": {
+                "select_options": {
+                    "all": "الكل",
+                    "smsa_salla": null,
+                    "smsa_cold": null,
+                    "adwar_cold": null,
+                    "JT_Express": null,
+                    "aymakan": "AyMakan",
+                    "bolesa": "Bolesa",
+                    "third_mile": "Third Mile",
+                    "smsa": "SMSA",
+                    "jt_express": "J&T Express",
+                    "tabex": "Tabex",
+                    "kwickbox": "Kwickbox",
+                    "aramex": "Aramex",
+                    "adwar": "Adwar"
+                },
+                "operators": [
+                    "="
+                ]
+            },
+        },
+        {
+            "key": "shipping_company",
+            "value": "bolesa",
+            "label": "Shipping Company",
+            "type": "select",
+            "valueLable": "Bolesa",
+            "operator": "=",
+            "props": {
+                "select_options": {
+                    "all": "الكل",
+                    "smsa_salla": null,
+                    "smsa_cold": null,
+                    "adwar_cold": null,
+                    "JT_Express": null,
+                    "aymakan": "AyMakan",
+                    "bolesa": "Bolesa",
+                    "third_mile": "Third Mile",
+                    "smsa": "SMSA",
+                    "jt_express": "J&T Express",
+                    "tabex": "Tabex",
+                    "kwickbox": "Kwickbox",
+                    "aramex": "Aramex",
+                    "adwar": "Adwar"
+                },
+                "operators": [
+                    "="
+                ]
+            }
+        },
+        {
+            "key": "shipping_company",
+            "value": "bolesa",
+            "label": "Shipping Company",
+            "type": "select",
+            "valueLable": "Bolesa",
+            "operator": "=",
+            "props": {
+                "select_options": {
+                    "all": "الكل",
+                    "smsa_salla": null,
+                    "smsa_cold": null,
+                    "adwar_cold": null,
+                    "JT_Express": null,
+                    "aymakan": "AyMakan",
+                    "bolesa": "Bolesa",
+                    "third_mile": "Third Mile",
+                    "smsa": "SMSA",
+                    "jt_express": "J&T Express",
+                    "tabex": "Tabex",
+                    "kwickbox": "Kwickbox",
+                    "aramex": "Aramex",
+                    "adwar": "Adwar"
+                },
+                "operators": [
+                    "="
+                ]
+            }
+        }]
     function handleClearRenderedFilters(key: any, props: any, type: any) {
 
         const filteredRenderedFilters = renderedFilters?.filter((filter: any) => filter?.key !== key)
@@ -24,27 +116,26 @@ function AppliedFilters({ setValue, resetField }: any) {
     return (
         <>
             {renderedFilters?.length > 0 && (
-                <ul className="list-inline p-0 mb-1">
-                    <li className="list-inline-item text-sm fw-bold ms-2">تصفــــية حسب: </li>
+                <div className="flex flex-wrap items-center justify-start gap-2 py-5">
+                    <div className="">Filters: </div>
                     {renderedFilters?.map((filter: any, index: any) => (
-                        <li className="list-inline-item mx-1 mb-1" key={index}>
-                            <div className="badge bg-info fw-normal py-0 rounded-pill pe-1 ps-3">
-                                <button
-                                    type="button"
-                                    className="btn btn-link shadow-0 p-0 text-white"
+                        <div className="text-nowrap" key={index}>
+                            <Badge className="p-1 px-2  rounded-3xl mx-1">
+                                <Button
+                                    size="sm"
+                                    className="p-0 m-0 h-fit"
+                                    variant="ghost"
                                     onClick={() => {
                                         handleClearRenderedFilters(filter?.key, filter?.props, filter?.type)
                                     }}
                                 >
-                                    <RiCloseCircleFill className="ms-2 mb-1" />
-                                    ''
-                                </button>
-                                <strong className="ms-1">{filter?.label}:</strong>
-                                <span>{filter?.type !== 'date' ? filter?.valueLable : formatDateNoTime(new Date(filter?.value))}</span>
-                            </div>
-                        </li>
+                                    <RiCloseCircleFill className="h-4 w-4" />
+                                </Button>
+                                <span className="ms-1 ">{filter?.label}:</span>
+                                <span className="">{filter?.type !== 'date' ? filter?.valueLable : formatDateNoTime(new Date(filter?.value))}</span></Badge>
+                        </div>
                     ))}
-                </ul>
+                </div>
             )}
         </>
     )
