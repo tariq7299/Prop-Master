@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge.tsx";
 import { CircleX } from 'lucide-react';
 
 
+
 function AppliedFilters({ setValue, resetField }: any) {
     const { /*renderedFilters*/ tableCoreDispatcher } = useTableCore()
 
@@ -116,11 +117,11 @@ function AppliedFilters({ setValue, resetField }: any) {
     return (
         <>
             {renderedFilters?.length > 0 && (
-                <div className="flex flex-wrap items-center justify-start gap-2 py-5">
-                    <div className="">Filters: </div>
+                <div className="flex flex-wrap items-center justify-start gap-2 pt-5">
+                    <div className=" text-sm font-bold">Filters: </div>
                     {renderedFilters?.map((filter: any, index: any) => (
                         <div className="text-nowrap" key={index}>
-                            <Badge className="p-1 px-2  rounded-3xl mx-1">
+                            <Badge className="bg-teal-500 text-background p-1 px-2  rounded-3xl mx-1">
                                 <Button
                                     size="sm"
                                     className="p-0 m-0 h-fit"
@@ -131,8 +132,9 @@ function AppliedFilters({ setValue, resetField }: any) {
                                 >
                                     <RiCloseCircleFill className="h-4 w-4" />
                                 </Button>
-                                <span className="ms-1 ">{filter?.label}:</span>
-                                <span className="">{filter?.type !== 'date' ? filter?.valueLable : formatDateNoTime(new Date(filter?.value))}</span></Badge>
+                                <span className="ms-1 font-bold">{filter?.label}:</span>
+                                <span className="">{filter?.type !== 'date' ? filter?.valueLable : formatDateNoTime(new Date(filter?.value))}</span>
+                            </Badge>
                         </div>
                     ))}
                 </div>

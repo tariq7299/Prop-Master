@@ -65,7 +65,7 @@ function TableFilters() {
 
 
     return (
-        <div className='pb-5'>
+        <>
 
             <Collapsible
                 open={isOpen}
@@ -86,7 +86,7 @@ function TableFilters() {
 
                 <CollapsibleContent className="py-4">
                     <form /*className="row g-3 align-items-end"*/ className="" onSubmit={handleSubmit(submitFiltersHandler)}>
-                        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6'>
+                        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-3'>
 
 
                             {/* ... Date Type Filters */}
@@ -173,7 +173,7 @@ function TableFilters() {
             <div className="my-4">
                 <AppliedFilters setValue={setValue} resetField={resetField} />
             </div>
-        </div>
+        </>
     )
 }
 

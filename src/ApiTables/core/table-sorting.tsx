@@ -1,29 +1,39 @@
 import * as React from "react"
 import { RiCloseCircleFill } from "react-icons/ri";
 import { useTableCore } from "../table-providers/table-core-provider.tsx";
+import { Button } from "@/components/custom/button.tsx";
+import { Badge } from "@/components/ui/badge.tsx";
 
 function TableSorting() {
-    const { tableSorting, tableCoreDispatcher } = useTableCore()
+    const { tableCoreDispatcher } = useTableCore()
 
     function resetTableSorting() {
         tableCoreDispatcher({ type: 'SET_TABLE_SORTING', payload: {} })
     }
 
+    const tableSorting = {
+        "label": "Payment Type",
+        "direction": "desc",
+        "payment_type": "desc"
+    }
+
     return (
         <>
             {Object.keys(tableSorting)?.length > 0 && (
-                <ul className="list-inline p-0 mb-4">
-                    <li className="list-inline-item text-sm fw-bold ms-2">الترتيب المطبق: </li>
-                    <li className="list-inline-item mx-1 mb-1">
-                        <div className="badge text-xxxs bg-dark fw-normal rounded-pill ps-3 pe-1 py-0">
-                            <button
-                                type="button"
-                                className="btn btn-link shadow-0 p-0 text-white"
-                                onClick={resetTableSorting}><RiCloseCircleFill className="ms-2 mb-1" />"</button>
-                            <strong>{tableSorting?.label}: </strong> {tableSorting?.direction === 'asc' ? 'تصاعدي' : 'تنازلي'}
-                        </div>
-                    </li>
-                </ul>
+                <div className="flex flex-wrap items-center justify-start gap-2 pb-5">
+                    <div className="text-sm font-bold">Applied Sorting: </div>
+                    <div className="text-nowrap">
+                        <Badge className="bg-gray-600 text-background p-1 px-2 rounded-3xl mx-1">
+                            <Button
+                                size="sm"
+                                className="p-0 m-0 h-fit"
+                                variant="ghost"
+                                onClick={resetTableSorting}><RiCloseCircleFill className="h-4 w-4" />
+                            </Button>
+                            <div className="mx-1 font-bold">{tableSorting?.label}: </div> {tableSorting?.direction === 'asc' ? 'ascending' : 'descending'}
+                        </Badge>
+                    </div>
+                </div>
             )}
         </>
     )

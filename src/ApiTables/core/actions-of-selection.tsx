@@ -4,6 +4,8 @@ import { useTableCore } from "../table-providers/table-core-provider.tsx"
 import { useTableBulkActions } from "../table-providers/bulk-actions-provider.tsx"
 import { useTableRowActions } from "../table-providers/row-actions-provider.tsx"
 import { ExternalRedirectRowActionElement, GeneralRowActionElement, RedirectRowActionElement, ToggleRowActionElement } from "../general-components/row-actions-elements.tsx"
+import { Button } from "@/components/custom/button.tsx"
+
 
 function ActionsOfSelections() {
     const { selectedRows, selectedIds } = useTableColumns()
@@ -37,17 +39,15 @@ function ActionsOfSelections() {
     return (
         <>
             {selectedRows?.length > 0 && (
-                <div className="row g-2 justify-content-center mb-3">
+                <div className="flex gap-2 pb-5">
                     {selectedRowActions?.map((action: any) => (
-                        <div className="col-12 col-sm-6 flex-grow-1 flex-md-grow-0 col-md-auto align-items-center" key={action?.action_key}>
+                        <div className="" key={action?.action_key}>
                             {action?.action_type === "toggle" ? (
                                 <ToggleRowActionElement action={action} isBulk={true} />
                             ) : action?.action_type === 'redirect' ? (
                                 <RedirectRowActionElement action={action} />
-                                // <RedirectRowActionElement action={action} isBulk={true} />
                             ) : action?.action_type === 'external_redirect' ? (
                                 <ExternalRedirectRowActionElement action={action} />
-                                // <ExternalRedirectRowActionElement action={action} isBulk={true} />
                             ) : (
                                 <GeneralRowActionElement action={action} isBulk={true} />
                             )}
@@ -55,12 +55,11 @@ function ActionsOfSelections() {
                     ))}
 
                     {bulkActions?.map((action: any) => (
-                        <div className="col-12 col-sm-6 flex-grow-1 flex-md-grow-0 col-md-auto align-items-center" key={action?.action_key}>
-                            <button type='button'
-                                className={`btn ${action?.button?.btnClasses?.join(' ') || 'btn-opac-primary'} btn-sm px-4 w-100`}
-                                onClick={() => fireBulkAction(action)}>
+                        <div className="" key={action?.action_key}>
+                            <Button size="sm" variant="outline"
+                                className="gap-1 " onClick={() => fireBulkAction(action)}>
                                 {action?.label}
-                            </button>
+                            </Button>
                         </div>
                     ))}
                 </div>

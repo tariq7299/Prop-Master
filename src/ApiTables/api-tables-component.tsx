@@ -27,10 +27,12 @@ function ApiTablesComponent({ customElement }: any) {
             {structureFilters && structureFilters?.length > 0 && (
                 <TableFilters />
             )}
+            <div className="pt-3">
+                <TableSorting />
 
-            {/* <TableSorting /> */}
+            </div>
 
-            <div className="flex  gap-2 pb-3">
+            <div className="flex gap-2 py-4">
 
                 <div className="me-auto space-x-3 flex">
                     {/* TABLE PAGE SIZE */}
@@ -60,8 +62,6 @@ function ApiTablesComponent({ customElement }: any) {
             </div>
 
             <TableBody />
-
-            {/* <div className="flex flex-wrap items-center gap-3 justify-center py-6"> */}
 
             {/* TABLE Pagenation */}
             <TablePagination />

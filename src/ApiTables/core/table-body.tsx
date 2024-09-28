@@ -10,6 +10,7 @@ import { useTableCore } from "../table-providers/table-core-provider.tsx";
 import { useTableBulkActions } from "../table-providers/bulk-actions-provider.tsx";
 import { useTableRowActions } from "../table-providers/row-actions-provider.tsx";
 import ExpandedRow from "./expanded-row.tsx";
+import { ArrowUpDown } from 'lucide-react'
 
 function TableBody() {
     const { bulkActions } = useTableBulkActions()
@@ -50,7 +51,7 @@ function TableBody() {
                         responsive
                         progressPending={tableFetchingLoading}
                         progressComponent={<TableLoader count={Number(pageSize)} />}
-                        sortIcon={<HiArrowsUpDown className='me-1' />}
+                        sortIcon={<ArrowUpDown className='h-4 w-4 ms-1' />}
                         selectableRowsComponent={Checkbox}
                         sortServer
                         onSort={sortingTableHandler}
@@ -75,6 +76,7 @@ function TableBody() {
                                 },
                                 headCells: {
                                     style: {
+                                        opacity: "1",
                                         justifyContent: 'center', padding: "1rem"
                                     }
                                 },
