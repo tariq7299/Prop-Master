@@ -23,7 +23,7 @@ function TableSorting() {
                 <div className="flex flex-wrap items-center justify-start gap-2 pb-5">
                     <div className="text-sm font-bold">Applied Sorting: </div>
                     <div className="text-nowrap ">
-                        <Badge className="bg-gray-600 text-background py-0.5 px-1.5 rounded-3xl mx-1 text-2xs">
+                        <Badge className="bg-neutral-400 text-background py-0.5 px-1.5 rounded-3xl mx-1 text-2xs">
                             <Button
                                 size="sm"
                                 className="p-0 m-0 h-fit"

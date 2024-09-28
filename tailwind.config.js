@@ -9,6 +9,9 @@ module.exports = {
   ],
   prefix: "",
   theme: {
+    safelist: [
+      'after:bg-[linear-gradient(180deg, _transparent_10%, _hsl(var(--background))_70%)]'
+    ],
     container: {
       center: true,
       padding: "2rem",

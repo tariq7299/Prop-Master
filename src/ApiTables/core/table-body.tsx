@@ -46,7 +46,7 @@ function TableBody() {
                     <DataTable
                         columns={tableColumns}
                         data={tableData}
-                        // expandableRows={trsue}
+                        // expandableRows={true}
                         // expandableRowsComponent={ExpandedRow}
                         responsive
                         progressPending={tableFetchingLoading}

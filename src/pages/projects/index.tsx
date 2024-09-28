@@ -14,6 +14,7 @@ import {
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { Building2 } from 'lucide-react';
+import { Button } from '@/components/custom/button'
 
 
 export default function Projects() {
@@ -46,12 +47,15 @@ export default function Projects() {
             {/* ===== Main ===== */}
             <Layout.Body>
 
+                {/* <Button className=' border-dotted bg-primary text-background'>IS this NIce</Button> */}
+
                 <div className='mb-6'>
-                    <h2 className='text-xl lg:text-2xl font-bold tracking-tight'>Prop Master Registered Projects <Building2 className='h-6 w-6 inline ms-2' /></h2>
+                    <h2 className='text-2xl font-bold tracking-tight'>Registered Projects <Building2 className='h-6 w-6 inline ms-2' /></h2>
                     <p className='text-muted-foreground font-light'>
                         You can add new project or edit any existing one!
                     </p>
                 </div>
+
                 <div >
                     <ReactApiTable table={tables?.table_test}></ReactApiTable>
                 </div>
