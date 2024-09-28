@@ -6,25 +6,26 @@ import useTableFetcher from "./hooks/use-table-fetcher.tsx"
 import { useTableCore } from "./table-providers/table-core-provider.tsx"
 import { useTableBulkActions } from "./table-providers/bulk-actions-provider.tsx"
 import { useTableRowActions } from "./table-providers/row-actions-provider.tsx"
+import { useTableNewRowActions } from "./table-providers/new-row-actions-provider.tsx";
 // import useAuth from "../hooks/useAuth"
 
 function ApiTablesController({ table, params, customElement }: any) {
-    console.log("table", table)
     // const { appAuth } = useAuth()
     // const { accessibilitySettings } = useApp()
     const { bulkActionsDispatcher } = useTableBulkActions()
     const { appliedFilters, currentPage, tableSorting, pageSize, tableCoreDispatcher, tableName } = useTableCore()
     const { rowActionsDispatcher } = useTableRowActions()
     const { tableFetchingHandler } = useTableFetcher()
+    const { newRowActionsDispatcher } = useTableNewRowActions();
 
 
-    function flattenMultiCellsActions(rowActions: any) {
-        if (rowActions && Object.keys(rowActions)?.filter(key => key === 'general_actions')?.length > 0) {
-            return Object.values(rowActions)?.map((object: any) => Object.values(object))?.reduce((acc, val) => {
+    function flattenMultiCellsActions(actions: any) {
+        if (actions && Object.keys(actions)?.filter(key => key === 'general_actions')?.length > 0) {
+            return Object.values(actions)?.map((object: any) => Object.values(object))?.reduce((acc, val) => {
                 return acc?.concat(val)
             }, [])
         } else {
-            return rowActions
+            return actions
         }
     }
 
@@ -37,6 +38,7 @@ function ApiTablesController({ table, params, customElement }: any) {
         tableCoreDispatcher({ type: 'GET_TABLE_COMPONENTS', payload: { ...table } })
         bulkActionsDispatcher({ type: 'GET_STRUCTURE_BULK_ACTIONS', payload: table?.bulkActions })
         rowActionsDispatcher({ type: 'GET_STRUCTURE_ROW_ACTIONS', payload: flattenMultiCellsActions(table?.rowActions) })
+        newRowActionsDispatcher({ type: 'EXTRACT_NEW_ROW_ACTIONS', payload: flattenMultiCellsActions(table?.newRowActions) })
         if (checkActionsInRegularCells(table?.rowActions)) {
             rowActionsDispatcher({ type: 'CHECK_ACTIONS_IN_REGULAR_CELLS', payload: true })
         }

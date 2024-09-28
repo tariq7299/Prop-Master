@@ -228,23 +228,23 @@ export function restructureSelectedFilters(data: any, dirtyFields: any, structur
 
 export function getOperatorLabel(operator: any) {
     if (operator === '=') {
-        return 'تطابق تام'
+        return 'Exact Matching'
     }
     if (operator === 'like') {
-        return 'قيم مشابهة'
+        return 'Similar Values'
     }
     if (operator === '>=') {
-        return 'أكبر من أو يساوي'
+        return 'Equal to or bigger than'
     }
     if (operator === '<=') {
-        return 'أقل من أو يساوي'
+        return 'Equal to or less than'
     }
 }
 
 export function handleNoColumnActionElement(action: any) {
     if (action === 'bank_account') {
         return (
-            <span className='badge bg-secondary' > غير مفعل </span>
+            <span className=''>Not Active(BADGE)</span>
         )
     }
     return '-'

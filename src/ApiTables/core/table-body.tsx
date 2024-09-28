@@ -51,21 +51,25 @@ function TableBody() {
                         responsive
                         progressPending={tableFetchingLoading}
                         progressComponent={<TableLoader count={Number(pageSize)} />}
-                        sortIcon={<ArrowUpDown className='h-4 w-4 ms-1' />}
+                        sortIcon={<ArrowUpDown className='h-4 w-4 ms-1 !text-foreground' />}
                         selectableRowsComponent={Checkbox}
                         sortServer
                         onSort={sortingTableHandler}
-                        noDataComponent={(<div className="py-4"> لا توجد نتائج. الرجاء توسيع نطاق البحث </div>)}
+                        noDataComponent={(<div className="py-4 bg-background w-full text-foreground flex justify-center"> No resultes ! </div>)}
                         persistTableHead={true}
                         selectableRows={!tableFetchingLoading && (bulkActions.length > 0 || (structureRowActions?.filter((action: any) => action?.applicableAsBulkAction)?.length > 0)) ? true : false}
                         customStyles={
                             {
                                 rows: {
                                     style: {
-
+                                        color: "hsl(var(--foreground))",
+                                        backgroundColor: "hsl(var(--background))",
                                         transition: "background-color 0.35s",
+                                        '&:not(:last-of-type)': {
+                                            borderBottomColor: "hsl(var(--input))",
+                                        },
                                         '&:hover': {
-                                            backgroundColor: '#f3f4f6',
+                                            backgroundColor: 'hsl(var(--muted))',
                                         }
                                     }
                                 },
@@ -76,6 +80,8 @@ function TableBody() {
                                 },
                                 headCells: {
                                     style: {
+                                        color: "hsl(var(--muted-foreground))",
+                                        backgroundColor: "hsl(var(--background))",
                                         opacity: "1",
                                         justifyContent: 'center', padding: "1rem"
                                     }

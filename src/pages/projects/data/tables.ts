@@ -4,11 +4,11 @@ const tables = {
         "columns": [
             {
                 "type": "text",
-                "label": "ID",
+                "label": "Id",
                 "name": null,
                 "sortable": true,
                 "data_src": "id",
-                "showable": false,
+                "showable": true,
                 "minWidth": "50px",
                 "showInMobileApp": false,
                 "loadIf": true

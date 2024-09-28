@@ -4,7 +4,7 @@ import { IconChevronRight } from '@tabler/icons-react'
 import { nord } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { Layout } from '@/components/custom/layout'
-import { Breadcrumb, BreadcrumbItem } from '@/components/custom/breadcrumb'
+import { Breadcrumb, BreadcrumbItem } from '@/components/ui/breadcrumb'
 import { PinInput, PinInputField } from '@/components/custom/pin-input'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Separator } from '@/components/ui/separator'
@@ -52,11 +52,11 @@ export default function ExtraComponents() {
             Extra Components
           </h1>
         </div>
-        <h2 className='text-lg font-bold md:text-xl'>Breadcrumbs</h2>
+        {/* <h2 className='text-lg font-bold md:text-xl'>Breadcrumbs</h2>
         <Breadcrumb separator={<IconChevronRight size={18} />}>
           {items}
         </Breadcrumb>
-        <Breadcrumb>{items}</Breadcrumb>
+        <Breadcrumb>{items}</Breadcrumb> */}
 
         <Separator />
 

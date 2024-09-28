@@ -13,6 +13,7 @@ import { useTableColumns } from "./table-providers/table-columns-provider";
 import { useTableCore } from "./table-providers/table-core-provider";
 import { Button } from "@/components/ui/button";
 import { CirclePlus } from 'lucide-react';
+import TableNewRowActions from "./core/table-new-row-actions";
 import { PlusCircle } from 'lucide-react';
 
 
@@ -27,7 +28,7 @@ function ApiTablesComponent({ customElement }: any) {
             {structureFilters && structureFilters?.length > 0 && (
                 <TableFilters />
             )}
-            <div className="pt-3">
+            <div className="pt-1">
                 <TableSorting />
 
             </div>
@@ -48,7 +49,7 @@ function ApiTablesComponent({ customElement }: any) {
 
 
                 {/* NEW ROW ACTIONS */}
-                <Button size="sm" className=" gap-1 text-background bg-foreground"  ><CirclePlus className="h-4 w-4" /><span className="sr-only md:not-sr-only ">Add New Project</span></Button>
+                <TableNewRowActions />
 
 
             </div>

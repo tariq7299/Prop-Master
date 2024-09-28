@@ -22,15 +22,17 @@ function TableSorting() {
             {Object.keys(tableSorting)?.length > 0 && (
                 <div className="flex flex-wrap items-center justify-start gap-2 pb-5">
                     <div className="text-sm font-bold">Applied Sorting: </div>
-                    <div className="text-nowrap">
-                        <Badge className="bg-gray-600 text-background p-1 px-2 rounded-3xl mx-1">
+                    <div className="text-nowrap ">
+                        <Badge className="bg-gray-600 text-background py-0.5 px-1.5 rounded-3xl mx-1 text-2xs">
                             <Button
                                 size="sm"
                                 className="p-0 m-0 h-fit"
                                 variant="ghost"
-                                onClick={resetTableSorting}><RiCloseCircleFill className="h-4 w-4" />
+                                onClick={resetTableSorting}><RiCloseCircleFill className="h-3 w-3" />
                             </Button>
-                            <div className="mx-1 font-bold">{tableSorting?.label}: </div> {tableSorting?.direction === 'asc' ? 'ascending' : 'descending'}
+
+                            <span className="mx-1 font-bold">{tableSorting?.label}: </span>
+                            <span>{tableSorting?.direction === 'asc' ? 'ascending' : 'descending'}</span>
                         </Badge>
                     </div>
                 </div>

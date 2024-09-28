@@ -36,7 +36,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
   function onSubmit(data: z.infer<typeof adminLoginSchema>) {
     // setIsLoading(true)
-    console.log("data", data)
+    // console.log("data", data)
 
     signIn(data, setIsLoading)
 

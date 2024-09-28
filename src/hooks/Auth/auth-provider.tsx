@@ -52,7 +52,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signInHandler = async (authData: z.infer<typeof adminLoginSchema>, setIsLoading: (arg0: IsLoadingCustom<"signing up" | "signing in" | 'signing out' | ''>) => void, loadingMessage?: string) => {
 
-    console.log("LogInauthData", authData)
+    // console.log("LogInauthData", authData)
 
     setIsLoading({ status: true, message: loadingMessage || "Checking...", type: "signing in" })
 

@@ -5,6 +5,7 @@ import { useTableBulkActions } from "../table-providers/bulk-actions-provider.ts
 import { useTableRowActions } from "../table-providers/row-actions-provider.tsx"
 import { ExternalRedirectRowActionElement, GeneralRowActionElement, RedirectRowActionElement, ToggleRowActionElement } from "../general-components/row-actions-elements.tsx"
 import { Button } from "@/components/custom/button.tsx"
+import { File } from "lucide-react"
 
 
 function ActionsOfSelections() {
@@ -39,7 +40,7 @@ function ActionsOfSelections() {
     return (
         <>
             {selectedRows?.length > 0 && (
-                <div className="flex gap-2 pb-5">
+                <div className="flex gap-2 pb-5 flex-wrap justify-center items-center">
                     {selectedRowActions?.map((action: any) => (
                         <div className="" key={action?.action_key}>
                             {action?.action_type === "toggle" ? (
@@ -58,7 +59,7 @@ function ActionsOfSelections() {
                         <div className="" key={action?.action_key}>
                             <Button size="sm" variant="outline"
                                 className="gap-1 " onClick={() => fireBulkAction(action)}>
-                                {action?.label}
+                                <File className="h-4 w-4" /> {action?.label}
                             </Button>
                         </div>
                     ))}

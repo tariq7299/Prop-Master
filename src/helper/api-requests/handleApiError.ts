@@ -17,13 +17,13 @@ function handleApiError(
     if (axios.isAxiosError(errResponse)) {
 
         const statusCode = errResponse.response?.status;
-        let errorMessage = customErrorMsg || (errResponse.response?.data as any)?.errors 
+        let errorMessage = customErrorMsg || (errResponse.response?.data as any)?.errors
 
         if (statusCode === 401 || statusCode === 419 || statusCode === 403) {
             errorMessage = errorMessage || 'Unauthorized: Please log in! Redirecting to login page...';
             toastApiMsgs(errorMessage, toast, "destructive");
             setTimeout(() => {
-                window.location.href = '/login';
+                window.location.href = '/sign-in';
             }, 4000);
             errorCallback?.();
             return; // Exit the function early

@@ -121,7 +121,7 @@ function AppliedFilters({ setValue, resetField }: any) {
                     <div className=" text-sm font-bold">Filters: </div>
                     {renderedFilters?.map((filter: any, index: any) => (
                         <div className="text-nowrap" key={index}>
-                            <Badge className="bg-teal-500 text-background p-1 px-2  rounded-3xl mx-1">
+                            <Badge className="bg-teal-500 text-background py-0.5 px-1.5  rounded-3xl mx-1 text-2xs">
                                 <Button
                                     size="sm"
                                     className="p-0 m-0 h-fit"
@@ -130,9 +130,9 @@ function AppliedFilters({ setValue, resetField }: any) {
                                         handleClearRenderedFilters(filter?.key, filter?.props, filter?.type)
                                     }}
                                 >
-                                    <RiCloseCircleFill className="h-4 w-4" />
+                                    <RiCloseCircleFill className="h-3 w-3" />
                                 </Button>
-                                <span className="ms-1 font-bold">{filter?.label}:</span>
+                                <span className="mx-1 font-bold ">{filter?.label}:</span>
                                 <span className="">{filter?.type !== 'date' ? filter?.valueLable : formatDateNoTime(new Date(filter?.value))}</span>
                             </Badge>
                         </div>

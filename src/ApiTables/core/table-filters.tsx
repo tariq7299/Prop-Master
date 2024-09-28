@@ -86,14 +86,14 @@ function TableFilters() {
 
                 <CollapsibleContent className="py-4">
                     <form /*className="row g-3 align-items-end"*/ className="" onSubmit={handleSubmit(submitFiltersHandler)}>
-                        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-6 gap-x-3'>
+                        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-y-5 gap-x-3'>
 
 
                             {/* ... Date Type Filters */}
                             {structureFilters?.filter((filter: any) => filter?.type === 'date')?.map((filter: any) => (
                                 filter?.pair_with && (
                                     <div className='' key={filter?.filter_name}>
-                                        <Label className='pb-3 block text-gray-400  ' htmlFor={filter?.filter_name}>{filter?.label}</Label>
+                                        <Label className='pb-3 block text-muted-foreground  ' htmlFor={filter?.filter_name}>{filter?.label}</Label>
                                         <DatePickerWithRange className='w-full' from={filter?.min} to={filter?.max} id={filter?.filter_name} ></DatePickerWithRange>
                                     </div>
 
@@ -102,46 +102,65 @@ function TableFilters() {
 
 
                             {/* Other Filter Types */}
-                            {structureFilters?.filter((filter: any) => filter?.type !== 'date')?.map((filter: any) => (
-                                <div
-                                    key={filter?.filter_name}
-                                // className={`${renderOperator(filter) ? 'filter-with-operator' : ''}`}
-                                >
-                                    <Label className='pb-3 block text-gray-400' htmlFor={filter?.filter_name}>{filter?.label}</Label>
-                                    {
-                                        // ... Select Type
-                                        (filter?.type === 'select' || filter?.type === 'boolean' || filter?.type === 'null') ? (
+                            {structureFilters?.filter((filter: any) => filter?.type !== 'date')?.map((filter: any, index: any) => (
+                                <div key={index}>
 
-                                            <Select >
-                                                <SelectTrigger className="w-full">
-                                                    <SelectValue placeholder="Choose" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectGroup>
-                                                        <SelectLabel>{filter?.label}</SelectLabel>
-                                                        {objectToArrayKeyVal(filter?.props?.select_options)?.sort((a, b) => (a.value === '' ? -1 : b.value === '' ? 1 : 0))?.map(opt => (
-                                                            <SelectItem value={opt?.value} key={opt?.value}>{opt?.key}</SelectItem>
-                                                        ))}
-                                                    </SelectGroup>
-                                                </SelectContent>
-                                            </Select>
-                                            // ... Number Type
-                                        ) : filter?.type === 'number' ? (
-                                            <Input className="w-full" type="number" id={filter?.label} placeholder={filter?.label} />
-                                            // ... Text Type
-                                        ) : filter?.type === 'text' && (
-                                            <Input className="w-full" type="text" id={filter?.label} placeholder={filter?.label} />
-                                        )
-                                    }
+                                    <Label className='pb-3 block text-muted-foreground' htmlFor={filter?.filter_name}>{filter?.label}</Label>
 
-                                    {/* <Controller
+                                    <div
+                                        key={filter?.filter_name}
+                                        className={`${renderOperator(filter) ? 'flex ' : ''}`}
+                                    >
+                                        {
+                                            // ... Select Type
+                                            (filter?.type === 'select' || filter?.type === 'boolean' || filter?.type === 'null') ? (
+                                                <Select >
+                                                    <SelectTrigger className={`w-full ${renderOperator(filter) ? 'border-r-0 rounded-r-none z-50' : ''}`}>
+                                                        <SelectValue placeholder="Choose" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectGroup>
+                                                            <SelectLabel>{filter?.label}</SelectLabel>
+                                                            {objectToArrayKeyVal(filter?.props?.select_options)?.sort((a, b) => (a.value === '' ? -1 : b.value === '' ? 1 : 0))?.map(opt => (
+                                                                <SelectItem value={opt?.value} key={opt?.value}>{opt?.key}</SelectItem>
+                                                            ))}
+                                                        </SelectGroup>
+                                                    </SelectContent>
+                                                </Select>
+                                                // ... Number Type
+                                            ) : filter?.type === 'number' ? (
+                                                <Input className={`w-full ${renderOperator(filter) ? 'border-r-0 rounded-r-none z-50' : ''}`} type="number" id={filter?.label} placeholder={filter?.label} />
+                                                // ... Text Type
+                                            ) : filter?.type === 'text' && (
+                                                <Input className={`w-full ${renderOperator(filter) ? 'border-r-0 rounded-r-none z-50' : ''}`} type="text" id={filter?.label} placeholder={filter?.label} />
+                                            )
+                                        }
+
+                                        <Select name={`${filter?.filter_name}.operator`} defaultValue={getOperators(filter)[0]} >
+                                            <SelectTrigger className={`${(renderOperator(filter) && filter?.type !== 'select' && filter?.type !== 'null' && filter?.type !== 'boolean') ? 'w-fit border-l-0 rounded-l-none bg-muted text-xs font-light' : 'hidden'}`}>
+                                                <SelectValue placeholder="Choose" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    {/* <SelectLabel >{filter?.label}</SelectLabel> */}
+                                                    {getOperators(filter)?.map((operator: any, idx: any) => (
+                                                        <SelectItem className='text-xs' key={idx} value={operator}>
+                                                            {getOperatorLabel(operator)}
+                                                        </SelectItem>
+                                                    ))}
+
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+
+                                        {/* <Controller
                                         name={`${filter?.filter_name}.operator`}
                                         control={control}
                                         defaultValue={getOperators(filter)[0]}
                                         render={({ field }) => (
                                             <select
                                                 {...field}
-                                                className={`${(renderOperator(filter) && filter?.type !== 'select' && filter?.type !== 'null' && filter?.type !== 'boolean') ? '' : 'd-none'} form-control mock-select shadow-0 filter-select-no-gutter ps-3`}
+                                                className={`${(renderOperator(filter) && filter?.type !== 'select' && filter?.type !== 'null' && filter?.type !== 'boolean') ? '' : 'hidden'}`}
                                             >
                                                 {getOperators(filter)?.map((operator: any, idx: any) => (
                                                     <option key={idx} value={operator}>
@@ -152,6 +171,7 @@ function TableFilters() {
                                         )}
                                     /> */}
 
+                                    </div>
                                 </div>
                             ))}
 
