@@ -30,7 +30,7 @@ function ApiTablesComponent({ customElement }: any) {
 
             {/* <TableSorting /> */}
 
-            <div className="flex  gap-2 pb-1">
+            <div className="flex  gap-2 pb-3">
 
                 <div className="me-auto space-x-3 flex">
                     {/* TABLE PAGE SIZE */}

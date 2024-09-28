@@ -93,7 +93,7 @@ function TableFilters() {
                             {structureFilters?.filter((filter: any) => filter?.type === 'date')?.map((filter: any) => (
                                 filter?.pair_with && (
                                     <div className='' key={filter?.filter_name}>
-                                        <Label className='pb-3 block text-gray-500  ' htmlFor={filter?.filter_name}>{filter?.label}</Label>
+                                        <Label className='pb-3 block text-gray-400  ' htmlFor={filter?.filter_name}>{filter?.label}</Label>
                                         <DatePickerWithRange className='w-full' from={filter?.min} to={filter?.max} id={filter?.filter_name} ></DatePickerWithRange>
                                     </div>
 
@@ -107,7 +107,7 @@ function TableFilters() {
                                     key={filter?.filter_name}
                                 // className={`${renderOperator(filter) ? 'filter-with-operator' : ''}`}
                                 >
-                                    <Label className='pb-3 block text-gray-500' htmlFor={filter?.filter_name}>{filter?.label}</Label>
+                                    <Label className='pb-3 block text-gray-400' htmlFor={filter?.filter_name}>{filter?.label}</Label>
                                     {
                                         // ... Select Type
                                         (filter?.type === 'select' || filter?.type === 'boolean' || filter?.type === 'null') ? (

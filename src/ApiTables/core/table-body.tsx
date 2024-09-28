@@ -61,14 +61,15 @@ function TableBody() {
                             {
                                 rows: {
                                     style: {
+
+                                        transition: "background-color 0.35s",
                                         '&:hover': {
-                                            backgroundColor: '#f1f1f1',
-                                            cursor: 'pointer',
+                                            backgroundColor: '#f3f4f6',
                                         }
                                     }
                                 },
-                                cells: { style: { justifyContent: 'center', padding: "1.20rem" } },
-                                headCells: { style: { justifyContent: 'center', padding: "1.20rem" } },
+                                cells: { style: { justifyContent: 'center', padding: "1rem" } },
+                                headCells: { style: { justifyContent: 'center', padding: "1rem" } },
 
                             }
                         }
