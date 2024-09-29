@@ -179,7 +179,7 @@ function TableFilters() {
                             <div className="flex justify-start items-end">
                                 {/* <button className="btn btn-sm px-4 btn-opac-primary" type='submit'
                             disabled={!isSubmitEnabled}>تطبيق</button> */}
-                                <Button disabled={!isSubmitEnabled}>
+                                <Button size="sm" disabled={!isSubmitEnabled}>
                                     <CornerDownRight className="mr-2 h-4 w-4" /> Apply
                                 </Button>
 
