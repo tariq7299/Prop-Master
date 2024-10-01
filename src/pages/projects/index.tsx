@@ -47,7 +47,7 @@ export default function Projects() {
             {/* ===== Main ===== */}
             <Layout.Body>
 
-                <Button className=' border-dotted bg-primary/90 text-background   hover:bg-primary-500/90'>IS this NIce</Button>
+                {/* <div className=' border-dotted bg-primary/50'>IS this NIce</div> */}
 
                 <div className='mb-6'>
                     <h2 className='text-2xl font-bold tracking-tight'>Registered Projects <Building2 className='h-6 w-6 inline ms-2' /></h2>

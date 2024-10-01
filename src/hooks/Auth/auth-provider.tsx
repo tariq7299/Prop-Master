@@ -84,7 +84,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     setIsLoading({ status: true, message: "Logging out...", type: "signing out" })
 
-
     try {
 
       const response = await axiosPrivate.post("/auth/logout");

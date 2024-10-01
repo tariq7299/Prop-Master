@@ -26,7 +26,7 @@
     --primary-950: 179, 84%, 10%;
 
     /* Secondary Shades */
-    --secondary-100: 330, 51%, 86%;
+    /* --secondary-100: 330, 51%, 86%;
     --secondary-200: 330, 51%, 80%;
     --secondary-300: 330, 50%, 75%;
     --secondary-400: 330, 50%, 70%;
@@ -34,10 +34,10 @@
     --secondary-600: 330, 54%, 46%;
     --secondary-700: 330, 53%, 37%;
     --secondary-800: 330, 52%, 30%;
-    --secondary-900: 330, 53%, 24%;
+    --secondary-900: 330, 53%, 24%; */
 
     /* accent1 Shades */
-    --accent1-100: 270, 30%, 88%;
+    /* --accent1-100: 270, 30%, 88%;
     --accent1-200: 270, 29%, 82%;
     --accent1-300: 270, 31%, 78%;
     --accent1-400: 270, 31%, 73%;
@@ -45,10 +45,10 @@
     --accent1-600: 270, 33%, 48%;
     --accent1-700: 270, 33%, 41%;
     --accent1-800: 270, 33%, 37%;
-    --accent1-900: 270, 34%, 30%;
+    --accent1-900: 270, 34%, 30%; */
 
     /* Destructive Shades */
-    --destructive-100: 0, 100%, 94%;
+    /* --destructive-100: 0, 100%, 94%;
     --destructive-200: 0, 98%, 89%;
     --destructive-300: 0, 95%, 82%;
     --destructive-400: 0, 93%, 69%;
@@ -57,10 +57,10 @@
     --destructive-700: 0, 76%, 40%;
     --destructive-800: 0, 82%, 36%;
     --destructive-900: 0, 81%, 31%;
-    --destructive-950: 0, 89%, 15%;
+    --destructive-950: 0, 89%, 15%; */
 
     /* Warning Shades */
-    --warning-100: 54, 94%, 86%;
+    /* --warning-100: 54, 94%, 86%;
     --warning-200: 54, 98%, 78%;
     --warning-300: 54, 96%, 65%;
     --warning-400: 54, 95%, 53%;
@@ -69,10 +69,10 @@
     --warning-700: 42, 89%, 26%;
     --warning-800: 34, 85%, 22%;
     --warning-900: 33, 71%, 19%;
-    --warning-950: 30, 75%, 14%;
+    --warning-950: 30, 75%, 14%; */
 
     /* Success Shades */
-    --success-100: 134, 82%, 89%;
+    /* --success-100: 134, 82%, 89%;
     --success-200: 134, 86%, 83%;
     --success-300: 134, 80%, 75%;
     --success-400: 134, 78%, 64%;
@@ -81,7 +81,7 @@
     --success-700: 134, 79%, 35%;
     --success-800: 134, 78%, 30%;
     --success-900: 134, 76%, 25%;
-    --success-950: 134, 83%, 9%;
+    --success-950: 134, 83%, 9%; */
 
 
     /* This is only in light theme */
@@ -92,24 +92,24 @@
 
 
     /* Secondary default light theme color */
-    --secondary: var(--secondary-500);
-    --secondary-foreground: 60 9.1% 97.8%;
+    /* --secondary: var(--secondary-500); */
+    /* --secondary-foreground: 60 9.1% 97.8%; */
 
     /* accent1 default light theme color */
-    --accent1: var(--accent1-500);
-    --accent1-foreground: 60 9.1% 97.8%;
+    /* --accent1: var(--accent1-500); */
+    /* --accent1-foreground: 60 9.1% 97.8%; */
 
     /* Destructive default light theme color */
-    --destructive: var(--destructive-500);
-    --destructive-foreground: 60 9.1% 97.8%;
+    /* --destructive: var(--destructive-500); */
+    /* --destructive-foreground: 60 9.1% 97.8%; */
 
     /* Warning default light theme color */
-    --warning: var(--warning-400);
-    --warning-foreground: 60 9.1% 97.8%;
+    /* --warning: var(--warning-400); */
+    /* --warning-foreground: 60 9.1% 97.8%; */
 
     /* Success default light theme color */
-    --success: var(--success-500);
-    --success-foreground: 60 9.1% 97.8%;
+    /* --success: var(--success-500); */
+    /* --success-foreground: 60 9.1% 97.8%; */
 
 
 
@@ -134,24 +134,6 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
 
-
-
-
-
-
-    /* My custom colors */
-    /* Light */
-    /* #d36f9c */
-    /* --accent-2: hsl(333, 53%, 63%); */
-    /* 902c59 */
-    /* Dark */
-    /* --accent-2: hsl(333, 53%, 37%); */
-    /* #b492c9 */
-    /* Light */
-    /* --accent-3: hsl(277, 34%, 68%); */
-    /* #533267 */
-    /* Dark */
-    /* --accent-3: hsl(277, 34%, 30%); */
   }
 
   .dark {
@@ -185,24 +167,24 @@
     --primary-foreground: 60 9.1% 97.8%;
 
     /* Secondary default Dark theme color */
-    --secondary: var(--secondary-700);
-    --secondary-foreground: 60 9.1% 97.8%;
+    /* --secondary: var(--secondary-700); */
+    /* --secondary-foreground: 60 9.1% 97.8%; */
 
     /* accent1 default Dark theme color */
-    --accent1: var(--accent1-900);
-    --accent1-foreground: 60 9.1% 97.8%;
+    /* --accent1: var(--accent1-900); */
+    /* --accent1-foreground: 60 9.1% 97.8%; */
 
     /* Destructive default Dark theme color */
-    --destructive: var(--destructive-500);
-    --destructive-foreground: 60 9.1% 97.8%;
+    /* --destructive: var(--destructive-500); */
+    /* --destructive-foreground: 60 9.1% 97.8%; */
 
     /* Warning default Dark theme color */
-    --warning: var(--warning-500);
-    --warning-foreground: 60 9.1% 97.8%;
+    /* --warning: var(--warning-500); */
+    /* --warning-foreground: 60 9.1% 97.8%; */
 
     /* Success default Dark theme color */
-    --success: var(--success-600);
-    --success-foreground: 60 9.1% 97.8%;
+    /* --success: var(--success-600); */
+    /* --success-foreground: 60 9.1% 97.8%; */
   }
 
 

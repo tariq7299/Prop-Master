@@ -11,7 +11,7 @@ const PrivateRoute = () => {
   const ls = new SecureLS();
   const token = ls.get('token');
 
-  return true ? <Outlet /> : <Navigate to="/sign-in" replace />;
+  return token ? <Outlet /> : <Navigate to="/sign-in" replace />;
 };
 
 export default PrivateRoute;
