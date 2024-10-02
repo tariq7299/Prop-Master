@@ -8,7 +8,7 @@ const tables = {
                 "name": null,
                 "sortable": true,
                 "data_src": "id",
-                "showable": true,
+                "showable": false,
                 "minWidth": "50px",
                 "showInMobileApp": false,
                 "loadIf": true
@@ -82,7 +82,7 @@ const tables = {
         "filters": [
             {
                 "type": "date",
-                "filter_name": "created_at_from",
+                "filter_name": "created_from_to",
                 "label": "Creation Date From/to",
                 "loadIf": true,
                 "min": 1664312400000,

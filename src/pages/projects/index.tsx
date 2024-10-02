@@ -1,5 +1,5 @@
 import { Layout } from '@/components/custom/layout'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactApiTable from '../../ApiTables/react-api-table'
 import tables from './data/tables'
 import { TopNav } from '@/components/top-nav'
@@ -15,9 +15,44 @@ import {
 } from "@/components/ui/breadcrumb"
 import { Building2 } from 'lucide-react';
 import { Button } from '@/components/custom/button'
+import { axiosPrivate } from '@/helper/axiosInstances'
+import { handleApiSuccess } from '@/helper/api-requests/handleApiSuccess'
+import { handleApiError } from '@/helper/api-requests/handleApiError'
+import useSendRequest from '@/hooks/api/use-send-request'
+import axios from 'axios'
 
 
 export default function Projects() {
+
+    const [table, setTable] = useState(null)
+
+
+    useEffect(() => {
+
+        const getTable = async () => {
+
+            try {
+                const response = await axiosPrivate("/client/projects")
+                handleApiSuccess(response?.data, true, "", () => {
+                    setTable(response?.data?.data)
+                })
+                console.log('responsee', response)
+
+            } catch (error: unknown) {
+                if (axios.isAxiosError(error) || (error instanceof Error)) {
+                    handleApiError(error);
+                    return error
+                } else {
+                    console.error(error)
+                }
+            }
+        }
+
+        getTable()
+
+    }, [])
+
+
     return (
         <Layout>
             {/* ===== Top Heading ===== */}
@@ -56,8 +91,8 @@ export default function Projects() {
                     </p>
                 </div>
 
-                <div >
-                    <ReactApiTable table={tables?.table_test}></ReactApiTable>
+                <div>
+                    <ReactApiTable table={table}></ReactApiTable>
                 </div>
 
 

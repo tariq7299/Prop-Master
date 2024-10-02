@@ -9,96 +9,96 @@ import { CircleX } from 'lucide-react';
 
 
 function AppliedFilters({ setValue, resetField }: any) {
-    const { /*renderedFilters*/ tableCoreDispatcher } = useTableCore()
+    const { renderedFilters, tableCoreDispatcher } = useTableCore()
 
-    const renderedFilters = [
-        {
-            "key": "shipping_company",
-            "value": "bolesa",
-            "label": "Shipping Company",
-            "type": "select",
-            "valueLable": "Bolesa",
-            "operator": "=",
-            "props": {
-                "select_options": {
-                    "all": "الكل",
-                    "smsa_salla": null,
-                    "smsa_cold": null,
-                    "adwar_cold": null,
-                    "JT_Express": null,
-                    "aymakan": "AyMakan",
-                    "bolesa": "Bolesa",
-                    "third_mile": "Third Mile",
-                    "smsa": "SMSA",
-                    "jt_express": "J&T Express",
-                    "tabex": "Tabex",
-                    "kwickbox": "Kwickbox",
-                    "aramex": "Aramex",
-                    "adwar": "Adwar"
-                },
-                "operators": [
-                    "="
-                ]
-            },
-        },
-        {
-            "key": "shipping_company",
-            "value": "bolesa",
-            "label": "Shipping Company",
-            "type": "select",
-            "valueLable": "Bolesa",
-            "operator": "=",
-            "props": {
-                "select_options": {
-                    "all": "الكل",
-                    "smsa_salla": null,
-                    "smsa_cold": null,
-                    "adwar_cold": null,
-                    "JT_Express": null,
-                    "aymakan": "AyMakan",
-                    "bolesa": "Bolesa",
-                    "third_mile": "Third Mile",
-                    "smsa": "SMSA",
-                    "jt_express": "J&T Express",
-                    "tabex": "Tabex",
-                    "kwickbox": "Kwickbox",
-                    "aramex": "Aramex",
-                    "adwar": "Adwar"
-                },
-                "operators": [
-                    "="
-                ]
-            }
-        },
-        {
-            "key": "shipping_company",
-            "value": "bolesa",
-            "label": "Shipping Company",
-            "type": "select",
-            "valueLable": "Bolesa",
-            "operator": "=",
-            "props": {
-                "select_options": {
-                    "all": "الكل",
-                    "smsa_salla": null,
-                    "smsa_cold": null,
-                    "adwar_cold": null,
-                    "JT_Express": null,
-                    "aymakan": "AyMakan",
-                    "bolesa": "Bolesa",
-                    "third_mile": "Third Mile",
-                    "smsa": "SMSA",
-                    "jt_express": "J&T Express",
-                    "tabex": "Tabex",
-                    "kwickbox": "Kwickbox",
-                    "aramex": "Aramex",
-                    "adwar": "Adwar"
-                },
-                "operators": [
-                    "="
-                ]
-            }
-        }]
+    // const renderedFilters = [
+    //     {
+    //         "key": "shipping_company",
+    //         "value": "bolesa",
+    //         "label": "Shipping Company",
+    //         "type": "select",
+    //         "valueLable": "Bolesa",
+    //         "operator": "=",
+    //         "props": {
+    //             "select_options": {
+    //                 "all": "الكل",
+    //                 "smsa_salla": null,
+    //                 "smsa_cold": null,
+    //                 "adwar_cold": null,
+    //                 "JT_Express": null,
+    //                 "aymakan": "AyMakan",
+    //                 "bolesa": "Bolesa",
+    //                 "third_mile": "Third Mile",
+    //                 "smsa": "SMSA",
+    //                 "jt_express": "J&T Express",
+    //                 "tabex": "Tabex",
+    //                 "kwickbox": "Kwickbox",
+    //                 "aramex": "Aramex",
+    //                 "adwar": "Adwar"
+    //             },
+    //             "operators": [
+    //                 "="
+    //             ]
+    //         },
+    //     },
+    //     {
+    //         "key": "shipping_company",
+    //         "value": "bolesa",
+    //         "label": "Shipping Company",
+    //         "type": "select",
+    //         "valueLable": "Bolesa",
+    //         "operator": "=",
+    //         "props": {
+    //             "select_options": {
+    //                 "all": "الكل",
+    //                 "smsa_salla": null,
+    //                 "smsa_cold": null,
+    //                 "adwar_cold": null,
+    //                 "JT_Express": null,
+    //                 "aymakan": "AyMakan",
+    //                 "bolesa": "Bolesa",
+    //                 "third_mile": "Third Mile",
+    //                 "smsa": "SMSA",
+    //                 "jt_express": "J&T Express",
+    //                 "tabex": "Tabex",
+    //                 "kwickbox": "Kwickbox",
+    //                 "aramex": "Aramex",
+    //                 "adwar": "Adwar"
+    //             },
+    //             "operators": [
+    //                 "="
+    //             ]
+    //         }
+    //     },
+    //     {
+    //         "key": "shipping_company",
+    //         "value": "bolesa",
+    //         "label": "Shipping Company",
+    //         "type": "select",
+    //         "valueLable": "Bolesa",
+    //         "operator": "=",
+    //         "props": {
+    //             "select_options": {
+    //                 "all": "الكل",
+    //                 "smsa_salla": null,
+    //                 "smsa_cold": null,
+    //                 "adwar_cold": null,
+    //                 "JT_Express": null,
+    //                 "aymakan": "AyMakan",
+    //                 "bolesa": "Bolesa",
+    //                 "third_mile": "Third Mile",
+    //                 "smsa": "SMSA",
+    //                 "jt_express": "J&T Express",
+    //                 "tabex": "Tabex",
+    //                 "kwickbox": "Kwickbox",
+    //                 "aramex": "Aramex",
+    //                 "adwar": "Adwar"
+    //             },
+    //             "operators": [
+    //                 "="
+    //             ]
+    //         }
+    //     }]
     function handleClearRenderedFilters(key: any, props: any, type: any) {
 
         const filteredRenderedFilters = renderedFilters?.filter((filter: any) => filter?.key !== key)
@@ -113,6 +113,8 @@ function AppliedFilters({ setValue, resetField }: any) {
         tableCoreDispatcher({ type: 'SET_CURRENT_PAGE', payload: 1 })
 
     }
+
+    // console.log("renderedFilters", renderedFilters)
 
     return (
         <>
@@ -133,7 +135,16 @@ function AppliedFilters({ setValue, resetField }: any) {
                                     <RiCloseCircleFill className="h-3 w-3" />
                                 </Button>
                                 <span className="mx-1 font-bold ">{filter?.label}:</span>
-                                <span className="">{filter?.type !== 'date' ? filter?.valueLable : formatDateNoTime(new Date(filter?.value))}</span>
+                                <span className="">{
+
+                                    filter?.type !== 'date' ? filter?.valueLable
+                                        :
+                                        `${formatDateNoTime(new Date(filter?.value?.from))} - ${formatDateNoTime(new Date(filter?.value?.to))} `
+
+                                }</span>
+
+                                {/* <span className="">{
+                                filter?.type !== 'date' ? filter?.valueLable : formatDateNoTime(new Date(filter?.value))  }</span> */}
                             </Badge>
                         </div>
                     ))}

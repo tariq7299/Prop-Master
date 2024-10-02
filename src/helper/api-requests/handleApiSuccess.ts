@@ -14,6 +14,8 @@ function handleApiSuccess(
 
     const { code: statusCode, success, msg } = successResponse;
 
+    console.log("successResponse", successResponse)
+
     if (!success) {
         throw new Error('An unknown error occurred. Please contact support!');
     }

@@ -72,6 +72,7 @@ function tableCoreReducer(state: any, action: any) {
         }
     }
     if (action.type === 'SET_TABLE_SORTING') {
+        console.log("action", action)
         return {
             ...state,
             tableSorting: action?.payload

@@ -202,19 +202,68 @@ export function filterOutOperatorKeys(input: any) {
 }
 
 export function restructureSelectedFilters(data: any, dirtyFields: any, structureFilters: any) {
+
+    console.log("dirtyFieldss", dirtyFields)
+    console.log("dataa", data)
+    // console.log("structureFilterss", structureFilters)
     const submittedData = objectToArrayKey(dirtyFields)
-    const filteredObject: any = Object.fromEntries(
-        Object.entries(data)?.filter(([key, value]: any) => (
-            typeof value?.fieldValue === 'string' ? submittedData?.includes(key) && value?.fieldValue.trim() !== '' && value?.fieldValue : submittedData?.includes(key) && value?.fieldValue !== '' && value?.fieldValue
-        ))
+
+    console.log("submittedData", submittedData)
+    // const filteredObject: any = Object.fromEntries(
+
+    const filteredObject = Object.fromEntries(Object.entries(data)?.filter(([key, value]: any) => {
+
+        // console.log("key", key)
+        // console.log("value", value)
+        // const test = submittedData?.includes(key) && value?.fieldValue !== '' && value?.fieldValue
+        console.log("value?.fieldValue", value?.fieldValue)
+        // console.log("test", test)
+        return typeof value?.fieldValue === 'string' ? submittedData?.includes(key) && value?.fieldValue.trim() !== '' && value?.fieldValue : submittedData?.includes(key) && value?.fieldValue !== '' && value?.fieldValue
+        // return test
+    })
     );
+    // console.log("test1", test1)
+
+    // let filteredObject = Object.fromEntries(test1)
+
+    // console.log("filteredObjectt", filteredObject)
+
+    // console.log("dirtyFieldss", dirtyFields)
+    // console.log("dataa", data)
+    // // console.log("structureFilterss", structureFilters)
+    // const submittedData = objectToArrayKey(dirtyFields)
+
+    // console.log("submittedData", submittedData)
+    // // const filteredObject: any = Object.fromEntries(
+
+    // const test1 = Object.entries(data)?.filter(([key, value]: any) => {
+
+    //     console.log("key", key)
+    //     console.log("value", value)
+    //     const test = submittedData?.includes(key) && value?.fieldValue !== '' && value?.fieldValue
+    //     console.log("value?.fieldValue", value?.fieldValue)
+    //     console.log("test", test)
+    //     typeof value?.fieldValue === 'string' ? submittedData?.includes(key) && value?.fieldValue.trim() !== '' && value?.fieldValue : submittedData?.includes(key) && value?.fieldValue !== '' && value?.fieldValue
+    //     return test
+    // })
+    // // );
+    // console.log("test1", test1)
+
+    // let filteredObject = Object.fromEntries(test1)
+
+    // console.log("filteredObjectt", filteredObject)
 
 
     const renderedFilters = Object.keys(filteredObject)?.map((key: any) => {
+
         const targetFilter = structureFilters?.find((filter: any) => filter?.filter_name === key);
+
+        console.log("key", key)
+        console.log("filteredObject[key]", filteredObject[key])
+
         return {
             key: key,
-            value: filteredObject[key]?.fieldValue,
+            value: targetFilter?.type === 'date' ? { from: filteredObject[key]?.fieldValue.from.getTime(), to: filteredObject[key]?.fieldValue.to.getTime() } : filteredObject[key]?.fieldValue,
             label: targetFilter?.label,
             type: targetFilter?.type,
             valueLable: targetFilter?.props?.select_options ? targetFilter?.props?.select_options[filteredObject[key]?.fieldValue] : filteredObject[key]?.fieldValue,
@@ -222,6 +271,8 @@ export function restructureSelectedFilters(data: any, dirtyFields: any, structur
             props: targetFilter?.props
         }
     })
+
+    console.log("rrenderedFilters", renderedFilters)
     return renderedFilters
 }
 

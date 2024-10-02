@@ -18,7 +18,6 @@ function ApiTablesController({ table, params, customElement }: any) {
     const { tableFetchingHandler } = useTableFetcher()
     const { newRowActionsDispatcher } = useTableNewRowActions();
 
-
     function flattenMultiCellsActions(actions: any) {
         if (actions && Object.keys(actions)?.filter(key => key === 'general_actions')?.length > 0) {
             return Object.values(actions)?.map((object: any) => Object.values(object))?.reduce((acc, val) => {
@@ -45,14 +44,11 @@ function ApiTablesController({ table, params, customElement }: any) {
         tableCoreDispatcher({ type: 'CHANGE_PAGE_SIZE', payload: 10 })
     }, [table])
 
-
-
     // useEffect(() => {
     //     if (checkActionsInRegularCells(table?.rowActions)) {
     //         rowActionsDispatcher({ type: 'CHECK_ACTIONS_IN_REGULAR_CELLS', payload: true })
     //     }
     // }, [table])
-
 
 
     //     tableCoreDispatcher({ type: 'CHANGE_PAGE_SIZE', payload: accessibilitySettings?.tablePageSize || 10 })
