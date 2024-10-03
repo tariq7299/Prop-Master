@@ -19,7 +19,6 @@ function TablePagination() {
         }
     }
 
-
     return (
         <div className="flex flex-wrap items-center justify-center lg:justify-between gap-4 pt-7">
 
@@ -41,12 +40,12 @@ function TablePagination() {
                                 <div className={` ${link?.active ? '' : ''} ${!link?.url && 'disabled'}`} key={index}>
                                     {link?.active ? (
                                         <Button size="sm" className="rounded-2xl">
-                                            <span aria-hidden="true">{link?.label?.includes('Previous Page') ? (<ChevronLeft className="h-3.5 w-3.5" />) : link?.label?.includes('Next Page') ? (<ChevronRight className="h-3.5 w-3.5" />) : link?.label}</span>
+                                            <span aria-hidden="true"> {link?.label}</span>
                                         </Button >
                                     ) : (
                                         <Button disabled={!link?.url} variant="ghost" size="sm"
                                             onClick={() => setCurrentPageHandler(link)}>
-                                            <span aria-hidden="true">{link?.label?.includes('Previous Page') ? (<ChevronLeft className="h-3.5 w-3.5" />) : link?.label?.includes('Next Page') ? (<ChevronRight className="h-3.5 w-3.5" />) : link?.label}</span>
+                                            <span aria-hidden="true">{link?.label?.includes('Previous') ? (<ChevronLeft className="h-3.5 w-3.5" />) : link?.label?.includes('Next') ? (<ChevronRight className="h-3.5 w-3.5" />) : link?.label}</span>
 
                                         </Button>
                                     )}
@@ -63,6 +62,7 @@ function TablePagination() {
 
         </div>
     );
+
 };
 
 export default TablePagination

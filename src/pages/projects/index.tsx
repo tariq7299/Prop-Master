@@ -20,11 +20,33 @@ import { handleApiSuccess } from '@/helper/api-requests/handleApiSuccess'
 import { handleApiError } from '@/helper/api-requests/handleApiError'
 import useSendRequest from '@/hooks/api/use-send-request'
 import axios from 'axios'
+import ApiTablesController from '@/ApiTables/api-tables-controller'
 
 
 export default function Projects() {
 
-    const [table, setTable] = useState(null)
+    // 
+    const [tableStructure, setTableStructure] = useState({
+        "newRowActions": {
+            "addNewProject": {
+                "action_key": "addNewProject",
+                "label": "Add New Project",
+                "action": {
+                    "api": "/api/control-tables/bulk-table-action/shipping_awbs/export_excel",
+                },
+                "button": {
+                    "label": "Add New Project",
+                    "btnClasses": []
+                },
+                "method": "post",
+                "payload_keys": [],
+                "need_confirmation": false,
+                "action_response": "instant",
+                "onSuccess": "OpenModalForm",
+                "callBack": ""
+            }
+        }
+    })
 
 
     useEffect(() => {
@@ -33,11 +55,10 @@ export default function Projects() {
 
             try {
                 const response = await axiosPrivate("/client/projects")
-                handleApiSuccess(response?.data, true, "", () => {
-                    setTable(response?.data?.data)
+                handleApiSuccess(response?.data, false, "", () => {
+                    setTableStructure({ ...tableStructure, ...response?.data?.data })
+                    console.log("{ ...tableStructure, ...response?.data?.data }", { ...tableStructure, ...response?.data?.data })
                 })
-                console.log('responsee', response)
-
             } catch (error: unknown) {
                 if (axios.isAxiosError(error) || (error instanceof Error)) {
                     handleApiError(error);
@@ -92,7 +113,7 @@ export default function Projects() {
                 </div>
 
                 <div>
-                    <ReactApiTable table={table}></ReactApiTable>
+                    <ReactApiTable table={tableStructure}></ReactApiTable>
                 </div>
 
 

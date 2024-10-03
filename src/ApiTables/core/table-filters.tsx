@@ -39,8 +39,6 @@ import {
 } from '@/components/ui/form'
 
 
-// import { useMemo } from "react";
-
 function TableFilters() {
     const { tableCoreDispatcher, structureFilters, tableName } = useTableCore()
     const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
@@ -68,11 +66,7 @@ function TableFilters() {
 
     function submitFiltersHandler(data: any) {
 
-        console.log("data", data)
-
         // console.log("structureFilters", structureFilters)
-
-
         tableCoreDispatcher({ type: 'SET_APPLIED_FILTERS', payload: restructureSelectedFilters(data, dirtyFields, structureFilters) })
         tableCoreDispatcher({ type: 'SET_RENDERED_FILTERS', payload: restructureSelectedFilters(data, dirtyFields, structureFilters) })
         tableCoreDispatcher({ type: 'SET_CURRENT_PAGE', payload: 1 })
@@ -158,7 +152,7 @@ function TableFilters() {
                                                         control={form.control}
                                                         name={`${filter?.filter_name}.fieldValue`}
                                                         render={({ field }) => (
-                                                            <FormItem className='space-y-1'>
+                                                            <FormItem className=''>
                                                                 <FormLabel className='text-muted-foreground'>{filter?.label}</FormLabel>
                                                                 <FormControl>
                                                                     <Select onValueChange={field.onChange}
@@ -188,7 +182,7 @@ function TableFilters() {
                                                         name={`${filter?.filter_name}.fieldValue`}
                                                         defaultValue=""
                                                         render={({ field }) => (
-                                                            <FormItem className='space-y-1'>
+                                                            <FormItem className=' w-full'>
                                                                 <FormLabel className='text-muted-foreground'>{filter?.label}</FormLabel>
                                                                 <FormControl>
                                                                     <Input  {...field} className={`w-full ${renderOperator(filter) ? 'border-r-0 rounded-r-none z-20' : ''}`} type={filter?.type} id={filter?.label} placeholder={filter?.label} />
@@ -207,7 +201,7 @@ function TableFilters() {
                                                         name={`${filter?.filter_name}.fieldValue`}
                                                         defaultValue=""
                                                         render={({ field }) => (
-                                                            <FormItem className='space-y-1'>
+                                                            <FormItem className=' w-full'>
                                                                 <FormLabel className='text-muted-foreground'>{filter?.label}</FormLabel>
                                                                 <FormControl>
                                                                     <Input {...field} className={`w-full ${renderOperator(filter) ? 'border-r-0 rounded-r-none z-20' : ''}`} type="text" id={filter?.label} placeholder={filter?.label} />
@@ -222,13 +216,13 @@ function TableFilters() {
 
                                             <FormField
                                                 control={form.control}
-                                                name={`${filter?.filter_name}.fieldValue`}
+                                                name={`${filter?.filter_name}.operator`}
                                                 defaultValue=""
                                                 render={({ field }) => (
                                                     <FormItem className=''>
                                                         {/* <FormLabel className='text-muted-foreground'>{filter?.label}</FormLabel> */}
                                                         <FormControl>
-                                                            <Select onValueChange={field.onChange} name={`${filter?.filter_name}.operator`} defaultValue={getOperators(filter)[0]} >
+                                                            <Select onValueChange={field.onChange} defaultValue={getOperators(filter)[0]} >
                                                                 <SelectTrigger className={`${(renderOperator(filter) && filter?.type !== 'select' && filter?.type !== 'null' && filter?.type !== 'boolean') ? 'w-fit border-l-0 rounded-l-none bg-muted text-xs font-light' : 'hidden'}`}>
                                                                     <SelectValue placeholder="Choose" />
                                                                 </SelectTrigger>
@@ -260,10 +254,10 @@ function TableFilters() {
                                 <div className="flex justify-start items-end">
                                     {/* <button className="btn btn-sm px-4 btn-opac-primary" type='submit'
                             disabled={!isSubmitEnabled}>تطبيق</button> */}
-                                    <Button size="sm" >
+                                    <Button size="sm" disabled={!isSubmitEnabled} >
                                         <CornerDownRight className="mr-2 h-4 w-4" /> Apply
                                     </Button>
-                                    {/* <Button size="sm" disabled={!isSubmitEnabled}>
+                                    {/* <Button size="sm" d>
                                         <CornerDownRight className="mr-2 h-4 w-4" /> Apply
                                     </Button> */}
 

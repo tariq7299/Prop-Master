@@ -15,7 +15,9 @@ const useTableFetcher = () => {
 
     async function tableFetchingHandler({ tableName, signal, pageSize, currentPage, appliedFilters, tableSorting, params }: any) {
 
+        console.log("tableName", tableName)
         console.log("appliedFilters", appliedFilters)
+        console.log("tableSorting", tableSorting)
 
         tableCoreDispatcher({ type: 'SET_TABLE_LOADING', payload: true })
         tableColumnsDispatcher({ type: 'SET_SELECTED_ROWS', payload: [] })
@@ -34,23 +36,12 @@ const useTableFetcher = () => {
                 signal
             })
 
-            // console.log("responsesd", response)
-
-            // tableCoreDispatcher({ type: 'GET_TABLE_DATA', payload: tablesItems })
-            // tableCoreDispatcher({ type: 'GET_TABLE_PAGINATION', payload: tablesPagenation })
-            // tableCoreDispatcher({ type: 'GET_TABLE_BINDINGS', payload: {} })
-
-            // handleApiSuccess(response.data, true, '', () => {
-            // })
-
-
-
-            // response?.data["success"] = true
-
             // Make Backend send success key from backend and remove the following line !
             const newData = { ...response?.data, success: true }
 
-            handleApiSuccess(newData, true, '', () => {
+
+
+            handleApiSuccess(newData, false, '', () => {
                 tableCoreDispatcher({ type: 'GET_TABLE_DATA', payload: response?.data?.items })
                 tableCoreDispatcher({ type: 'GET_TABLE_PAGINATION', payload: response?.data?.pagination })
                 tableCoreDispatcher({ type: 'GET_TABLE_BINDINGS', payload: response?.data?.bindings })

@@ -46,7 +46,7 @@ function tableColumnsReducer(state: any, action: any) {
             ...state,
             tableColumns: action?.payload?.filter((col: any) => col?.showable)?.map((col: any) => {
                 return {
-                    name: <span className=" text-wrap text-muted-foreground lg:text-base ">{col?.label}</span>,
+                    name: <span className=" text-wrap text-muted-foreground ">{col?.label}</span>,
                     sortable: col?.sortable,
                     colIdentifier: col?.data_src,
                     data_src: col?.data_src,

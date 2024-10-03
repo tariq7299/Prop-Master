@@ -12,7 +12,7 @@ function TableSorting() {
         tableCoreDispatcher({ type: 'SET_TABLE_SORTING', payload: {} })
     }
 
-    console.log("tableSorting", tableSorting)
+    // console.log("tableSorting", tableSorting)
 
     // const tableSorting = {
     //     "label": "Payment Type",

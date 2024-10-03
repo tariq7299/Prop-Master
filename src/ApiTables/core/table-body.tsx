@@ -20,9 +20,10 @@ function TableBody() {
 
     function sortingTableHandler(column: any, sortDirection: any) {
         console.log("column", column)
+        console.log("column-Name", column?.name?.children)
         // if (column) {}
         console.log("sortDirection", sortDirection)
-        Object.keys(column).length > 0 && tableCoreDispatcher({ type: 'SET_TABLE_SORTING', payload: { label: column?.name, direction: sortDirection, [column?.colIdentifier]: sortDirection } })
+        Object.keys(column).length > 0 && tableCoreDispatcher({ type: 'SET_TABLE_SORTING', payload: { label: column?.name?.props?.children, direction: sortDirection, [column?.colIdentifier]: sortDirection } })
     }
 
     useEffect(() => {
@@ -40,6 +41,8 @@ function TableBody() {
             })
         }
     }, [structureColumns])
+
+    console.log("tableData", tableData)
 
 
     return (
