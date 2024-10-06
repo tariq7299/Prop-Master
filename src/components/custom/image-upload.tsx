@@ -6,15 +6,15 @@ import { ImagePlus } from 'lucide-react';
 
 export default function ImageUpload() {
     return (
-        <div className="grid gap-4 max-w-2xl mx-auto md:p-6">
+        <div className="grid gap-4 max-w-sm md:p-6">
             <div className="grid gap-2">
-                <h2 className="text-lg font-bold">Upload Project Images</h2>
-                <p className="text-gray-500 dark:text-gray-400">
+                <h2 className="text-md font-medium">Upload Project Images</h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
                     Drag and drop your images here or click the button to select files.
                 </p>
             </div>
             <Card>
-                <CardContent className="grid gap-4 p-6">
+                <CardContent className="grid gap-4 p-4">
                     <div>
                         <div>
                             <div className="flex flex-col items-center justify-center h-48 border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-700 transition-colors group-[.drag-over]:border-primary group-[.drag-over]:bg-primary/10">
@@ -32,7 +32,7 @@ export default function ImageUpload() {
                     </div>
                 </CardContent>
             </Card>
-            <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-y-3 gap-x-3 justify-items-center">
 
                 <div className="flex justify-center items-center w-[100px] h-[100px] bg-neutral-300 rounded-lg">
                     <ImagePlus className="w-6 h-6 text-neutral-400" />

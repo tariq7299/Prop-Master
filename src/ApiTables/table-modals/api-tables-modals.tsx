@@ -66,16 +66,17 @@ function ApiTablesModals() {
 
             {/* Custom Control Modals */}
 
-            <DrawerDialog action={customControlAction} handleCloseModal={handleCloseModal} status={customControlAction?.url?.web?.includes('/add-new-project')} modalTitle={clickedRowAction?.button?.label} modalDescription="Fill in the details of the new project" modalFooter={(<Button >Add Project</Button>)}>
+            <DrawerDialog
+                action={customControlAction}
+                handleCloseModal={handleCloseModal}
+                status={customControlAction?.url?.web?.includes('/add-new-project')}
+                modalTitle={(<p className="text-xl">{clickedRowAction?.button?.label}</p>)} modalDescription="Fill in the details of the new project"
+                modalFooter={(<Button >Add Project</Button>)}
+            >
                 <AddNewProject />
             </DrawerDialog >
 
-            {/* <DrawerDialog action={customControlAction} handleCloseModal={handleCloseModal} status={customControlAction} modalTitle={clickedRowAction?.button?.label}>
-                {customControlAction?.url?.web?.includes('/add-new-project') && (
-                    // <h2>testin</h2>
-                    <AddNewProject />
-                )}
-            </DrawerDialog> */}
+
 
 
             {/* Custom Control Modals */}

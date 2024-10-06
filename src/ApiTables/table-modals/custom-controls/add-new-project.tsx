@@ -25,73 +25,82 @@ export default function AddNewProject() {
         <>
 
 
-            <div className="overflow-y-auto p-4 flex flex-col gap-y-5 ">
-                {/* <h2 className="text-2xl font-bold tracking-tight">New Project</h2> */}
-                <Label>Name</Label>
-                <Input name="name" type="text"></Input>
+            <div className="overflow-y-auto p-4 flex flex-col gap-y-10 items-start">
+                {/* <h2 className="text-2xl font-medium tracking-tight">New Project</h2> */}
+
+                <div className="space-y-2 w-full">
+                    <Label className="text-md font-medium ">Project Name</Label>
+                    <Input className=" max-w-sm" name="name" type="text"></Input>
+                </div>
 
                 <ImageUpload></ImageUpload>
 
-                <Label>Delivery Time</Label>
-                <DatePicker></DatePicker>
+                <div className="space-y-2 w-full">
+                    <Label className="block text-md font-medium">Delivery Time</Label>
+                    <DatePicker></DatePicker>
+                </div >
 
 
+                <div className="space-y-2 w-full">
+                    <Label className="text-md font-medium">Status</Label>
+                    <Select
+                    >
+                        <SelectTrigger className="max-w-sm" >
+                            <SelectValue placeholder="Choose">
+                            </SelectValue>
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectLabel></SelectLabel>
+                                <SelectItem value="active" >Active</SelectItem>
+                                <SelectItem value="not-active" >Not active</SelectItem>
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                </div>
 
-                <Label>Status</Label>
-                <Select
-                >
-                    <SelectTrigger >
-                        <SelectValue placeholder="Choose">
-                        </SelectValue>
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectGroup>
-                            <SelectLabel></SelectLabel>
-                            <SelectItem value="active" >Active</SelectItem>
-                            <SelectItem value="not-active" >Active</SelectItem>
-                        </SelectGroup>
-                    </SelectContent>
-                </Select>
+                <div className="space-y-2 w-full">
+                    <Label className="text-md font-medium">Number of Acres</Label>
+                    <Input className="max-w-sm" name="acres" type="number"></Input>
+                </div>
 
+                <div className="space-y-2 w-full">
+                    <Label className="text-md font-medium">Contractor Company</Label>
+                    <Select
+                    >
+                        <SelectTrigger className="max-w-sm">
+                            <SelectValue placeholder="Choose">
+                            </SelectValue>
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectLabel>Conractor Company</SelectLabel>
+                                <SelectItem value="Emmar" >Emmar</SelectItem>
+                                <SelectItem value="Amer" >Amer</SelectItem>
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                </div>
 
-                <Label>Number of Acres</Label>
-                <Input name="acres" type="number"></Input>
+                <div className="space-y-2 w-full">
+                    <Label className="text-md font-medium">Destination</Label>
+                    <Select
+                    >
+                        <SelectTrigger className="max-w-sm">
+                            <SelectValue placeholder="Choose">
+                            </SelectValue>
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectLabel>Destination</SelectLabel>
+                                <SelectItem value="new-cairo" >Emmar</SelectItem>
+                                <SelectItem value="Amer" >Amer</SelectItem>
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                </div>
 
-                <Label>Contractor Company</Label>
-                <Select
-                >
-                    <SelectTrigger >
-                        <SelectValue placeholder="Choose">
-                        </SelectValue>
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectGroup>
-                            <SelectLabel>Conractor Company</SelectLabel>
-                            <SelectItem value="Emmar" >Emmar</SelectItem>
-                            <SelectItem value="Amer" >Amer</SelectItem>
-                        </SelectGroup>
-                    </SelectContent>
-                </Select>
-
-                <Label>Destination</Label>
-                <Select
-                >
-                    <SelectTrigger >
-                        <SelectValue placeholder="Choose">
-                        </SelectValue>
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectGroup>
-                            <SelectLabel>Destination</SelectLabel>
-                            <SelectItem value="new-cairo" >Emmar</SelectItem>
-                            <SelectItem value="Amer" >Amer</SelectItem>
-                        </SelectGroup>
-                    </SelectContent>
-                </Select>
-
-
-                <Button className="">Add Project</Button>
-            </div>
+            </div >
         </>
     )
 }

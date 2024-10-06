@@ -34,17 +34,17 @@ export default function DrawerDialog({ status, handleCloseModal, modalTitle, mod
         return (
             <Dialog open={status} onOpenChange={handleCloseModal}>
                 <DialogContent className="sm:max-w-[425px]">
-                    {/* <DialogHeader>
+                    <DialogHeader>
                         <DialogTitle>{modalTitle}</DialogTitle>
                         <DialogDescription>{modalDescription}</DialogDescription>
-                    </DialogHeader> */}
+                    </DialogHeader>
                     {children}
-                    {/* <DialogFooter className="pt-2">
+                    <DialogFooter className="pt-2">
                         {modalFooter}
                         <DialogClose asChild>
                             <Button variant="outline">Cancel</Button>
                         </DialogClose>
-                    </DialogFooter> */}
+                    </DialogFooter>
                 </DialogContent>
             </Dialog>
         )
@@ -53,7 +53,7 @@ export default function DrawerDialog({ status, handleCloseModal, modalTitle, mod
     return (
         <Drawer open={status} onOpenChange={handleCloseModal} >
 
-            <DrawerContent className="h-[80%]">
+            <DrawerContent className="h-[85%]">
                 <DrawerHeader className="text-left">
                     <DrawerTitle>{modalTitle}</DrawerTitle>
                     <DrawerDescription>{modalDescription}</DrawerDescription>
