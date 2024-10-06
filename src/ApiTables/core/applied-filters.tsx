@@ -11,94 +11,7 @@ import { CircleX } from 'lucide-react';
 function AppliedFilters({ setValue, resetField }: any) {
     const { renderedFilters, tableCoreDispatcher } = useTableCore()
 
-    // const renderedFilters = [
-    //     {
-    //         "key": "shipping_company",
-    //         "value": "bolesa",
-    //         "label": "Shipping Company",
-    //         "type": "select",
-    //         "valueLable": "Bolesa",
-    //         "operator": "=",
-    //         "props": {
-    //             "select_options": {
-    //                 "all": "الكل",
-    //                 "smsa_salla": null,
-    //                 "smsa_cold": null,
-    //                 "adwar_cold": null,
-    //                 "JT_Express": null,
-    //                 "aymakan": "AyMakan",
-    //                 "bolesa": "Bolesa",
-    //                 "third_mile": "Third Mile",
-    //                 "smsa": "SMSA",
-    //                 "jt_express": "J&T Express",
-    //                 "tabex": "Tabex",
-    //                 "kwickbox": "Kwickbox",
-    //                 "aramex": "Aramex",
-    //                 "adwar": "Adwar"
-    //             },
-    //             "operators": [
-    //                 "="
-    //             ]
-    //         },
-    //     },
-    //     {
-    //         "key": "shipping_company",
-    //         "value": "bolesa",
-    //         "label": "Shipping Company",
-    //         "type": "select",
-    //         "valueLable": "Bolesa",
-    //         "operator": "=",
-    //         "props": {
-    //             "select_options": {
-    //                 "all": "الكل",
-    //                 "smsa_salla": null,
-    //                 "smsa_cold": null,
-    //                 "adwar_cold": null,
-    //                 "JT_Express": null,
-    //                 "aymakan": "AyMakan",
-    //                 "bolesa": "Bolesa",
-    //                 "third_mile": "Third Mile",
-    //                 "smsa": "SMSA",
-    //                 "jt_express": "J&T Express",
-    //                 "tabex": "Tabex",
-    //                 "kwickbox": "Kwickbox",
-    //                 "aramex": "Aramex",
-    //                 "adwar": "Adwar"
-    //             },
-    //             "operators": [
-    //                 "="
-    //             ]
-    //         }
-    //     },
-    //     {
-    //         "key": "shipping_company",
-    //         "value": "bolesa",
-    //         "label": "Shipping Company",
-    //         "type": "select",
-    //         "valueLable": "Bolesa",
-    //         "operator": "=",
-    //         "props": {
-    //             "select_options": {
-    //                 "all": "الكل",
-    //                 "smsa_salla": null,
-    //                 "smsa_cold": null,
-    //                 "adwar_cold": null,
-    //                 "JT_Express": null,
-    //                 "aymakan": "AyMakan",
-    //                 "bolesa": "Bolesa",
-    //                 "third_mile": "Third Mile",
-    //                 "smsa": "SMSA",
-    //                 "jt_express": "J&T Express",
-    //                 "tabex": "Tabex",
-    //                 "kwickbox": "Kwickbox",
-    //                 "aramex": "Aramex",
-    //                 "adwar": "Adwar"
-    //             },
-    //             "operators": [
-    //                 "="
-    //             ]
-    //         }
-    //     }]
+
     function handleClearRenderedFilters(key: any, props: any, type: any) {
 
         const filteredRenderedFilters = renderedFilters?.filter((filter: any) => filter?.key !== key)
@@ -106,6 +19,7 @@ function AppliedFilters({ setValue, resetField }: any) {
             setValue(`${key}.fieldValue`, '', { shouldDirty: true, shouldValidate: true })
             setValue(`${key}.operator`, props?.operators[0], { shouldDirty: true, shouldValidate: true })
         } else {
+
             resetField(`${key}.fieldValue`)
         }
         tableCoreDispatcher({ type: 'SET_RENDERED_FILTERS', payload: filteredRenderedFilters })

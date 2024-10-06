@@ -15,9 +15,9 @@ import { EllipsisVertical } from 'lucide-react';
 import { Button } from "@/components/custom/button.tsx"
 
 function TableRowActions({ row, col }: any) {
-    const { selectedRows } = useTableColumns()
-    const { tableData } = useTableCore()
-    const { actionsInRegularCells, rowActionsDispatcher } = useTableRowActions()
+    const { selectedRows } = useTableColumns();
+    const { tableData } = useTableCore();
+    const { actionsInRegularCells, rowActionsDispatcher } = useTableRowActions();
 
     const checkButtonsDirection = () => {
         return (tableData?.length <= 3 && !actionsInRegularCells) ? 'd-flex align-items-center' : 'row g-1 d-flex align-items-center flex-column'
@@ -32,7 +32,7 @@ function TableRowActions({ row, col }: any) {
         }
     }, [row, actionsInRegularCells, col])
 
-
+    console.log("rowActions", rowActions)
 
     useEffect(() => {
         if (selectedRows?.length > 0) {
@@ -63,6 +63,8 @@ function TableRowActions({ row, col }: any) {
                                     ) : action?.action_type === 'external_redirect' ? (
                                         <ExternalRedirectRowActionElement action={action} />
                                     ) : (
+                                        // This for action_type="normal" and action_type="custom_control"
+                                        // "cutom_controll" type is a normal looking button but when clicking on it it will show a custom view modal that frontend engineers will decide
                                         <GeneralRowActionElement action={action} />
                                     )}
                                 </DropdownMenuItem>

@@ -18,21 +18,23 @@ import { Button } from '@/components/custom/button'
 import { axiosPrivate } from '@/helper/axiosInstances'
 import { handleApiSuccess } from '@/helper/api-requests/handleApiSuccess'
 import { handleApiError } from '@/helper/api-requests/handleApiError'
-import useSendRequest from '@/hooks/api/use-send-request'
 import axios from 'axios'
-import ApiTablesController from '@/ApiTables/api-tables-controller'
 
 
 export default function Projects() {
 
-    // 
+    // I have added the object of newRowActions manually here instead of backend 
+    // Then i add it to tableStructure coming from backend --> setTableStructure({ ...tableStructure, ...response?.data?.data })
     const [tableStructure, setTableStructure] = useState({
         "newRowActions": {
             "addNewProject": {
                 "action_key": "addNewProject",
+                // The real purpose of this key is to not apply the styling of redirect/toggle button and 
+                "action_type": "custom_control",
                 "label": "Add New Project",
                 "action": {
-                    "api": "/api/control-tables/bulk-table-action/shipping_awbs/export_excel",
+                    "api": "/api/control-tables/bulk-table-action/shipping_awbs/add-new-project",
+                    "web": "/api/control-tables/bulk-table-action/shipping_awbs/add-new-project",
                 },
                 "button": {
                     "label": "Add New Project",
@@ -48,7 +50,6 @@ export default function Projects() {
         }
     })
 
-
     useEffect(() => {
 
         const getTable = async () => {
@@ -57,7 +58,7 @@ export default function Projects() {
                 const response = await axiosPrivate("/client/projects")
                 handleApiSuccess(response?.data, false, "", () => {
                     setTableStructure({ ...tableStructure, ...response?.data?.data })
-                    console.log("{ ...tableStructure, ...response?.data?.data }", { ...tableStructure, ...response?.data?.data })
+                    // console.log("{ ...tableStructure, ...response?.data?.data }", { ...tableStructure, ...response?.data?.data })
                 })
             } catch (error: unknown) {
                 if (axios.isAxiosError(error) || (error instanceof Error)) {

@@ -7,7 +7,7 @@ import { restructureSelectedFilters } from '../table-utils/utils.tsx'
 import { useTableCore } from '../table-providers/table-core-provider.tsx';
 // import useApp from "../../hooks/useApp"
 import AppliedFilters from "./applied-filters.tsx";
-import { DatePickerWithRange } from '../../pages/projects/components/ControlledDatePickerWithRange.tsx';
+import { DatePickerWithRange } from '../../pages/projects/components/controlled-date-picker-with-range.tsx';
 import { Label } from '@/components/ui/label.tsx';
 import {
     Select,
@@ -71,8 +71,6 @@ function TableFilters() {
         tableCoreDispatcher({ type: 'SET_RENDERED_FILTERS', payload: restructureSelectedFilters(data, dirtyFields, structureFilters) })
         tableCoreDispatcher({ type: 'SET_CURRENT_PAGE', payload: 1 })
     }
-
-    // console.log("watch()", watch())
 
 
     return (
@@ -151,14 +149,16 @@ function TableFilters() {
                                                     <FormField
                                                         control={form.control}
                                                         name={`${filter?.filter_name}.fieldValue`}
+
                                                         render={({ field }) => (
                                                             <FormItem className=''>
                                                                 <FormLabel className='text-muted-foreground'>{filter?.label}</FormLabel>
                                                                 <FormControl>
-                                                                    <Select onValueChange={field.onChange}
+                                                                    <Select defaultValue="" value={field?.value} onValueChange={field.onChange}
                                                                     >
                                                                         <SelectTrigger className={`w-full ${renderOperator(filter) ? 'border-r-0 rounded-r-none z-20' : ''}`}>
-                                                                            <SelectValue placeholder="Choose" />
+                                                                            <SelectValue placeholder="Choose">
+                                                                            </SelectValue>
                                                                         </SelectTrigger>
                                                                         <SelectContent>
                                                                             <SelectGroup>

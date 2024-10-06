@@ -61,6 +61,7 @@ function tableRowActionsReducer(state: any, action: any) {
         }
     }
     if (action.type === 'GET_CUSTOM_CONTROL_REQUEST') {
+        console.log("action in dispatch", action)
         return {
             ...state,
             customControlAction: action?.payload
@@ -143,11 +144,33 @@ export default function RowActionsProvider({ children }: any) {
         rowActionsDispatcher({ type: 'GET_CLICKED_ROW_ACTION', payload: action })
 
         try {
-            const response = await axiosPrivate({
-                method, url, data: { ...payload }, ...(customHeader && {
-                    headers: { ...customHeader }
-                })
-            })
+            // const response = await axiosPrivate({
+            //     method, url, data: { ...payload }, ...(customHeader && {
+            //         headers: { ...customHeader }
+            //     })
+            // })
+
+            const mockPayload = {
+                success: true,
+                payload: {
+                    contractors_companies: ["Emaar, Amer"],
+                },
+                url: {
+                    "web": "/add-new-project"
+                },
+                method: "post",
+                onSuccess: "refetchRow"
+            }
+
+            console.log("actionnn", action)
+
+
+            // Mock the correct return response of new row button action 
+            if (action?.action_type !== 'custom_control') {
+                rowActionsDispatcher({ type: 'GET_CLICKED_ROW_ACTION_RESPONSE', payload: mockPayload })
+            } else if (action?.action_type === 'custom_control') {
+                rowActionsDispatcher({ type: 'GET_CUSTOM_CONTROL_REQUEST', payload: mockPayload })
+            }
 
 
             // . If a success response => save the reponse to a state & take an action on the table
@@ -165,16 +188,17 @@ export default function RowActionsProvider({ children }: any) {
             // })
 
             // . If a success response => save the reponse to a state & take an action on the table
-            handleApiSuccess(response.data, true, '', function () {
-                if (action?.action_type !== 'custom_control') {
-                    rowActionsDispatcher({ type: 'GET_CLICKED_ROW_ACTION_RESPONSE', payload: response?.data })
-                } else if (action?.action_type === 'custom_control') {
-                    rowActionsDispatcher({ type: 'GET_CUSTOM_CONTROL_REQUEST', payload: response?.data })
-                }
-                handleRowActionRepsonse(action, response?.data)
 
-                // . In case of a fail response => Remove the row action from state
-            })
+            // handleApiSuccess(response.data, true, '', function () {
+            //     if (action?.action_type !== 'custom_control') {
+            //         rowActionsDispatcher({ type: 'GET_CLICKED_ROW_ACTION_RESPONSE', payload: response?.data })
+            //     } else if (action?.action_type === 'custom_control') {
+            //         rowActionsDispatcher({ type: 'GET_CUSTOM_CONTROL_REQUEST', payload: response?.data })
+            //     }
+            //     handleRowActionRepsonse(action, response?.data)
+
+            //     // . In case of a fail response => Remove the row action from state
+            // })
 
             // // . In case of a fail response => Remove the row action from state
             // if (!response?.data?.success && response?.data?.message) {

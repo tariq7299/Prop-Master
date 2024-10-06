@@ -6,6 +6,32 @@ import { SendToMails } from "./bulk-actions-modals.tsx"
 import { ConfirmationModal, ViewRowData } from "./columns-static-modals.tsx"
 // import EditConsigneeInfoForm from "./custom-controls/edit-consignee-info.tsx"
 
+import { cn } from "@/lib/utils"
+import { useMediaQuery } from "@/hooks/use-media-query"
+import { Button } from "@/components/ui/button"
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import {
+    Drawer,
+    DrawerClose,
+    DrawerContent,
+    DrawerDescription,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
+} from "@/components/ui/drawer"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import DrawerDialog from "@/components/custom/drawer-dialog.tsx"
+import AddNewProject from "./custom-controls/add-new-project.tsx"
+
 
 
 function ApiTablesModals() {
@@ -39,14 +65,31 @@ function ApiTablesModals() {
             </Popup>
 
             {/* Custom Control Modals */}
-            <Popup hasDissmissButton={true} status={customControlAction} closeModal={handleCloseModal} containerClass={`${customControlAction?.url?.web?.includes('/cities/update-carriers') ? "col-11" : ''}`}>
-                <h5 className="text-center mb-5">{clickedRowAction?.button?.label}</h5>
 
-                {/* {customControlAction?.url?.web?.includes('update-address') && (
+            <DrawerDialog action={customControlAction} handleCloseModal={handleCloseModal} status={customControlAction?.url?.web?.includes('/add-new-project')} modalTitle={clickedRowAction?.button?.label} modalDescription="Fill in the details of the new project" modalFooter={(<Button >Add Project</Button>)}>
+                <AddNewProject />
+            </DrawerDialog >
+
+            {/* <DrawerDialog action={customControlAction} handleCloseModal={handleCloseModal} status={customControlAction} modalTitle={clickedRowAction?.button?.label}>
+                {customControlAction?.url?.web?.includes('/add-new-project') && (
+                    // <h2>testin</h2>
+                    <AddNewProject />
+                )}
+            </DrawerDialog> */}
+
+
+            {/* Custom Control Modals */}
+            {/* <Popup hasDissmissButton={true} status={customControlAction} closeModal={handleCloseModal} containerClass={`${customControlAction?.url?.web?.includes('/cities/update-carriers') ? "col-11" : ''}`}>
+                <h5 className="text-center mb-5">{clickedRowAction?.button?.label}</h5> */}
+
+            {/* {customControlAction?.url?.web?.includes('update-address') && (
                     <EditConsigneeInfoForm action={customControlAction} closeModal={handleCloseModal} />
                 )} */}
 
-            </Popup>
+            {/* </Popup> */}
+
+
+
 
         </>
     )

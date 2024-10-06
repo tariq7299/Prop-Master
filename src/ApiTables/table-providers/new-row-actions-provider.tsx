@@ -15,6 +15,12 @@ function newRowActionsReducer(state: any, action: any) {
             newRowActionsArray: objectToArrayValue(action.payload)
         }
     }
+    if (action.type === 'SET_ROW_ACTION_POST_LOADING') {
+        return {
+            ...state,
+            rowActionPostLoading: action?.payload
+        }
+    }
     return initialState
 }
 

@@ -54,12 +54,14 @@ export const ExternalRedirectRowActionElement = ({ action }: any) => {
 }
 
 export const GeneralRowActionElement = ({ action, isBulk = false }: any) => {
+
     const { rowActionsPostHandler, clickedRowAction, rowActionPostLoading, rowActionsDispatcher } = useTableRowActions()
     const { selectedIds } = useTableColumns()
 
     // ... 🐼 Bulk Action API Post Handler
     function fireRowAction(action: any) {
         if (requireModal(action)) {
+
             rowActionsDispatcher({ type: 'GET_CLICKED_ROW_ACTION', payload: { ...action, ...(isBulk && { isBulk: true }) } })
 
             if (action?.action_type === 'custom_control') {
