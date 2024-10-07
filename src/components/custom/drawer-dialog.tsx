@@ -10,6 +10,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogClose,
+    DialogOverlay,
     DialogTrigger,
 } from "@/components/ui/dialog"
 
@@ -33,7 +34,7 @@ export default function DrawerDialog({ status, handleCloseModal, modalTitle, mod
     if (isDesktop) {
         return (
             <Dialog open={status} onOpenChange={handleCloseModal}>
-                <DialogContent className="sm:max-w-[425px]">
+                <DialogContent className=" ">
                     <DialogHeader>
                         <DialogTitle>{modalTitle}</DialogTitle>
                         <DialogDescription>{modalDescription}</DialogDescription>
@@ -53,7 +54,7 @@ export default function DrawerDialog({ status, handleCloseModal, modalTitle, mod
     return (
         <Drawer open={status} onOpenChange={handleCloseModal} >
 
-            <DrawerContent className="h-[85%]">
+            <DrawerContent className="">
                 <DrawerHeader className="text-left">
                     <DrawerTitle>{modalTitle}</DrawerTitle>
                     <DrawerDescription>{modalDescription}</DrawerDescription>

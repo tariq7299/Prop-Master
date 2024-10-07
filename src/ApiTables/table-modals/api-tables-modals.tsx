@@ -79,6 +79,7 @@ function ApiTablesModals() {
 
 
 
+
             {/* Custom Control Modals */}
             {/* <Popup hasDissmissButton={true} status={customControlAction} closeModal={handleCloseModal} containerClass={`${customControlAction?.url?.web?.includes('/cities/update-carriers') ? "col-11" : ''}`}>
                 <h5 className="text-center mb-5">{clickedRowAction?.button?.label}</h5> */}

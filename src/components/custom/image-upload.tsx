@@ -4,13 +4,24 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "./button"
 import { ImagePlus } from 'lucide-react';
 
-export default function ImageUpload() {
+type ImageUplaod = {
+    title: string,
+    description: string,
+    imagePlaceHolderText: string,
+    titleIcon?: React.ReactNode,
+    imagePlaceHolderIcon?: React.ReactNode
+}
+
+export default function ImageUpload({ title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon }: ImageUplaod) {
     return (
-        <div className="grid gap-4 max-w-sm md:p-6">
+        <div className="grid gap-4 max-w-sm">
             <div className="grid gap-2">
-                <h2 className="text-md font-medium">Upload Project Images</h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                    Drag and drop your images here or click the button to select files.
+                <div className="flex  items-center space-x-2">
+                    <h2 className="text-md font-medium">{title}</h2> {titleIcon && titleIcon}
+                </div>
+                {/* <p className="text-sm text-gray-500 dark:text-gray-400"> */}
+                <p className="text-sm text-muted-foreground">
+                    {description}
                 </p>
             </div>
             <Card>
@@ -19,7 +30,7 @@ export default function ImageUpload() {
                         <div>
                             <div className="flex flex-col items-center justify-center h-48 border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-700 transition-colors group-[.drag-over]:border-primary group-[.drag-over]:bg-primary/10">
                                 <UploadIcon className="w-10 h-10 text-gray-400 dark:text-gray-500" />
-                                <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">Drag and drop your images here</p>
+                                <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">{imagePlaceHolderText}</p>
                             </div>
                         </div>
                     </div>
@@ -32,25 +43,26 @@ export default function ImageUpload() {
                     </div>
                 </CardContent>
             </Card>
-            <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-y-3 gap-x-3 justify-items-center">
+            <div className="grid grid-flow-row auto-rows-max gap-y-3 gap-x-3 justify-items-center grid-cols-3 ">
+                {/* <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-y-3 gap-x-3 justify-items-center"> */}
 
-                <div className="flex justify-center items-center w-[100px] h-[100px] bg-neutral-300 rounded-lg">
-                    <ImagePlus className="w-6 h-6 text-neutral-400" />
+                <div className="flex justify-center items-center w-[100px] h-[100px] bg-muted rounded-lg">
+                    {imagePlaceHolderIcon}
                 </div>
-                <div className="flex justify-center items-center w-[100px] h-[100px] bg-neutral-300 rounded-lg">
-                    <ImagePlus className="w-6 h-6 text-neutral-400" />
+                <div className="flex justify-center items-center w-[100px] h-[100px] bg-muted rounded-lg">
+                    {imagePlaceHolderIcon}
                 </div>
-                <div className="flex justify-center items-center w-[100px] h-[100px] bg-neutral-300 rounded-lg">
-                    <ImagePlus className="w-6 h-6 text-neutral-400" />
+                <div className="flex justify-center items-center w-[100px] h-[100px] bg-muted rounded-lg">
+                    {imagePlaceHolderIcon}
                 </div>
-                <div className="flex justify-center items-center w-[100px] h-[100px] bg-neutral-300 rounded-lg">
-                    <ImagePlus className="w-6 h-6 text-neutral-400" />
+                <div className="flex justify-center items-center w-[100px] h-[100px] bg-muted rounded-lg">
+                    {imagePlaceHolderIcon}
                 </div>
-                <div className="flex justify-center items-center w-[100px] h-[100px] bg-neutral-300 rounded-lg">
-                    <ImagePlus className="w-6 h-6 text-neutral-400" />
+                <div className="flex justify-center items-center w-[100px] h-[100px] bg-muted rounded-lg">
+                    {imagePlaceHolderIcon}
                 </div>
-                <div className="flex justify-center items-center w-[100px] h-[100px] bg-neutral-300 rounded-lg">
-                    <ImagePlus className="w-6 h-6 text-neutral-400" />
+                <div className="flex justify-center items-center w-[100px] h-[100px] bg-muted rounded-lg">
+                    {imagePlaceHolderIcon}
                 </div>
 
             </div>
