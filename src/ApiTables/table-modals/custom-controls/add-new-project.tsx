@@ -15,11 +15,79 @@ import {
 import { useForm } from "react-hook-form"
 import { Button } from "../../../components/custom/button";
 import { CirclePlus, Building2, Image, CalendarClock, Activity, LandPlot, Warehouse, MapPinHouse, ImagePlus } from 'lucide-react';
+import useSendRequest from "@/hooks/api/use-send-request";
+import { axiosPrivate } from "@/helper/axiosInstances";
+import { handleApiError } from "@/helper/api-requests/handleApiError";
+import { handleApiSuccess } from "@/helper/api-requests/handleApiSuccess";
+import axios from "axios";
 
 export default function AddNewProject() {
 
     const form = useForm()
     const { handleSubmit, register, control, setValue, resetField, watch, formState: { dirtyFields } } = form
+
+    // See how to add types to this
+    const [contractors, setContractors] = React.useState([{ id: "1", name: "Emaar" }, { id: "2", name: "Amer Group" }, { id: "3", name: "New Address" }, { id: "4", name: "Nawy" }, { id: "5", name: "Madint Masr" }])
+    const [destinations, setDestinations] = React.useState([{ id: "1", name: "Alamin" }, { id: "2", name: "New Cairo" }, { id: "3", name: "fifth" }, { id: "4", name: "Nasr City" }, { id: "5", name: "Misr Elgededah" }])
+
+
+
+
+    // const {resData, isLoading, sendRequest} = useSendRequest();
+
+    // React.useEffect(() => {
+
+    //     const getAllContractors = async () => {
+
+    //         try {
+
+    //             const contractorsRes = await axiosPrivate("/client/contract-company")
+
+    //             handleApiSuccess(contractorsRes?.data, false, '', () => {
+    //                 console.log("contractorsRes?.data", contractorsRes?.data)
+    //                 // setContractors()
+    //             })
+
+
+
+    //         } catch (error) {
+    //             if (axios.isAxiosError(error) || error instanceof Error) {
+    //                 handleApiError(error)
+
+    //             }
+
+    //         }
+    //     }
+
+    //     const getAllDestinations = async () => {
+
+    //         try {
+
+    //             const destinationsRes = await axiosPrivate("/client/destination")
+
+    //             handleApiSuccess(destinationsRes?.data, false, '', () => {
+    //                 console.log("destinationsRes?.data", destinationsRes?.data)
+    //                 // setContractors()
+    //             })
+
+
+
+    //         } catch (error) {
+    //             if (axios.isAxiosError(error) || error instanceof Error) {
+    //                 handleApiError(error)
+
+    //             }
+
+    //         }
+    //     }
+
+    //     getAllContractors()
+
+    //     getAllDestinations()
+
+
+    // }, [])
+
 
     return (
         <>
@@ -55,12 +123,12 @@ export default function AddNewProject() {
                     <Select
                     >
                         <SelectTrigger className="w-full" >
-                            <SelectValue placeholder="Choose">
+                            <SelectValue placeholder="Choose project status">
                             </SelectValue>
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
-                                <SelectLabel></SelectLabel>
+                                <SelectLabel>Choose Status</SelectLabel>
                                 <SelectItem value="active" >Active</SelectItem>
                                 <SelectItem value="not-active" >Not active</SelectItem>
                             </SelectGroup>
@@ -83,14 +151,17 @@ export default function AddNewProject() {
                         <Select
                         >
                             <SelectTrigger className=" flex-grow">
-                                <SelectValue placeholder="Choose">
+                                <SelectValue placeholder="Choose Contractor">
                                 </SelectValue>
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
                                     <SelectLabel>Conractor Company</SelectLabel>
-                                    <SelectItem value="Emmar" >Emmar</SelectItem>
-                                    <SelectItem value="Amer" >Amer</SelectItem>
+                                    {contractors.map((contractor) => {
+                                        return (
+                                            <SelectItem key={contractor.id} value={contractor.id} >{contractor.name}</SelectItem>
+                                        )
+                                    })}
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
@@ -111,8 +182,11 @@ export default function AddNewProject() {
                         <SelectContent>
                             <SelectGroup>
                                 <SelectLabel>Destination</SelectLabel>
-                                <SelectItem value="new-cairo" >Emmar</SelectItem>
-                                <SelectItem value="Amer" >Amer</SelectItem>
+                                {destinations.map((destination) => {
+                                    return (
+                                        <SelectItem key={destination.id} value={destination.id} >{destination.name}</SelectItem>
+                                    )
+                                })}
                             </SelectGroup>
                         </SelectContent>
                     </Select>

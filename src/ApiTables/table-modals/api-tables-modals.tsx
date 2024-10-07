@@ -69,8 +69,8 @@ function ApiTablesModals() {
             <DrawerDialog
                 action={customControlAction}
                 handleCloseModal={handleCloseModal}
-                status={customControlAction?.url?.web?.includes('/add-new-project')}
-                modalTitle={(<p className="text-xl">{clickedRowAction?.button?.label}</p>)} modalDescription="Fill in the details of the new project"
+                status={customControlAction?.action_key === "addNewProject"}
+                modalTitle={(<p className="text-xl">{customControlAction?.button?.label}</p>)} modalDescription="Fill in the details of the new project"
                 modalFooter={(<Button >Add Project</Button>)}
             >
                 <AddNewProject />

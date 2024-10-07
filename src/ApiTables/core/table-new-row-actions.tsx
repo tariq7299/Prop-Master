@@ -22,19 +22,27 @@ export default function TableNewRowActions() {
 
     // ... 🐼 Bulk Action API Post Handler
     function fireRowAction(action: any) {
-        if (requireModal(action)) {
 
-            rowActionsDispatcher({ type: 'GET_CLICKED_ROW_ACTION', payload: { ...action } })
+        rowActionsDispatcher({ type: 'GET_CUSTOM_CONTROL_REQUEST', payload: action })
+        rowActionsDispatcher({ type: 'GET_CLICKED_ROW_ACTION', payload: { ...action } })
 
-            if (action?.action_type === 'custom_control') {
-                rowActionsPostHandler(action?.method, action?.action.web, { selected_ids: selectedIds }, action
-                )
-            }
+        // if (requireModal(action)) {
 
-        } else {
-            rowActionsPostHandler(action?.method, action?.action.web, { selected_ids: selectedIds }, { ...action }
-            )
-        }
+
+        //     // . Start the inline loader
+        //     // rowActionsDispatcher({ type: 'SET_ROW_ACTION_POST_LOADING', payload: true })
+        //     // . Save the clicked row action to a state
+        //     // rowActionsDispatcher({ type: 'GET_CLICKED_ROW_ACTION', payload: action })
+
+        //     if (action?.action_type === 'custom_control') {
+        //         rowActionsPostHandler(action?.method, action?.action.web, { selected_ids: selectedIds }, action
+        //         )
+        //     }
+
+        // } else {
+        //     rowActionsPostHandler(action?.method, action?.action.web, { selected_ids: selectedIds }, { ...action }
+        //     )
+        // }
     }
 
     return (
@@ -50,7 +58,11 @@ export default function TableNewRowActions() {
                                 disabled={rowActionPostLoading}
                                 onClick={() => { fireRowAction(newRowAction) }}
 
-                            ><CirclePlus className="h-4 w-4" /><span className="sr-only md:not-sr-only ">{clickedRowAction?.action_key === newRowAction?.action_key ? 'Loading...' : newRowAction?.button?.label}</span></Button>
+                            >
+                                {clickedRowAction?.action_key === newRowAction?.action_key ? 'Loading...' : (
+                                    <><CirclePlus className="h-4 w-4" /><span className="sr-only md:not-sr-only ">{newRowAction?.button?.label}</span></>)}
+
+                            </Button>
                         ))}
                     </>
                 )

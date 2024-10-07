@@ -33,8 +33,8 @@ export default function Projects() {
                 "action_type": "custom_control",
                 "label": "Add New Project",
                 "action": {
-                    "api": "/api/control-tables/bulk-table-action/shipping_awbs/add-new-project",
-                    "web": "/api/control-tables/bulk-table-action/shipping_awbs/add-new-project",
+                    // This should change from API
+                    // "web": "/admin/projects",
                 },
                 "button": {
                     "label": "Add New Project",
