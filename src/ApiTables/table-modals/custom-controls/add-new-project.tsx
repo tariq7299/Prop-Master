@@ -93,7 +93,7 @@ export default function AddNewProject() {
         <>
 
 
-            <div className="overflow-y-auto p-4 flex flex-col gap-y-10 items-start lg:items-center">
+            <div className="overflow-y-auto py-6 flex flex-col gap-y-10 items-start lg:items-center">
                 {/* <h2 className="text-2xl font-medium tracking-tight">New Project</h2> */}
 
                 <div className="space-y-2 w-full max-w-sm">
