@@ -28,6 +28,7 @@ import { axiosPrivate } from "@/helper/axiosInstances";
 import { handleApiError } from "@/helper/api-requests/handleApiError";
 import { handleApiSuccess } from "@/helper/api-requests/handleApiSuccess";
 import axios from "axios";
+import { toast } from "@/components/ui/use-toast";
 
 export default function AddNewProject({ handleCloseModal }) {
 
@@ -52,7 +53,7 @@ export default function AddNewProject({ handleCloseModal }) {
         }
     })
 
-    const { handleSubmit, register, control, setValue, resetField, watch, formState: { dirtyFields } } = form
+    const { handleSubmit, register, control, setValue, resetField, watch, setError, clearErrors, formState: { dirtyFields } } = form
 
     const images = watch("images")
     console.log("imagesss", images)
@@ -60,29 +61,55 @@ export default function AddNewProject({ handleCloseModal }) {
 
     // set correct types
     const handleImagesChange = (uploadedImages, onChange) => {
-        console.log("uploadedImages", uploadedImages)
+        clearErrors("images")
 
         const existingImages = watch("images")
-        console.log("existingImages", existingImages)
 
         const uploadedImagesArray = Array.from(uploadedImages)
-        console.log("uploadedImagesArray", uploadedImagesArray)
 
-        const newUploadedImages = [...existingImages.filter(existingImage => uploadedImagesArray.some(uploadedImage => uploadedImage.name !== existingImage.name)), ...uploadedImages]
+        if (uploadedImagesArray.length > 6) {
+            setError("images", { type: "maxNumberOfImages", message: `You're attempting to upload ${uploadedImagesArray.length} images, which exceeds our limit of 6. Please reduce your selection to 6 or fewer images.` })
+            toast({
+                title: "Max number of photos",
+                variant: "destructive",
+                description: `You're attempting to upload ${uploadedImagesArray.length} images, which exceeds our limit of 6. Please reduce your selection to 6 or fewer images.`
+            })
+            return
+        }
 
-        console.log("uplonewUploadedImagesadedImages", newUploadedImages)
+        if (existingImages.length >= 6 || existingImages.length + uploadedImagesArray.length > 6) {
+            setError("images", { type: "maxNumberOfImages", message: "You can upload a maximum of 6 images. Please remove some before adding more." })
+            toast({
+                title: "Max number of photos",
+                variant: "destructive",
+                description: "You can upload a maximum of 6 images. Please remove some before adding more."
+            })
+            return
+        }
 
+        let newUploadedImages;
+
+        // First check if existingImages has any images becasue if not just use the uploadedImagesArray directily !
+        if (existingImages.length > 0) {
+
+            // This will filter `uploadedImagesArray` to see if any image inside it has been already uploaded before
+
+            // We did this by filtring "uploadedImagesArray" by checking if any `existingImage.name` in `existingImages` equal to `uploadedImage.name` by using: 
+            // `existingImages.some(uploadedImage.name === existingImage.name)` function to each `uploadedImage`.
+
+            // Then if output of `existingImages.some()` is true then convert to `false` by using `!existingImages.some()` 
+
+            // Then that will tell uploadedImagesArray.filter() function to not return the current image ! and move to the next one 
+
+            // Finally return the filtered `uploadedImagesArray` array and `existingImages` array
+
+            newUploadedImages = [...uploadedImagesArray.filter(uploadedImage => !existingImages.some(existingImage => (uploadedImage.name === existingImage.name))), ...existingImages]
+        } else {
+            newUploadedImages = [...uploadedImagesArray]
+        }
         onChange(newUploadedImages)
 
     }
-
-    // console.log("uploadedImages", uploadedImages?.findIndex(item => item === 0))
-
-    // React.useEffect(() => {
-    //     setUploadedImages(prev =>
-    //         [...prev?.filter(file => Array.from(imagess)?.some(image => file?.name !== image?.name)), ...Array.from(imagess)]
-    //     )
-    // }, [imagess])
 
 
     // console.log(uploadedImages?.map(img => URL.createObjectURL(img)))
