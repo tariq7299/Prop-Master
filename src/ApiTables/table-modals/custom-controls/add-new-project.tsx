@@ -44,7 +44,7 @@ export default function AddNewProject({ handleCloseModal }) {
         defaultValues: {
             name: "",
             delivery_time: "",
-            images: "",
+            images: [],
             acres: "",
             status: "active",
             contractors: contractors[0]?.id,
@@ -53,6 +53,21 @@ export default function AddNewProject({ handleCloseModal }) {
     })
 
     const { handleSubmit, register, control, setValue, resetField, watch, formState: { dirtyFields } } = form
+
+    const imagess = watch("images")
+    console.log("imagesss", imagess)
+    const [uploadedImages, setUploadedImages] = React.useState([])
+
+    // console.log("uploadedImages", uploadedImages?.findIndex(item => item === 0))
+
+    React.useEffect(() => {
+        setUploadedImages(prev =>
+            [...prev?.filter(file => Array.from(imagess)?.some(image => file?.name !== image?.name)), ...Array.from(imagess)]
+        )
+    }, [imagess])
+
+
+    console.log(uploadedImages?.map(img => URL.createObjectURL(img)))
 
     // const {resData, isLoading, sendRequest} = useSendRequest();
 
@@ -115,6 +130,9 @@ export default function AddNewProject({ handleCloseModal }) {
 
     return (
         <>
+
+
+
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="overflow-y-auto">
 
@@ -177,6 +195,7 @@ export default function AddNewProject({ handleCloseModal }) {
                                             <ImageUpload
                                                 // form={form}
                                                 field={field}
+                                                uploadedImages={uploadedImages}
                                                 title={"Upload Project Images"}
                                                 description={"Drag and drop your images here or click the button to select files."}
                                                 imagePlaceHolderText={"Drag and drop your images here"}
@@ -204,11 +223,7 @@ export default function AddNewProject({ handleCloseModal }) {
                                 name='status'
                                 render={({ field }) => (
                                     <FormItem className='space-y-1'>
-                                        <div className="flex items-center space-x-2">
-                                            <CalendarClock className="h-5 w-5 text-secondary" />
-
-                                            <div className="flex items-center space-x-2"> <FormLabel>Status</FormLabel><Activity className="h-5 w-5 text-secondary" />
-                                            </div>
+                                        <div className="flex items-center space-x-2"> <FormLabel>Status</FormLabel><Activity className="h-5 w-5 text-secondary" />
                                         </div>
                                         <FormControl>
                                             <Select
@@ -240,9 +255,7 @@ export default function AddNewProject({ handleCloseModal }) {
                                 name='acres'
                                 render={({ field }) => (
                                     <FormItem className='space-y-1'>
-                                        <div className="flex items-center space-x-2">
-                                            <div className="flex items-center space-x-2"> <FormLabel>Number of Acres</FormLabel><LandPlot className="h-5 w-5 text-secondary" />
-                                            </div>
+                                        <div className="flex items-center space-x-2"> <FormLabel>Number of Acres</FormLabel><LandPlot className="h-5 w-5 text-secondary" />
                                         </div>
                                         <FormControl>
                                             <Input {...field} type="number"></Input>
@@ -259,9 +272,7 @@ export default function AddNewProject({ handleCloseModal }) {
                                 name='contractors'
                                 render={({ field }) => (
                                     <FormItem className='space-y-1'>
-                                        <div className="flex items-center space-x-2">
-                                            <div className="flex items-center space-x-2"> <FormLabel>Contractor Company</FormLabel><Warehouse className="h-5 w-5 text-secondary" />
-                                            </div>
+                                        <div className="flex items-center space-x-2"> <FormLabel>Contractor Company</FormLabel><Warehouse className="h-5 w-5 text-secondary" />
                                         </div>
                                         <FormControl>
                                             <div className="flex justify-center items-center gap-2 ">

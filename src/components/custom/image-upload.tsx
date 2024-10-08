@@ -15,6 +15,7 @@ import {
 type ImageUplaod = {
     // Change this and add to filed the correct types
     // form: any
+    uploadedImages: any
     field: any
     title: string,
     description: string,
@@ -23,10 +24,12 @@ type ImageUplaod = {
     imagePlaceHolderIcon?: React.ReactNode
 }
 
-export default function ImageUpload({ field, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon }: ImageUplaod) {
+export default function ImageUpload({ field, uploadedImages, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon }: ImageUplaod) {
+    console.log("field", field.value.fileName)
     return (
 
-        <div className="grid gap-4 max-w-lg">
+
+        <div className="grid gap-4 max-w-lg" >
 
             <div className="grid gap-1">
 
@@ -71,9 +74,18 @@ export default function ImageUpload({ field, title, description, imagePlaceHolde
                     </div> */}
                     <div className="flex justify-end">
                         <label htmlFor="file-input" className="button button-sm">
+
                             <UploadIcon className="mr-2 h-4 w-4" />
                             Select Files
-                            <Input {...field} id="file-input" type="file" multiple className="hidden" />
+
+                            <Input {...field} value={field?.value?.fileName}
+                                onChange={(event) => {
+                                    console.log("event.target.files", event.target.files)
+                                    console.log("event.target.files[0]", event.target.files[0]?.fileName)
+
+                                    field.onChange(event.target.files || []);
+                                }} id="file-input" type="file" multiple className="hidden" />
+
                         </label>
                     </div>
                 </CardContent>
@@ -82,28 +94,29 @@ export default function ImageUpload({ field, title, description, imagePlaceHolde
             <div className="grid grid-flow-row auto-rows-max gap-5 justify-items-stretch grid-cols-3 justify-start px-14">
                 {/* <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-y-3 gap-x-3 justify-items-center"> */}
 
-                <div className="flex justify-center items-center aspect-square w-full bg-muted rounded-lg">
-                    {imagePlaceHolderIcon}
-                </div>
-                <div className="flex justify-center items-center aspect-square  w-full bg-muted rounded-lg">
-                    {imagePlaceHolderIcon}
-                </div>
-                <div className="flex justify-center items-center aspect-square w-full bg-muted rounded-lg">
-                    {imagePlaceHolderIcon}
-                </div>
-                <div className="flex justify-center items-center aspect-square w-full bg-muted rounded-lg">
-                    {imagePlaceHolderIcon}
-                </div>
-                <div className="flex justify-center items-center aspect-square w-full bg-muted rounded-lg">
-                    {imagePlaceHolderIcon}
-                </div>
-                <div className="flex justify-center items-center aspect-square w-full bg-muted rounded-lg">
-                    {imagePlaceHolderIcon}
-                </div>
+                {Array.from([1, 2, 3, 4, 5, 6]).map((_, i) => {
+
+                    if (uploadedImages.find((_, index) => index === i)) {
+                        return (
+                            <div key={i} className="flex justify-center items-center aspect-square w-full bg-muted rounded-lg overflow-hidden">
+                                <img src={URL.createObjectURL(uploadedImages[i])} alt="" />
+                            </div>
+                        )
+                    } else {
+
+                        return (
+
+                            <div key={i} className="flex justify-center items-center aspect-square w-full bg-muted rounded-lg">
+                                {imagePlaceHolderIcon}
+                            </div>
+                        )
+                    }
+                })}
+
 
             </div>
 
-        </div>
+        </div >
 
     )
 }
