@@ -8,7 +8,6 @@ import { useTableCore } from '../table-providers/table-core-provider.tsx';
 // import useApp from "../../hooks/useApp"
 import AppliedFilters from "./applied-filters.tsx";
 import { DatePickerWithRange } from '../../pages/projects/components/controlled-date-picker-with-range.tsx';
-import { Label } from '@/components/ui/label.tsx';
 import {
     Select,
     SelectContent,

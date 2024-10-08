@@ -31,9 +31,8 @@ import axios from "axios";
 
 export default function AddNewProject({ handleCloseModal }) {
 
-    const form = useForm()
 
-    const { handleSubmit, register, control, setValue, resetField, watch, formState: { dirtyFields } } = form
+
 
     // See how to add types to this
     const [contractors, setContractors] = React.useState([{ id: "1", name: "Emaar" }, { id: "2", name: "Amer Group" }, { id: "3", name: "New Address" }, { id: "4", name: "Nawy" }, { id: "5", name: "Madint Masr" }])
@@ -41,6 +40,19 @@ export default function AddNewProject({ handleCloseModal }) {
     // See how to add types 
     const [destinations, setDestinations] = React.useState([{ id: "1", name: "Alamin" }, { id: "2", name: "fNew Cairo" }, { id: "3", name: "fifth" }, { id: "4", name: "Nasr City" }, { id: "5", name: "Misr Elgededah" }])
 
+    const form = useForm({
+        defaultValues: {
+            name: "",
+            delivery_time: "",
+            images: "",
+            acres: "",
+            status: "active",
+            contractors: contractors[0]?.id,
+            destination: destinations[0]?.id
+        }
+    })
+
+    const { handleSubmit, register, control, setValue, resetField, watch, formState: { dirtyFields } } = form
 
     // const {resData, isLoading, sendRequest} = useSendRequest();
 
@@ -107,7 +119,7 @@ export default function AddNewProject({ handleCloseModal }) {
                 <form onSubmit={form.handleSubmit(onSubmit)} className="overflow-y-auto">
 
                     {/* Modal Body  */}
-                    <div className=" py-6 pb-28 md:p-6 md:pb-14 grid grid-cols-1 md:grid-cols-2 gap-y-10 md:items-center justify-items-center gap-x-10 ">
+                    <div className=" py-6 p-1 pb-28 md:p-6 md:pb-14 grid grid-cols-1 md:grid-cols-2 gap-y-10 md:items-center justify-items-center gap-x-10 ">
                         {/* <div className="overflow-y-auto py-6 flex flex-col gap-y-10 items-start md:items-center"> */}
                         {/* <h2 className="text-2xl font-medium tracking-tight">New Project</h2> */}
 
@@ -200,7 +212,6 @@ export default function AddNewProject({ handleCloseModal }) {
                                         </div>
                                         <FormControl>
                                             <Select
-                                                defaultValue=""
                                                 value={field?.value}
                                                 onValueChange={field.onChange}
                                             >
@@ -245,7 +256,7 @@ export default function AddNewProject({ handleCloseModal }) {
                         <div className="space-y-2 w-full max-w-sm">
                             <FormField
                                 control={form.control}
-                                name='acres'
+                                name='contractors'
                                 render={({ field }) => (
                                     <FormItem className='space-y-1'>
                                         <div className="flex items-center space-x-2">
@@ -255,7 +266,6 @@ export default function AddNewProject({ handleCloseModal }) {
                                         <FormControl>
                                             <div className="flex justify-center items-center gap-2 ">
                                                 <Select
-                                                    defaultValue=""
                                                     value={field?.value}
                                                     onValueChange={field.onChange}
                                                 >
@@ -292,13 +302,10 @@ export default function AddNewProject({ handleCloseModal }) {
                                 render={({ field }) => (
                                     <FormItem className='space-y-1'>
                                         <div className="flex items-center space-x-2">
-                                            <div className="flex items-center space-x-2">
-                                                <FormLabel>Destination</FormLabel><Warehouse className="h-5 w-5 text-secondary" />
-                                            </div>
+                                            <FormLabel>Destination</FormLabel><Warehouse className="h-5 w-5 text-secondary" />
                                         </div>
                                         <FormControl>
                                             <Select
-                                                defaultValue=""
                                                 value={field?.value}
                                                 onValueChange={field.onChange}
                                             >
