@@ -15,7 +15,9 @@ import {
 type ImageUplaod = {
     // Change this and add to filed the correct types
     // form: any
-    uploadedImages: any
+    handleImagesChange: any
+    uploadedImages: any,
+    images: any
     field: any
     title: string,
     description: string,
@@ -24,8 +26,8 @@ type ImageUplaod = {
     imagePlaceHolderIcon?: React.ReactNode
 }
 
-export default function ImageUpload({ field, uploadedImages, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon }: ImageUplaod) {
-    console.log("field", field.value.fileName)
+export default function ImageUpload({ field, uploadedImages, images, handleImagesChange, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon }: ImageUplaod) {
+    console.log("images", images)
     return (
 
 
@@ -74,17 +76,14 @@ export default function ImageUpload({ field, uploadedImages, title, description,
                     </div> */}
                     <div className="flex justify-end">
                         <label htmlFor="file-input" className="button button-sm">
-
                             <UploadIcon className="mr-2 h-4 w-4" />
                             Select Files
-
-                            <Input {...field} value={field?.value?.fileName}
-                                onChange={(event) => {
-                                    console.log("event.target.files", event.target.files)
-                                    console.log("event.target.files[0]", event.target.files[0]?.fileName)
-
-                                    field.onChange(event.target.files || []);
-                                }} id="file-input" type="file" multiple className="hidden" />
+                            <Input {...field} value={field.value.fileName} onChange={(e) => {
+                                console.log(e)
+                                console.log(e.target.files)
+                                // field.onChange(Array.from(e.target.files))
+                                handleImagesChange(e.target.files, field.onChange)
+                            }} id="file-input" type="file" multiple className="hidden" />
 
                         </label>
                     </div>
@@ -96,23 +95,25 @@ export default function ImageUpload({ field, uploadedImages, title, description,
 
                 {Array.from([1, 2, 3, 4, 5, 6]).map((_, i) => {
 
-                    if (uploadedImages.find((_, index) => index === i)) {
+                    if (images.find((_, index) => index === i)) {
                         return (
                             <div key={i} className="flex justify-center items-center aspect-square w-full bg-muted rounded-lg overflow-hidden">
-                                <img src={URL.createObjectURL(uploadedImages[i])} alt="" />
+                                <img src={URL.createObjectURL(images[i])} alt="" />
                             </div>
                         )
                     } else {
 
                         return (
-
                             <div key={i} className="flex justify-center items-center aspect-square w-full bg-muted rounded-lg">
-                                {imagePlaceHolderIcon}
+                                <Button className="h-full w-full" variant="ghost" onClick={() => { document.getElementById("file-input")?.click() }}>
+                                    {imagePlaceHolderIcon}
+                                </Button>
+
                             </div>
+
                         )
                     }
                 })}
-
 
             </div>
 

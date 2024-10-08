@@ -54,20 +54,38 @@ export default function AddNewProject({ handleCloseModal }) {
 
     const { handleSubmit, register, control, setValue, resetField, watch, formState: { dirtyFields } } = form
 
-    const imagess = watch("images")
-    console.log("imagesss", imagess)
+    const images = watch("images")
+    console.log("imagesss", images)
     const [uploadedImages, setUploadedImages] = React.useState([])
+
+    // set correct types
+    const handleImagesChange = (uploadedImages, onChange) => {
+        console.log("uploadedImages", uploadedImages)
+
+        const existingImages = watch("images")
+        console.log("existingImages", existingImages)
+
+        const uploadedImagesArray = Array.from(uploadedImages)
+        console.log("uploadedImagesArray", uploadedImagesArray)
+
+        const newUploadedImages = [...existingImages.filter(existingImage => uploadedImagesArray.some(uploadedImage => uploadedImage.name !== existingImage.name)), ...uploadedImages]
+
+        console.log("uplonewUploadedImagesadedImages", newUploadedImages)
+
+        onChange(newUploadedImages)
+
+    }
 
     // console.log("uploadedImages", uploadedImages?.findIndex(item => item === 0))
 
-    React.useEffect(() => {
-        setUploadedImages(prev =>
-            [...prev?.filter(file => Array.from(imagess)?.some(image => file?.name !== image?.name)), ...Array.from(imagess)]
-        )
-    }, [imagess])
+    // React.useEffect(() => {
+    //     setUploadedImages(prev =>
+    //         [...prev?.filter(file => Array.from(imagess)?.some(image => file?.name !== image?.name)), ...Array.from(imagess)]
+    //     )
+    // }, [imagess])
 
 
-    console.log(uploadedImages?.map(img => URL.createObjectURL(img)))
+    // console.log(uploadedImages?.map(img => URL.createObjectURL(img)))
 
     // const {resData, isLoading, sendRequest} = useSendRequest();
 
@@ -194,7 +212,9 @@ export default function AddNewProject({ handleCloseModal }) {
                                         <FormControl>
                                             <ImageUpload
                                                 // form={form}
+                                                handleImagesChange={handleImagesChange}
                                                 field={field}
+                                                images={images}
                                                 uploadedImages={uploadedImages}
                                                 title={"Upload Project Images"}
                                                 description={"Drag and drop your images here or click the button to select files."}
@@ -209,12 +229,12 @@ export default function AddNewProject({ handleCloseModal }) {
                             />
 
                             {/* <ImageUpload
-                                title={"Upload Project Images"}
-                                description={"Drag and drop your images here or click the button to select files."}
-                                imagePlaceHolderText={"Drag and drop your images here"}
-                                titleIcon={(<Image className="h-5 w-5 text-secondary" />)}
-                                imagePlaceHolderIcon={(<ImagePlus className="w-6 h-6 text-muted-foreground" />)}
-                            /> */}
+    title={"Upload Project Images"}
+    description={"Drag and drop your images here or click the button to select files."}
+    imagePlaceHolderText={"Drag and drop your images here"}
+    titleIcon={(<Image className="h-5 w-5 text-secondary" />)}
+    imagePlaceHolderIcon={(<ImagePlus className="w-6 h-6 text-muted-foreground" />)}
+/> */}
                         </div>
 
                         <div className="space-y-2 w-full max-w-sm">
