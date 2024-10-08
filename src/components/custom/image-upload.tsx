@@ -2,9 +2,20 @@
 import * as React from "react";
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "./button"
-import { ImagePlus } from 'lucide-react';
+import { Input } from "../ui/input";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from '@/components/ui/form'
 
 type ImageUplaod = {
+    // Change this and add to filed the correct types
+    // form: any
+    field: any
     title: string,
     description: string,
     imagePlaceHolderText: string,
@@ -12,18 +23,25 @@ type ImageUplaod = {
     imagePlaceHolderIcon?: React.ReactNode
 }
 
-export default function ImageUpload({ title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon }: ImageUplaod) {
+export default function ImageUpload({ field, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon }: ImageUplaod) {
     return (
-        <div className="grid gap-4 max-w-sm">
-            <div className="grid gap-2">
+
+        <div className="grid gap-4 max-w-lg">
+
+            <div className="grid gap-1">
+
                 <div className="flex  items-center space-x-2">
                     <h2 className="text-md font-medium">{title}</h2> {titleIcon && titleIcon}
                 </div>
+
                 {/* <p className="text-sm text-gray-500 dark:text-gray-400"> */}
+
                 <p className="text-sm text-muted-foreground">
                     {description}
                 </p>
+
             </div>
+
             <Card>
                 <CardContent className="grid gap-4 p-4">
                     <div>
@@ -34,39 +52,59 @@ export default function ImageUpload({ title, description, imagePlaceHolderText, 
                             </div>
                         </div>
                     </div>
+                    {/* <div className="flex justify-end">
+                        <FormField
+                            control={form.control}
+                            name='delivery_time'
+                            render={({ field }) => (
+                                <FormItem className='space-y-1'>
+                                    <div className="flex items-center space-x-2">
+                                        <FormLabel htmlFor="file-input" className="button button-sm"> Select Files <UploadIcon className="mr-2 h-4 w-4" /> </FormLabel>
+                                        <Input {...field} id="file-input" type="file" multiple className="hidden" />
+                                    </div>
+                                    <FormControl>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div> */}
                     <div className="flex justify-end">
-                        <Button as="label" htmlFor="file-input" size="sm">
+                        <label htmlFor="file-input" className="button button-sm">
                             <UploadIcon className="mr-2 h-4 w-4" />
                             Select Files
-                        </Button>
-                        <input id="file-input" type="file" multiple className="hidden" />
+                            <Input {...field} id="file-input" type="file" multiple className="hidden" />
+                        </label>
                     </div>
                 </CardContent>
             </Card>
-            <div className="grid grid-flow-row auto-rows-max gap-y-3 gap-x-3 justify-items-center grid-cols-3 ">
+
+            <div className="grid grid-flow-row auto-rows-max gap-5 justify-items-stretch grid-cols-3 justify-start px-14">
                 {/* <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-y-3 gap-x-3 justify-items-center"> */}
 
-                <div className="flex justify-center items-center w-[100px] h-[100px] bg-muted rounded-lg">
+                <div className="flex justify-center items-center aspect-square w-full bg-muted rounded-lg">
                     {imagePlaceHolderIcon}
                 </div>
-                <div className="flex justify-center items-center w-[100px] h-[100px] bg-muted rounded-lg">
+                <div className="flex justify-center items-center aspect-square  w-full bg-muted rounded-lg">
                     {imagePlaceHolderIcon}
                 </div>
-                <div className="flex justify-center items-center w-[100px] h-[100px] bg-muted rounded-lg">
+                <div className="flex justify-center items-center aspect-square w-full bg-muted rounded-lg">
                     {imagePlaceHolderIcon}
                 </div>
-                <div className="flex justify-center items-center w-[100px] h-[100px] bg-muted rounded-lg">
+                <div className="flex justify-center items-center aspect-square w-full bg-muted rounded-lg">
                     {imagePlaceHolderIcon}
                 </div>
-                <div className="flex justify-center items-center w-[100px] h-[100px] bg-muted rounded-lg">
+                <div className="flex justify-center items-center aspect-square w-full bg-muted rounded-lg">
                     {imagePlaceHolderIcon}
                 </div>
-                <div className="flex justify-center items-center w-[100px] h-[100px] bg-muted rounded-lg">
+                <div className="flex justify-center items-center aspect-square w-full bg-muted rounded-lg">
                     {imagePlaceHolderIcon}
                 </div>
 
             </div>
+
         </div>
+
     )
 }
 

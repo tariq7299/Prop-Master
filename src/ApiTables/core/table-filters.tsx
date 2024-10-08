@@ -120,7 +120,7 @@ function TableFilters() {
                                             name={`${filter?.filter_name}.fieldValue`}
                                             render={({ field }) => (
                                                 <FormItem className='space-y-1'>
-                                                    <FormLabel className=' text-muted-foreground  ' htmlFor={filter?.filter_name}>{filter?.label}</FormLabel>
+                                                    <FormLabel className='text-muted-foreground' htmlFor={filter?.filter_name}>{filter?.label}</FormLabel>
                                                     <FormControl>
                                                         <DatePickerWithRange min={new Date(filter?.min)} max={new Date(filter?.max)} onChange={field.onChange} value={field.value} className='w-full' id={filter?.filter_name} ></DatePickerWithRange>
                                                     </FormControl>

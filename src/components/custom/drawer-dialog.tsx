@@ -40,12 +40,12 @@ export default function DrawerDialog({ status, handleCloseModal, modalTitle, mod
                         <DialogDescription>{modalDescription}</DialogDescription>
                     </DialogHeader>
                     {children}
-                    <DialogFooter className="pt-2">
+                    {/* <DialogFooter className="pt-2">
                         {modalFooter}
                         <DialogClose asChild>
                             <Button variant="outline">Cancel</Button>
                         </DialogClose>
-                    </DialogFooter>
+                    </DialogFooter> */}
                 </DialogContent>
             </Dialog>
         )
@@ -60,12 +60,12 @@ export default function DrawerDialog({ status, handleCloseModal, modalTitle, mod
                     <DrawerDescription>{modalDescription}</DrawerDescription>
                 </DrawerHeader>
                 {children}
-                <DrawerFooter className="pt-2">
+                {/* <DrawerFooter className="pt-2">
                     {modalFooter}
                     <DrawerClose asChild >
                         <Button variant="outline">Cancel</Button>
                     </DrawerClose>
-                </DrawerFooter>
+                </DrawerFooter> */}
             </DrawerContent>
         </Drawer>
     )
