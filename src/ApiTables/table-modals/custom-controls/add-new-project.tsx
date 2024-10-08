@@ -61,7 +61,10 @@ export default function AddNewProject({ handleCloseModal }) {
 
     // set correct types
     const handleImagesChange = (uploadedImages, onChange) => {
+
         clearErrors("images")
+
+        const twoMegaBytes = 2097152;
 
         const existingImages = watch("images")
 
@@ -87,6 +90,24 @@ export default function AddNewProject({ handleCloseModal }) {
             return
         }
 
+        const oneOfImagesExceedMaxSize = uploadedImagesArray.some(uploadedImage => {
+            console.log("uploadedImage.size", uploadedImage.size)
+            return uploadedImage.size > twoMegaBytes
+        })
+
+        console.log("oneOfImagesExceedMaxSize", oneOfImagesExceedMaxSize)
+
+        if (oneOfImagesExceedMaxSize) {
+            // not working ??!??!
+            // setError("images", { type: "maxSizeOfImage", message: "Some of the images didn't got upladed as it exceed the maximum size of 2 MB!" })
+            toast({
+                title: "Max size",
+                variant: "destructive",
+                description: "Some of the images didn't got upladed as it exceed the maximum size of 2 MB!"
+            })
+        }
+
+
         let newUploadedImages;
 
         // First check if existingImages has any images becasue if not just use the uploadedImagesArray directily !
@@ -104,9 +125,15 @@ export default function AddNewProject({ handleCloseModal }) {
             // Finally return the filtered `uploadedImagesArray` array and `existingImages` array
 
             newUploadedImages = [...uploadedImagesArray.filter(uploadedImage => !existingImages.some(existingImage => (uploadedImage.name === existingImage.name))), ...existingImages]
+
+            console.log("newUploadedImages", newUploadedImages)
         } else {
             newUploadedImages = [...uploadedImagesArray]
         }
+
+        // Then test the max size of each image and only include > 2mb image from the uploadedImages
+        newUploadedImages = [...newUploadedImages.filter(uploadedImage => uploadedImage.size <= twoMegaBytes)]
+
         onChange(newUploadedImages)
 
     }
