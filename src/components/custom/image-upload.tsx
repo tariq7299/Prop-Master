@@ -103,13 +103,13 @@ export default function ImageUpload({ field, watch, getValues, handleImagesChang
                         return (
                             <div key={i} className="flex justify-center items-center aspect-square w-full bg-muted rounded-lg relative group overflow-hidden">
 
-                                <img src={URL.createObjectURL(getValues("images")[i])} alt="" className="object-contain w-full h-full" />
+                                <img src={URL.createObjectURL(getValues("images")[i])} alt="" className="" />
 
-                                <Button type="button" size="sm" variant="outline" className="absolute top-2 right-2 px-1 hidden group-hover:block  " ><X className="h-5 w-5" /></Button>
+                                <Button type="button" size="sm" variant="outline" className="absolute top-2 right-2 w-max h-max p-1 block md:hidden group-hover:block"><X className="h-3 w-3 md:h-4 md:w-4 text-destructive" /></Button>
                                 {getValues("images")[i]?.cover ? (
                                     <>
                                         <div className="bg-primary w-full absolute bottom-4 left-[-25px]  text-background font-bold text-2xs md:text-xs text-center rotate-45 tracking-widest "><p>COVER</p></div>
-                                    </>) : (<Button size="sm" type="button" variant="outline" className="hidden group-hover:block absolute bottom-2 ">Set as cover</Button>)}
+                                    </>) : (<Button size="sm" type="button" variant="default" className="block md:hidden group-hover:block absolute bottom-2 w-max h-max px-2 text-2xs py-1 ">Set as cover</Button>)}
                             </div>
                         )
                     } else {

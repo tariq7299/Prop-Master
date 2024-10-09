@@ -282,7 +282,7 @@ export default function AddNewProject({ handleCloseModal }) {
                                 control={form.control}
                                 name='images'
                                 render={({ field }) => (
-                                    <FormItem className='space-y-1'>
+                                    <FormItem className='space-y-1  '>
                                         <FormControl>
                                             <ImageUpload
                                                 // form={form}
@@ -299,7 +299,7 @@ export default function AddNewProject({ handleCloseModal }) {
                                                 imagePlaceHolderIcon={(<ImagePlus className="w-6 h-6 text-muted-foreground" />)}
                                             />
                                         </FormControl>
-                                        <FormMessage />
+                                        <FormMessage className="  max-w-prose" />
                                     </FormItem>
                                 )}
                             />
