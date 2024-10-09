@@ -11,12 +11,15 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form'
+import { X } from 'lucide-react';
+
 
 type ImageUplaod = {
     // Change this and add to filed the correct types
     // form: any
     handleImagesChange: any
     watch: any
+    getValues: any
     // images: any
     field: any
     title: string,
@@ -26,7 +29,7 @@ type ImageUplaod = {
     imagePlaceHolderIcon?: React.ReactNode
 }
 
-export default function ImageUpload({ field, watch, handleImagesChange, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon }: ImageUplaod) {
+export default function ImageUpload({ field, watch, getValues, handleImagesChange, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon }: ImageUplaod) {
     // console.log("images", images)
     return (
 
@@ -90,22 +93,29 @@ export default function ImageUpload({ field, watch, handleImagesChange, title, d
                 </CardContent>
             </Card>
 
-            <div className="grid grid-flow-row auto-rows-max gap-5 justify-items-stretch grid-cols-3 justify-start px-14">
+            <div className="grid grid-flow-row auto-rows-max gap-5 justify-items-stretch grid-cols-[repeat(3,_minmax(70px,_100px))] justify-center p-4">
                 {/* <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-y-3 gap-x-3 justify-items-center"> */}
 
+                {/* Write some comments here  */}
                 {Array.from([1, 2, 3, 4, 5, 6]).map((_, i) => {
 
-                    if (watch("images").find((_, index) => index === i)) {
+                    if (getValues("images").find((_, index) => index === i)) {
                         return (
-                            <div key={i} className="flex justify-center items-center aspect-square w-full bg-muted rounded-lg overflow-hidden">
-                                <img src={URL.createObjectURL(watch("images")[i])} alt="" />
+                            <div key={i} className="flex justify-center items-center aspect-square w-full bg-muted rounded-lg relative group overflow-hidden">
 
+                                <img src={URL.createObjectURL(getValues("images")[i])} alt="" className="object-contain w-full h-full" />
+
+                                <Button type="button" size="sm" variant="outline" className="absolute top-2 right-2 px-1 hidden group-hover:block  " ><X className="h-5 w-5" /></Button>
+                                {getValues("images")[i]?.cover ? (
+                                    <>
+                                        <div className="bg-primary w-full absolute bottom-4 left-[-25px]  text-background font-bold text-2xs md:text-xs text-center rotate-45 tracking-widest "><p>COVER</p></div>
+                                    </>) : (<Button size="sm" type="button" variant="outline" className="hidden group-hover:block absolute bottom-2 ">Set as cover</Button>)}
                             </div>
                         )
                     } else {
 
                         return (
-                            <div key={i} className="flex justify-center items-center aspect-square w-full bg-muted rounded-lg">
+                            <div key={i} className="flex justify-center items-center aspect-square w-full bg-muted rounded-lg  ">
                                 <Button type="button" className="h-full w-full" variant="ghost" onClick={() => { document.getElementById("file-input")?.click() }}>
                                     {imagePlaceHolderIcon}
                                 </Button>

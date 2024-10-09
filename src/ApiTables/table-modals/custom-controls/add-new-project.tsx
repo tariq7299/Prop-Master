@@ -53,7 +53,7 @@ export default function AddNewProject({ handleCloseModal }) {
         }
     })
 
-    const { handleSubmit, register, control, setValue, resetField, watch, setError, clearErrors, formState: { dirtyFields } } = form
+    const { handleSubmit, register, control, setValue, resetField, watch, getValues, setError, clearErrors, formState: { dirtyFields } } = form
 
 
     // set correct types
@@ -290,6 +290,7 @@ export default function AddNewProject({ handleCloseModal }) {
                                                 field={field}
                                                 // images={images}
                                                 watch={watch}
+                                                getValues={getValues}
                                                 // uploadedImages={uploadedImages}
                                                 title={"Upload Project Images"}
                                                 description={"Drag and drop your images here or click the button to select files."}
