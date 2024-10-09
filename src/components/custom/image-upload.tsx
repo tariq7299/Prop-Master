@@ -16,8 +16,8 @@ type ImageUplaod = {
     // Change this and add to filed the correct types
     // form: any
     handleImagesChange: any
-    uploadedImages: any,
-    images: any
+    watch: any
+    // images: any
     field: any
     title: string,
     description: string,
@@ -26,8 +26,8 @@ type ImageUplaod = {
     imagePlaceHolderIcon?: React.ReactNode
 }
 
-export default function ImageUpload({ field, uploadedImages, images, handleImagesChange, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon }: ImageUplaod) {
-    console.log("images", images)
+export default function ImageUpload({ field, watch, handleImagesChange, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon }: ImageUplaod) {
+    // console.log("images", images)
     return (
 
 
@@ -95,20 +95,20 @@ export default function ImageUpload({ field, uploadedImages, images, handleImage
 
                 {Array.from([1, 2, 3, 4, 5, 6]).map((_, i) => {
 
-                    if (images.find((_, index) => index === i)) {
+                    if (watch("images").find((_, index) => index === i)) {
                         return (
                             <div key={i} className="flex justify-center items-center aspect-square w-full bg-muted rounded-lg overflow-hidden">
-                                <img src={URL.createObjectURL(images[i])} alt="" />
+                                <img src={URL.createObjectURL(watch("images")[i])} alt="" />
+
                             </div>
                         )
                     } else {
 
                         return (
                             <div key={i} className="flex justify-center items-center aspect-square w-full bg-muted rounded-lg">
-                                <Button className="h-full w-full" variant="ghost" onClick={() => { document.getElementById("file-input")?.click() }}>
+                                <Button type="button" className="h-full w-full" variant="ghost" onClick={() => { document.getElementById("file-input")?.click() }}>
                                     {imagePlaceHolderIcon}
                                 </Button>
-
                             </div>
 
                         )

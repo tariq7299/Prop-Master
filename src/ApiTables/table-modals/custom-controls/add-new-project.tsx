@@ -55,9 +55,6 @@ export default function AddNewProject({ handleCloseModal }) {
 
     const { handleSubmit, register, control, setValue, resetField, watch, setError, clearErrors, formState: { dirtyFields } } = form
 
-    const images = watch("images")
-    console.log("imagesss", images)
-    const [uploadedImages, setUploadedImages] = React.useState([])
 
     // set correct types
     const handleImagesChange = (uploadedImages, onChange) => {
@@ -65,7 +62,6 @@ export default function AddNewProject({ handleCloseModal }) {
         clearErrors("images")
 
         const twoMegaBytes = 2097152;
-
         const existingImages = watch("images")
 
         const uploadedImagesArray = Array.from(uploadedImages)
@@ -107,11 +103,19 @@ export default function AddNewProject({ handleCloseModal }) {
             })
         }
 
-
         let newUploadedImages;
+
+        console.log("newUploadedImages", newUploadedImages)
 
         // First check if existingImages has any images becasue if not just use the uploadedImagesArray directily !
         if (existingImages.length > 0) {
+
+            // Add cover key to each image object in uploadedImagesArray
+            // Here i want to mark all of them to be as `false` as there is already existing images and one of them is set to cover image
+            newUploadedImages = uploadedImagesArray.map((uploadedImage, index) => {
+                uploadedImage["cover"] = false
+                return uploadedImage
+            })
 
             // This will filter `uploadedImagesArray` to see if any image inside it has been already uploaded before
 
@@ -124,16 +128,32 @@ export default function AddNewProject({ handleCloseModal }) {
 
             // Finally return the filtered `uploadedImagesArray` array and `existingImages` array
 
+
             newUploadedImages = [...uploadedImagesArray.filter(uploadedImage => !existingImages.some(existingImage => (uploadedImage.name === existingImage.name))), ...existingImages]
 
-            console.log("newUploadedImages", newUploadedImages)
+
         } else {
+            // Add cover key to each image object in uploadedImagesArray
+            newUploadedImages = uploadedImagesArray.map((uploadedImage, index) => {
+                // If the it is the first image in the array then mark it as a cover image
+                if (index === 0) {
+                    uploadedImage["cover"] = true
+                    return uploadedImage
+                } else {
+                    // If not then it is not a cover image
+                    uploadedImage["cover"] = false
+                    return uploadedImage
+                }
+            })
+
             newUploadedImages = [...uploadedImagesArray]
         }
+
 
         // Then test the max size of each image and only include > 2mb image from the uploadedImages
         newUploadedImages = [...newUploadedImages.filter(uploadedImage => uploadedImage.size <= twoMegaBytes)]
 
+        console.log("newUploadedImages", newUploadedImages)
         onChange(newUploadedImages)
 
     }
@@ -268,8 +288,9 @@ export default function AddNewProject({ handleCloseModal }) {
                                                 // form={form}
                                                 handleImagesChange={handleImagesChange}
                                                 field={field}
-                                                images={images}
-                                                uploadedImages={uploadedImages}
+                                                // images={images}
+                                                watch={watch}
+                                                // uploadedImages={uploadedImages}
                                                 title={"Upload Project Images"}
                                                 description={"Drag and drop your images here or click the button to select files."}
                                                 imagePlaceHolderText={"Drag and drop your images here"}
