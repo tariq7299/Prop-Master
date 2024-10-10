@@ -15,6 +15,8 @@ const useTableFetcher = () => {
 
     async function tableFetchingHandler({ tableName, signal, pageSize, currentPage, appliedFilters, tableSorting, params }: any) {
 
+        console.log("appliedFilters", appliedFilters)
+
         tableCoreDispatcher({ type: 'SET_TABLE_LOADING', payload: true })
         tableColumnsDispatcher({ type: 'SET_SELECTED_ROWS', payload: [] })
         tableColumnsDispatcher({ type: 'SET_TOGGLED_CLEAR_ROW', payload: !toggledClearRows })

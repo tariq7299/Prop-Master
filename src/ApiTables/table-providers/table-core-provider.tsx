@@ -30,9 +30,11 @@ function tableCoreReducer(state: any, action: any) {
         return {
             ...state,
             appliedFilters: action?.payload?.reduce((acc: any, curr: any) => {
-                acc[curr.key] = curr;
+                const { type, valueLable, props, ...rest } = curr
+                acc[curr.key] = rest;
                 return acc;
             }, {})
+
         }
     }
     if (action.type === 'SET_RENDERED_FILTERS') {

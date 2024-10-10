@@ -14,9 +14,13 @@ function handleApiError(
     errorCallback?: ErrorCallback
 ) {
 
+
     if (axios.isAxiosError(errResponse)) {
 
+
         const statusCode = errResponse.response?.status;
+        const ErrorCode = errResponse.code;
+
         let errorMessage = customErrorMsg || (errResponse.response?.data as any)?.errors
 
         if (statusCode === 401 || statusCode === 419 || statusCode === 403) {
@@ -64,7 +68,10 @@ function handleApiError(
                 }
         }
 
-        toastApiMsgs(errorMessage, toast, "destructive");
+        if (ErrorCode !== "ERR_CANCELED") {
+            toastApiMsgs(errorMessage, toast, "destructive");
+        }
+
         errorCallback?.();
 
     } else {

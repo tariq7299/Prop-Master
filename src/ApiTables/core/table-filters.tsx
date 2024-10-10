@@ -63,13 +63,13 @@ function TableFilters() {
         return filter?.props?.operators?.length > 1
     }
 
-    function submitFiltersHandler(data: any) {
 
-        // console.log("structureFilters", structureFilters)
+    function submitFiltersHandler(data: any) {
         tableCoreDispatcher({ type: 'SET_APPLIED_FILTERS', payload: restructureSelectedFilters(data, dirtyFields, structureFilters) })
         tableCoreDispatcher({ type: 'SET_RENDERED_FILTERS', payload: restructureSelectedFilters(data, dirtyFields, structureFilters) })
         tableCoreDispatcher({ type: 'SET_CURRENT_PAGE', payload: 1 })
     }
+
 
 
     return (
@@ -216,7 +216,7 @@ function TableFilters() {
                                             <FormField
                                                 control={form.control}
                                                 name={`${filter?.filter_name}.operator`}
-                                                defaultValue=""
+                                                defaultValue={getOperators(filter)[0]}
                                                 render={({ field }) => (
                                                     <FormItem className=''>
                                                         {/* <FormLabel className='text-muted-foreground'>{filter?.label}</FormLabel> */}

@@ -203,63 +203,16 @@ export function filterOutOperatorKeys(input: any) {
 
 export function restructureSelectedFilters(data: any, dirtyFields: any, structureFilters: any) {
 
-    console.log("dirtyFieldss", dirtyFields)
-    console.log("dataa", data)
-    // console.log("structureFilterss", structureFilters)
     const submittedData = objectToArrayKey(dirtyFields)
-
-    console.log("submittedData", submittedData)
-    // const filteredObject: any = Object.fromEntries(
 
     const filteredObject = Object.fromEntries(Object.entries(data)?.filter(([key, value]: any) => {
 
-        // console.log("key", key)
-        // console.log("value", value)
-        // const test = submittedData?.includes(key) && value?.fieldValue !== '' && value?.fieldValue
-        console.log("value?.fieldValue", value?.fieldValue)
-        // console.log("test", test)
         return typeof value?.fieldValue === 'string' ? submittedData?.includes(key) && value?.fieldValue.trim() !== '' && value?.fieldValue : submittedData?.includes(key) && value?.fieldValue !== '' && value?.fieldValue
-        // return test
     })
     );
-    // console.log("test1", test1)
-
-    // let filteredObject = Object.fromEntries(test1)
-
-    // console.log("filteredObjectt", filteredObject)
-
-    // console.log("dirtyFieldss", dirtyFields)
-    // console.log("dataa", data)
-    // // console.log("structureFilterss", structureFilters)
-    // const submittedData = objectToArrayKey(dirtyFields)
-
-    // console.log("submittedData", submittedData)
-    // // const filteredObject: any = Object.fromEntries(
-
-    // const test1 = Object.entries(data)?.filter(([key, value]: any) => {
-
-    //     console.log("key", key)
-    //     console.log("value", value)
-    //     const test = submittedData?.includes(key) && value?.fieldValue !== '' && value?.fieldValue
-    //     console.log("value?.fieldValue", value?.fieldValue)
-    //     console.log("test", test)
-    //     typeof value?.fieldValue === 'string' ? submittedData?.includes(key) && value?.fieldValue.trim() !== '' && value?.fieldValue : submittedData?.includes(key) && value?.fieldValue !== '' && value?.fieldValue
-    //     return test
-    // })
-    // // );
-    // console.log("test1", test1)
-
-    // let filteredObject = Object.fromEntries(test1)
-
-    // console.log("filteredObjectt", filteredObject)
-
-
     const renderedFilters = Object.keys(filteredObject)?.map((key: any) => {
 
         const targetFilter = structureFilters?.find((filter: any) => filter?.filter_name === key);
-
-        console.log("key", key)
-        console.log("filteredObject[key]", filteredObject[key])
 
         return {
             key: key,

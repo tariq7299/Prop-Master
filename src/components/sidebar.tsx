@@ -50,24 +50,29 @@ export default function Sidebar({
         {/* Header */}
         <Layout.Header
           sticky
-          className='z-50 flex justify-between px-4 py-3 shadow-sm md:px-4'
+          className='z-50 flex justify-between px-4 py-3 shadow-sm md:px-4 '
         >
+          {isCollapsed
+            ? (
+              <div className={`flex items-center w-full`}>
+                <PropMasterLogoOnly2 className='max-w-[50px] ' />
+              </div>
+            )
+            // THis will appear/be showd when User is on mobile view or he has collabsed the side bar when on desktop view
+            : (
+              <>
 
-
-
-          {isCollapsed ? (<div className={`flex items-center w-full`}>
-            <PropMasterLogoOnly2 className=' w-[50px] h-[50px] ' />
-          </div>) : (<div
-            className={`flex flex-col justify-end truncate w-full p-5`}
-          >
-
-            <PropMasterLogo2 className=' w-[100px] h-[100px] ' />
-            {/* <span className='font-medium'>P</span> */}
-          </div>)
+                <div className="w-full hidden md:block p-5">
+                  <PropMasterLogo2 />
+                </div>
+                <div className="flex items-center md:hidden max-w-[50px]  ">
+                  <PropMasterLogoOnly2 className='  w-full h-auto object-contain' />
+                </div>
+              </>
+            )
 
           }
 
-          {/* </div> */}
 
           {/* Toggle Button in mobile */}
           <Button
@@ -105,6 +110,6 @@ export default function Sidebar({
           />
         </Button>
       </Layout>
-    </aside>
+    </aside >
   )
 }

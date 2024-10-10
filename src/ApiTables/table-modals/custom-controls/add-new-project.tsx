@@ -106,6 +106,9 @@ export default function AddNewProject({ handleCloseModal }) {
                 description: "Some of the images didn't got upladed as it exceed the maximum size of 2 MB!"
             })
         }
+
+        // Then test the max size of each image and only include equal or less than 2MB image from the uploadedImages
+        return uploadedImagesArray.filter((uploadedImage) => uploadedImage.size <= maxSize)
     }
 
     // set correct types
@@ -119,7 +122,7 @@ export default function AddNewProject({ handleCloseModal }) {
         const existingImages: ImageWithCoverKey[] = watch("images")
 
         // Convert the `uploadedImages` to array as it is a `FileList` object
-        const uploadedImagesArray = Array.from(uploadedImages)
+        let uploadedImagesArray = Array.from(uploadedImages)
 
         const uploadedImagesCount = uploadedImagesArray.length
         const existingImageCount = existingImages.length
@@ -129,7 +132,8 @@ export default function AddNewProject({ handleCloseModal }) {
             return
         }
 
-        validateMaxImageSize(uploadedImagesArray, twoMegaBytes)
+
+        uploadedImagesArray = validateMaxImageSize(uploadedImagesArray, twoMegaBytes)
 
         let newUploadedImages: ImageWithCoverKey[];
 
@@ -187,8 +191,8 @@ export default function AddNewProject({ handleCloseModal }) {
 
         console.log("newUploadedImagessdf", newUploadedImages)
 
-        // Then test the max size of each image and only include equal or less than 2MB image from the uploadedImages
-        newUploadedImages = [...newUploadedImages.filter(uploadedImage => uploadedImage.size <= twoMegaBytes)]
+
+        // newUploadedImages = [...newUploadedImages.filter(uploadedImage => uploadedImage.size <= twoMegaBytes)]
 
         console.log("newUploadedImages", newUploadedImages)
 

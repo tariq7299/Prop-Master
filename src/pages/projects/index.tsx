@@ -56,10 +56,13 @@ export default function Projects() {
 
             try {
                 const response = await axiosPrivate("/client/projects")
+
+
                 handleApiSuccess(response?.data, false, "", () => {
                     setTableStructure({ ...tableStructure, ...response?.data?.data })
                     // console.log("{ ...tableStructure, ...response?.data?.data }", { ...tableStructure, ...response?.data?.data })
                 })
+
             } catch (error: unknown) {
                 if (axios.isAxiosError(error) || (error instanceof Error)) {
                     handleApiError(error);
