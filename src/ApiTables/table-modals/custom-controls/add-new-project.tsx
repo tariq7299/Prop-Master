@@ -30,6 +30,13 @@ import { handleApiSuccess } from "@/helper/api-requests/handleApiSuccess";
 import axios from "axios";
 import { toast } from "@/components/ui/use-toast";
 
+
+
+type ImageWithCoverKey = File & {
+    cover?: boolean
+}
+
+
 export default function AddNewProject({ handleCloseModal }) {
 
 
@@ -56,42 +63,39 @@ export default function AddNewProject({ handleCloseModal }) {
     const { handleSubmit, register, control, setValue, resetField, watch, getValues, setError, clearErrors, formState: { dirtyFields } } = form
 
 
-    // set correct types
-    const handleImagesChange = (uploadedImages, onChange) => {
+    const validateMaxNubmerOfImages = (uploadedImageCount: number, existingImageCount: number): boolean | undefined => {
 
-        clearErrors("images")
-
-        const twoMegaBytes = 2097152;
-        const existingImages = watch("images")
-
-        const uploadedImagesArray = Array.from(uploadedImages)
-
-        if (uploadedImagesArray.length > 6) {
-            setError("images", { type: "maxNumberOfImages", message: `You're attempting to upload ${uploadedImagesArray.length} images, which exceeds our limit of 6. Please reduce your selection to 6 or fewer images.` })
+        if (uploadedImageCount > 6) {
+            setError("images", { type: "maxNumberOfImages", message: `You're attempting to upload ${uploadedImageCount} images, which exceeds our limit of 6. Please reduce your selection to 6 or fewer images.` })
             toast({
                 title: "Max number of photos",
                 variant: "destructive",
-                description: `You're attempting to upload ${uploadedImagesArray.length} images, which exceeds our limit of 6. Please reduce your selection to 6 or fewer images.`
+                description: `You're attempting to upload ${uploadedImageCount} images, which exceeds our limit of 6. Please reduce your selection to 6 or fewer images.`
             })
-            return
+            return true
         }
 
-        if (existingImages.length >= 6 || existingImages.length + uploadedImagesArray.length > 6) {
+        if (existingImageCount >= 6 || existingImageCount + uploadedImageCount > 6) {
             setError("images", { type: "maxNumberOfImages", message: "You can upload a maximum of 6 images. Please remove some before adding more." })
             toast({
                 title: "Max number of photos",
                 variant: "destructive",
                 description: "You can upload a maximum of 6 images. Please remove some before adding more."
             })
-            return
+            return true
         }
+
+
+
+
+    }
+
+    const validateMaxImageSize = (uploadedImagesArray: File[], maxSize: number) => {
 
         const oneOfImagesExceedMaxSize = uploadedImagesArray.some(uploadedImage => {
             console.log("uploadedImage.size", uploadedImage.size)
-            return uploadedImage.size > twoMegaBytes
+            return uploadedImage.size > maxSize
         })
-
-        console.log("oneOfImagesExceedMaxSize", oneOfImagesExceedMaxSize)
 
         if (oneOfImagesExceedMaxSize) {
             // not working ??!??!
@@ -102,19 +106,43 @@ export default function AddNewProject({ handleCloseModal }) {
                 description: "Some of the images didn't got upladed as it exceed the maximum size of 2 MB!"
             })
         }
+    }
 
-        let newUploadedImages;
+    // set correct types
+    const handleImagesChange = (uploadedImages: FileList, onChange: (e: ImageWithCoverKey[]) => void) => {
 
-        console.log("newUploadedImages", newUploadedImages)
+        // clear error appeared under the image input if any found
+        clearErrors("images")
+
+        // This is the max size of an iamge that will be used later
+        const twoMegaBytes = 2097152;
+        const existingImages: ImageWithCoverKey[] = watch("images")
+
+        // Convert the `uploadedImages` to array as it is a `FileList` object
+        const uploadedImagesArray = Array.from(uploadedImages)
+
+        const uploadedImagesCount = uploadedImagesArray.length
+        const existingImageCount = existingImages.length
+
+        const isNotValid = validateMaxNubmerOfImages(uploadedImagesCount, existingImageCount)
+        if (isNotValid) {
+            return
+        }
+
+        validateMaxImageSize(uploadedImagesArray, twoMegaBytes)
+
+        let newUploadedImages: ImageWithCoverKey[];
+
+        // console.log("newUploadedImages", newUploadedImages)
 
         // First check if existingImages has any images becasue if not just use the uploadedImagesArray directily !
         if (existingImages.length > 0) {
 
             // Add cover key to each image object in uploadedImagesArray
             // Here i want to mark all of them to be as `false` as there is already existing images and one of them is set to cover image
-            newUploadedImages = uploadedImagesArray.map((uploadedImage, index) => {
-                uploadedImage["cover"] = false
-                return uploadedImage
+            newUploadedImages = uploadedImagesArray.map((uploadedImage) => {
+                const uploadedImageWithCoverKey = { ...uploadedImage, cover: false };
+                return uploadedImageWithCoverKey
             })
 
             // This will filter `uploadedImagesArray` to see if any image inside it has been already uploaded before
@@ -131,33 +159,73 @@ export default function AddNewProject({ handleCloseModal }) {
 
             newUploadedImages = [...uploadedImagesArray.filter(uploadedImage => !existingImages.some(existingImage => (uploadedImage.name === existingImage.name))), ...existingImages]
 
-
+            // This part of 'if' will be used if there is no existing images yet 
         } else {
             // Add cover key to each image object in uploadedImagesArray
             newUploadedImages = uploadedImagesArray.map((uploadedImage, index) => {
                 // If the it is the first image in the array then mark it as a cover image
                 if (index === 0) {
-                    uploadedImage["cover"] = true
+
+                    Object.assign(uploadedImage, { cover: true });
+                    // const uploadedImageWithCoverKey = { ...uploadedImage, cover: true };
+                    // console.log("uploadedImageWithCoverKey", uploadedImageWithCoverKey)
                     return uploadedImage
                 } else {
                     // If not then it is not a cover image
-                    uploadedImage["cover"] = false
+                    Object.assign(uploadedImage, { cover: false });
+                    // const uploadedImageWithCoverKey = { ...uploadedImage, cover: false };
+                    // console.log("uploadedImageWithCoverKey", uploadedImageWithCoverKey)
                     return uploadedImage
                 }
             })
 
-            newUploadedImages = [...uploadedImagesArray]
+            console.log("newUploadedImages", newUploadedImages)
+
+
+            // newUploadedImages = [...uploadedImagesArray]
         }
 
+        console.log("newUploadedImagessdf", newUploadedImages)
 
-        // Then test the max size of each image and only include > 2mb image from the uploadedImages
+        // Then test the max size of each image and only include equal or less than 2MB image from the uploadedImages
         newUploadedImages = [...newUploadedImages.filter(uploadedImage => uploadedImage.size <= twoMegaBytes)]
 
         console.log("newUploadedImages", newUploadedImages)
+
         onChange(newUploadedImages)
 
     }
 
+
+
+    const handleSetImageAsCover = (imageName: string) => {
+        const existingImages: ImageWithCoverKey[] = getValues("images")
+
+        const newImages = existingImages.map((existingImage) => {
+            if (existingImage?.name === imageName) {
+                existingImage["cover"] = true
+                return existingImage
+            } else {
+                existingImage["cover"] = false
+                return existingImage
+            }
+        })
+
+        setValue("images", newImages)
+
+
+    }
+
+    const handleRemovingImage = (imageName: string) => {
+
+        const existingImages: ImageWithCoverKey[] = getValues("images")
+
+        const newImages = existingImages.filter((existingImage) => existingImage?.name !== imageName)
+
+        setValue("images", newImages)
+
+
+    }
 
     // console.log(uploadedImages?.map(img => URL.createObjectURL(img)))
 
@@ -287,6 +355,8 @@ export default function AddNewProject({ handleCloseModal }) {
                                             <ImageUpload
                                                 // form={form}
                                                 handleImagesChange={handleImagesChange}
+                                                handleSetImageAsCover={handleSetImageAsCover}
+                                                handleRemovingImage={handleRemovingImage}
                                                 field={field}
                                                 // images={images}
                                                 watch={watch}

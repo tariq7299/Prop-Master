@@ -18,6 +18,8 @@ type ImageUplaod = {
     // Change this and add to filed the correct types
     // form: any
     handleImagesChange: any
+    handleSetImageAsCover: any
+    handleRemovingImage: any
     watch: any
     getValues: any
     // images: any
@@ -29,7 +31,7 @@ type ImageUplaod = {
     imagePlaceHolderIcon?: React.ReactNode
 }
 
-export default function ImageUpload({ field, watch, getValues, handleImagesChange, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon }: ImageUplaod) {
+export default function ImageUpload({ field, watch, getValues, handleImagesChange, handleSetImageAsCover, handleRemovingImage, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon }: ImageUplaod) {
     // console.log("images", images)
     return (
 
@@ -105,21 +107,29 @@ export default function ImageUpload({ field, watch, getValues, handleImagesChang
 
                                 <img src={URL.createObjectURL(getValues("images")[i])} alt="" className="" />
 
-                                <Button type="button" size="sm" variant="outline" className="absolute top-2 right-2 w-max h-max p-1 block md:hidden group-hover:block"><X className="h-3 w-3 md:h-4 md:w-4 text-destructive" /></Button>
-                                {getValues("images")[i]?.cover ? (
-                                    <>
-                                        <div className="bg-primary w-full absolute bottom-4 left-[-25px]  text-background font-bold text-2xs md:text-xs text-center rotate-45 tracking-widest "><p>COVER</p></div>
-                                    </>) : (<Button size="sm" type="button" variant="default" className="block md:hidden group-hover:block absolute bottom-2 w-max h-max px-2 text-2xs py-1 ">Set as cover</Button>)}
+                                <Button type="button" size="sm" variant="outline" className="absolute top-2 right-2 w-max h-max p-1 block md:hidden group-hover:block"
+                                    onClick={() => handleRemovingImage(getValues("images")[i]?.name || "")}
+                                >
+                                    <X className="h-3 w-3 md:h-4 md:w-4 text-destructive" />
+                                </Button>
+
+                                {
+                                    getValues("images")[i]?.cover ? (
+                                        <>
+                                            <div className="bg-primary w-full absolute bottom-4 left-[-25px]  text-background font-bold text-2xs md:text-xs text-center rotate-45 tracking-widest " ><p>COVER</p></div>
+                                        </>) : (
+                                        <Button size="sm" type="button" variant="default" className="block md:hidden group-hover:block absolute bottom-2 w-max h-max px-2 text-2xs py-1 " onClick={() => handleSetImageAsCover(getValues("images")[i]?.name || "")}>Set as cover</Button>)
+                                }
                             </div>
                         )
                     } else {
 
                         return (
-                            <div key={i} className="flex justify-center items-center aspect-square w-full bg-muted rounded-lg  ">
-                                <Button type="button" className="h-full w-full" variant="ghost" onClick={() => { document.getElementById("file-input")?.click() }}>
-                                    {imagePlaceHolderIcon}
-                                </Button>
-                            </div>
+                            // <div className="">
+                            <Button key={i} type="button" className="h-full  flex justify-center items-center aspect-square w-full bg-muted hover:bg-muted/50 rounded-lg" variant="ghost" onClick={() => { document.getElementById("file-input")?.click() }}>
+                                {imagePlaceHolderIcon}
+                            </Button>
+                            // </div>
 
                         )
                     }
