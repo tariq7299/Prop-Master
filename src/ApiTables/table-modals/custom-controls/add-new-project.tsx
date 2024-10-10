@@ -29,6 +29,7 @@ import { handleApiError } from "@/helper/api-requests/handleApiError";
 import { handleApiSuccess } from "@/helper/api-requests/handleApiSuccess";
 import axios from "axios";
 import { toast } from "@/components/ui/use-toast";
+import { z } from 'zod'
 
 
 
@@ -41,6 +42,10 @@ export default function AddNewProject({ handleCloseModal }) {
 
 
 
+    // const newProjectSchema = z
+    //     .object({
+
+    //     })
 
     // See how to add types to this
     const [contractors, setContractors] = React.useState([{ id: "1", name: "Emaar" }, { id: "2", name: "Amer Group" }, { id: "3", name: "New Address" }, { id: "4", name: "Nawy" }, { id: "5", name: "Madint Masr" }])
@@ -137,7 +142,6 @@ export default function AddNewProject({ handleCloseModal }) {
 
         let newUploadedImages: ImageWithCoverKey[];
 
-        // console.log("newUploadedImages", newUploadedImages)
 
         // First check if existingImages has any images becasue if not just use the uploadedImagesArray directily !
         if (existingImages.length > 0) {

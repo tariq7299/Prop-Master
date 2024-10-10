@@ -5,9 +5,9 @@ import { Button } from './custom/button'
 import Nav from './nav'
 import { cn } from '@/lib/utils'
 import { sidelinks } from '@/data/sidelinks'
-import PropMasterLogo from './custom/PropMasterLogo'
-import PropMasterLogo2 from './custom/PropMasterLogo2'
-import PropMasterLogoOnly2 from './custom/PropMasterLogoOnly2'
+import PropMasterLogo from './custom/prop-master'
+import PropMasterLogo2 from './custom/prop-master-logo'
+import PropMasterLogoOnly2 from './custom/prop-master-logo-slogan'
 
 
 

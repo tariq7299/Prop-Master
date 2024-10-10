@@ -1,8 +1,8 @@
 import { UserAuthForm } from './components/user-auth-form'
 import ViteLogo from '@/assets/vite.svg'
 import PropMasterLogoOnlny from '@/assets/prop-master-high-resolution-logo-white-transparent.svg'
-import PropMasterLogoOnly2 from '@/components/custom/PropMasterLogoOnly2'
-import PropMasterLogo2 from '@/components/custom/PropMasterLogo2'
+import PropMasterLogoOnly2 from '@/components/custom/prop-master-logo-slogan'
+import PropMasterLogo2 from '@/components/custom/prop-master-logo'
 
 export default function SignIn() {
   return (
