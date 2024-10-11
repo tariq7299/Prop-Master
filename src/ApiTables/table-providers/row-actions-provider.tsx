@@ -2,10 +2,10 @@ import * as React from "react"
 import { createContext, useReducer, useContext } from 'react';
 import { downloadURL, objectToArrayValue } from "../table-utils/utils.tsx"
 // import useAuth from '../../hooks/useAuth';
-import { axiosPrivate } from '@/helper/axiosInstances';
+import { axiosPrivate } from '@/helper/api/axiosInstances.ts';
 // import { handleResponseErrors, handleNetworkErrors } from '../table-utils/errorHandling';
-import { handleApiSuccess } from '@/helper/api-requests/handleApiSuccess';
-import { handleApiError } from '@/helper/api-requests/handleApiError';
+import { handleApiSuccess } from '@/helper/api/handleApiSuccess.ts';
+import { handleApiError } from '@/helper/api/handleApiError.ts';
 // import { toast } from 'react-toastify';
 // import { router } from '@inertiajs/react';
 import { useTableCore } from "./table-core-provider.tsx";

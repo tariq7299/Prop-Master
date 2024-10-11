@@ -2,10 +2,10 @@ import * as React from "react"
 import { createContext, useContext, useReducer } from 'react';
 import { objectToArrayValue } from "../table-utils/utils"
 // import useAuth from '../../hooks/useAuth';
-import { axiosPrivate } from '@/helper/axiosInstances';
+import { axiosPrivate } from '@/helper/api/axiosInstances';
 // import { handleResponseErrors, handleNetworkErrors } from '../table-utils/errorHandling';
-import { handleApiSuccess } from '@/helper/api-requests/handleApiSuccess';
-import { handleApiError } from '@/helper/api-requests/handleApiError';
+import { handleApiSuccess } from '@/helper/api/handleApiSuccess';
+import { handleApiError } from '@/helper/api/handleApiError';
 import { FullPageLoader } from '@/hooks/app/types';
 import { useApp } from '@/hooks/app/app-provider';
 import axios from 'axios';

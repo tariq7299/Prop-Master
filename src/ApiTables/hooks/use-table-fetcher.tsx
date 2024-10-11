@@ -1,12 +1,12 @@
 import * as React from "react"
 import { useTableColumns } from "../table-providers/table-columns-provider.tsx"
 import { useTableCore } from "../table-providers/table-core-provider.tsx"
-import { handleApiSuccess } from '@/helper/api-requests/handleApiSuccess'
-import { handleApiError } from '@/helper/api-requests/handleApiError'
+import { handleApiSuccess } from '@/helper/api/handleApiSuccess.ts'
+import { handleApiError } from '@/helper/api/handleApiError.ts'
 import axios from 'axios'
 import tablesItems from "../../pages/projects/data/tableItems.ts"
 import tablesPagenation from "../../pages/projects/data/tablesPagenation.ts"
-import { axiosPrivate } from "@/helper/axiosInstances.ts"
+import { axiosPrivate } from "@/helper/api/axiosInstances.ts"
 
 const useTableFetcher = () => {
     // const { axiosPrivate } = useAuth()

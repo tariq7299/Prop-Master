@@ -15,9 +15,9 @@ import {
 } from "@/components/ui/breadcrumb"
 import { Building2 } from 'lucide-react';
 import { Button } from '@/components/custom/button'
-import { axiosPrivate } from '@/helper/axiosInstances'
-import { handleApiSuccess } from '@/helper/api-requests/handleApiSuccess'
-import { handleApiError } from '@/helper/api-requests/handleApiError'
+import { axiosPrivate } from '@/helper/api/axiosInstances'
+import { handleApiSuccess } from '@/helper/api/handleApiSuccess'
+import { handleApiError } from '@/helper/api/handleApiError'
 import axios from 'axios'
 
 

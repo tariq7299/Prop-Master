@@ -2,12 +2,12 @@ import React, { useContext, createContext } from 'react';
 import axios from 'axios';
 import { newAdminSignUpSchema, adminLoginSchema } from '@/pages/auth/types';
 import { z } from 'zod'
-import { handleApiSuccess } from '@/helper/api-requests/handleApiSuccess';
-import { handleApiError } from '@/helper/api-requests/handleApiError';
+import { handleApiSuccess } from '@/helper/api/handleApiSuccess';
+import { handleApiError } from '@/helper/api/handleApiError';
 import { IsLoadingCustom, Admin } from '@/pages/auth/types';
 import useLocalStorage from '../use-local-storage';
 import SecureLS from 'secure-ls';
-import { axiosPrivate } from '@/helper/axiosInstances';
+import { axiosPrivate } from '@/helper/api/axiosInstances';
 
 
 

@@ -88,7 +88,7 @@ export default function ImageUpload({ field, watch, getValues, handleImagesChang
                                 console.log(e.target.files)
                                 // field.onChange(Array.from(e.target.files))
                                 handleImagesChange(e.target.files, field.onChange)
-                            }} id="file-input" type="file" multiple className="hidden" />
+                            }} id="file-input" type="file" multiple className="hidden" accept="image/png, image/jpg, image/jpeg" />
 
                         </label>
                     </div>

@@ -24,12 +24,14 @@ import {
     FormMessage,
 } from '@/components/ui/form'
 import useSendRequest from "@/hooks/api/use-send-request";
-import { axiosPrivate } from "@/helper/axiosInstances";
-import { handleApiError } from "@/helper/api-requests/handleApiError";
-import { handleApiSuccess } from "@/helper/api-requests/handleApiSuccess";
+import { axiosPrivate } from "@/helper/api/axiosInstances";
+import { handleApiError } from "@/helper/api/handleApiError";
+import { handleApiSuccess } from "@/helper/api/handleApiSuccess";
 import axios from "axios";
 import { toast } from "@/components/ui/use-toast";
 import { z } from 'zod'
+import { zodResolver } from "@hookform/resolvers/zod";
+import { formatDateToMMYYYY } from '@/helper/utils/dateUtils';
 
 
 
@@ -38,14 +40,36 @@ type ImageWithCoverKey = File & {
 }
 
 
+const newProjectSchema = z
+    .object({
+        name: z
+            .string()
+            .min(1, { message: "Please enter a name for the project" })
+            .min(5, { message: "Project name must be at least 5 characters" })
+            .max(90, { message: "Project name must't exceed 90 characters long" }),
+        delivery_time: z
+            .date()
+            .min(new Date(), { message: "Delivery date can't be in the past" }),
+        images: z
+            .any(),
+        acres: z
+            // THis has to be added if want the field value to be parsed and submitted as Number
+            .coerce
+            .number()
+            .positive()
+            .gte(1, { message: "Acres should at least be 1" })
+            .lte(1000, { message: "Acres should not exceed 1000" }),
+        contractor_company: z
+            .string(),
+        destination_id: z
+            .string(),
+        status: z
+            .string(),
+    })
+
+type NewProjectSchema = z.infer<typeof newProjectSchema>
+
 export default function AddNewProject({ handleCloseModal }) {
-
-
-
-    // const newProjectSchema = z
-    //     .object({
-
-    //     })
 
     // See how to add types to this
     const [contractors, setContractors] = React.useState([{ id: "1", name: "Emaar" }, { id: "2", name: "Amer Group" }, { id: "3", name: "New Address" }, { id: "4", name: "Nawy" }, { id: "5", name: "Madint Masr" }])
@@ -53,15 +77,16 @@ export default function AddNewProject({ handleCloseModal }) {
     // See how to add types 
     const [destinations, setDestinations] = React.useState([{ id: "1", name: "Alamin" }, { id: "2", name: "fNew Cairo" }, { id: "3", name: "fifth" }, { id: "4", name: "Nasr City" }, { id: "5", name: "Misr Elgededah" }])
 
-    const form = useForm({
+    const form = useForm<NewProjectSchema>({
+        resolver: zodResolver(newProjectSchema),
         defaultValues: {
             name: "",
-            delivery_time: "",
+            delivery_time: new Date(),
             images: [],
-            acres: "",
+            acres: 0,
             status: "active",
-            contractors: contractors[0]?.id,
-            destination: destinations[0]?.id
+            contractor_company: contractors[0]?.id,
+            destination_id: destinations[0]?.id
         }
     })
 
@@ -116,7 +141,8 @@ export default function AddNewProject({ handleCloseModal }) {
         return uploadedImagesArray.filter((uploadedImage) => uploadedImage.size <= maxSize)
     }
 
-    // set correct types
+
+
     const handleImagesChange = (uploadedImages: FileList, onChange: (e: ImageWithCoverKey[]) => void) => {
 
         // clear error appeared under the image input if any found
@@ -292,8 +318,13 @@ export default function AddNewProject({ handleCloseModal }) {
 
     // }, [])
 
-    const onSubmit = (data) => {
+    const onSubmit = (data: NewProjectSchema) => {
+
+        const formatedData = { ...data, delivery_time: formatDateToMMYYYY(data.delivery_time) }
+        console.log("formatedData", formatedData)
+        // Formate the date to "MM-YYYY" before submitting
         console.log("dataa", data)
+
     }
 
     return (
@@ -443,7 +474,7 @@ export default function AddNewProject({ handleCloseModal }) {
                         <div className="space-y-2 w-full max-w-sm">
                             <FormField
                                 control={form.control}
-                                name='contractors'
+                                name='contractor_company'
                                 render={({ field }) => (
                                     <FormItem className='space-y-1'>
                                         <div className="flex items-center space-x-2"> <FormLabel>Contractor Company</FormLabel><Warehouse className="h-5 w-5 text-secondary" />
@@ -483,7 +514,7 @@ export default function AddNewProject({ handleCloseModal }) {
 
                             <FormField
                                 control={form.control}
-                                name='destination'
+                                name='destination_id'
                                 render={({ field }) => (
                                     <FormItem className='space-y-1'>
                                         <div className="flex items-center space-x-2">

@@ -4,7 +4,7 @@ import NotFoundError from './pages/errors/not-found-error'
 import MaintenanceError from './pages/errors/maintenance-error'
 import UnauthorisedError from './pages/errors/unauthorised-error.tsx'
 import PrivateRoute from './components/private-route.tsx'
-import { handleGettingRouteData } from './helper/api-requests/handleGettingRouteData.ts'
+import { handleGettingRouteData } from './helper/api/handleGettingRouteData.ts'
 
 
 const router = createBrowserRouter([

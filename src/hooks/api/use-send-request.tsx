@@ -1,10 +1,10 @@
 import { useState } from "react"
-import { handleApiError } from "@/helper/api-requests/handleApiError"
-import { handleApiSuccess } from "@/helper/api-requests/handleApiSuccess"
+import { handleApiError } from "@/helper/api/handleApiError"
+import { handleApiSuccess } from "@/helper/api/handleApiSuccess"
 import { useApp } from "../app/app-provider"
-import { axiosPrivate } from "@/helper/axiosInstances"
+import { axiosPrivate } from "@/helper/api/axiosInstances"
 import axios from "axios"
-import { SendRequest } from "@/helper/api-requests/types"
+import { SendRequest } from "@/helper/api/types"
 
 function useSendRequest() {
 
