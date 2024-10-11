@@ -17,14 +17,15 @@ import { X } from 'lucide-react';
 type ImageUplaod = {
     // Change this and add to filed the correct types
     // form: any
-    handleDroppingImages: handleDroppingImages
-    handleImagesChange: any
-    handleSetImageAsCover: any
-    handleRemovingImage: any
-    watch: any
-    getValues: any
+    maxImagesSlots: number
+    handleDroppingImages: any,
+    handleImagesChange: any,
+    handleSetImageAsCover: any,
+    handleRemovingImage: any,
+    watch: any,
+    getValues: any,
     // images: any
-    field: any
+    field: any,
     title: string,
     description: string,
     imagePlaceHolderText: string,
@@ -32,7 +33,7 @@ type ImageUplaod = {
     imagePlaceHolderIcon?: React.ReactNode
 }
 
-export default function ImageUpload({ field, watch, getValues, handleDroppingImages, handleImagesChange, handleSetImageAsCover, handleRemovingImage, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon }: ImageUplaod) {
+export default function ImageUpload({ maxImagesSlots, field, watch, getValues, handleDroppingImages, handleImagesChange, handleSetImageAsCover, handleRemovingImage, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon }: ImageUplaod) {
     // console.log("images", images)
     return (
         <div className="grid gap-4 max-w-lg" >
@@ -98,7 +99,7 @@ export default function ImageUpload({ field, watch, getValues, handleDroppingIma
                 {/* <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-y-3 gap-x-3 justify-items-center"> */}
 
                 {/* Write some comments here  */}
-                {Array.from([1, 2, 3, 4, 5, 6]).map((_, i) => {
+                {Array.from({ length: maxImagesSlots }, (_, i) => {
 
                     if (getValues("images").find((_, index) => index === i)) {
                         return (
