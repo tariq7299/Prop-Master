@@ -17,6 +17,7 @@ import { X } from 'lucide-react';
 type ImageUplaod = {
     // Change this and add to filed the correct types
     // form: any
+    handleDroppingImages: handleDroppingImages
     handleImagesChange: any
     handleSetImageAsCover: any
     handleRemovingImage: any
@@ -31,11 +32,9 @@ type ImageUplaod = {
     imagePlaceHolderIcon?: React.ReactNode
 }
 
-export default function ImageUpload({ field, watch, getValues, handleImagesChange, handleSetImageAsCover, handleRemovingImage, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon }: ImageUplaod) {
+export default function ImageUpload({ field, watch, getValues, handleDroppingImages, handleImagesChange, handleSetImageAsCover, handleRemovingImage, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon }: ImageUplaod) {
     // console.log("images", images)
     return (
-
-
         <div className="grid gap-4 max-w-lg" >
 
             <div className="grid gap-1">
@@ -54,7 +53,7 @@ export default function ImageUpload({ field, watch, getValues, handleImagesChang
 
             <Card>
                 <CardContent className="grid gap-4 p-4">
-                    <div>
+                    <div onDrop={(e) => { e.preventDefault(); handleDroppingImages(e.dataTransfer.files, field.onChange) }} onDragOver={(event) => event.preventDefault()}>
                         <div>
                             <div className="flex flex-col items-center justify-center h-48 border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-700 transition-colors group-[.drag-over]:border-primary group-[.drag-over]:bg-primary/10">
                                 <UploadIcon className="w-10 h-10 text-gray-400 dark:text-gray-500" />

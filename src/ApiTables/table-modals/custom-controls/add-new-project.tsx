@@ -142,7 +142,6 @@ export default function AddNewProject({ handleCloseModal }) {
     }
 
 
-
     const handleImagesChange = (uploadedImages: FileList, onChange: (e: ImageWithCoverKey[]) => void) => {
 
         // clear error appeared under the image input if any found
@@ -228,6 +227,11 @@ export default function AddNewProject({ handleCloseModal }) {
 
         onChange(newUploadedImages)
 
+    }
+
+
+    const handleDroppingImages = (droppedImages: FileList, onChange: (e: ImageWithCoverKey[]) => void) => {
+        handleImagesChange(droppedImages, onChange)
     }
 
 
@@ -393,6 +397,7 @@ export default function AddNewProject({ handleCloseModal }) {
                                         <FormControl>
                                             <ImageUpload
                                                 // form={form}
+                                                handleDroppingImages={handleDroppingImages}
                                                 handleImagesChange={handleImagesChange}
                                                 handleSetImageAsCover={handleSetImageAsCover}
                                                 handleRemovingImage={handleRemovingImage}
