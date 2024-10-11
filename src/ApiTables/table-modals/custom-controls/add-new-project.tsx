@@ -141,32 +141,46 @@ export default function AddNewProject({ handleCloseModal }) {
         return uploadedImagesArray.filter((uploadedImage) => uploadedImage.size <= maxSize)
     }
 
+    const validateImageType = (uploadedImagesArray: File[], validImageTypes: string[]) => {
+        const isAnyImageHasInvalidType = uploadedImagesArray.some(uploadedImage => !validImageTypes.includes(uploadedImage.type))
+        if (isAnyImageHasInvalidType) {
+            toast({
+                title: "Invalid type",
+                variant: "destructive",
+                description: "Some of the images didn't got upladed as has an invalid image type!, Valid types are [.png, .jpg, .jpeg]"
+            })
+        }
+        return uploadedImagesArray.filter(uploadedImage => validImageTypes.includes(uploadedImage.type))
+    }
 
     const handleImagesChange = (uploadedImages: FileList, onChange: (e: ImageWithCoverKey[]) => void) => {
 
         // clear error appeared under the image input if any found
         clearErrors("images")
 
-        // This is the max size of an iamge that will be used later
-        const twoMegaBytes = 2097152;
-        const existingImages: ImageWithCoverKey[] = watch("images")
-
         // Convert the `uploadedImages` to array as it is a `FileList` object
         let uploadedImagesArray = Array.from(uploadedImages)
 
+        // This is the max size of an iamge that will be used later
+        const twoMegaBytes = 2097152;
+        const existingImages: ImageWithCoverKey[] = watch("images")
+        const validImageTypes = ["image/png", "image/jpg", "image/jpeg"]
         const uploadedImagesCount = uploadedImagesArray.length
         const existingImageCount = existingImages.length
+
+
+        // Validation
 
         const isNotValid = validateMaxNubmerOfImages(uploadedImagesCount, existingImageCount)
         if (isNotValid) {
             return
         }
-
-
+        // Validate and return filtered array with correct values/images !
+        uploadedImagesArray = validateImageType(uploadedImagesArray, validImageTypes)
         uploadedImagesArray = validateMaxImageSize(uploadedImagesArray, twoMegaBytes)
 
+        // This
         let newUploadedImages: ImageWithCoverKey[];
-
 
         // First check if existingImages has any images becasue if not just use the uploadedImagesArray directily !
         if (existingImages.length > 0) {
@@ -189,8 +203,9 @@ export default function AddNewProject({ handleCloseModal }) {
 
             // Finally return the filtered `uploadedImagesArray` array and `existingImages` array
 
-
             newUploadedImages = [...uploadedImagesArray.filter(uploadedImage => !existingImages.some(existingImage => (uploadedImage.name === existingImage.name))), ...existingImages]
+
+
 
             // This part of 'if' will be used if there is no existing images yet 
         } else {
@@ -212,8 +227,6 @@ export default function AddNewProject({ handleCloseModal }) {
                 }
             })
 
-            console.log("newUploadedImages", newUploadedImages)
-
 
             // newUploadedImages = [...uploadedImagesArray]
         }
@@ -233,8 +246,6 @@ export default function AddNewProject({ handleCloseModal }) {
     const handleDroppingImages = (droppedImages: FileList, onChange: (e: ImageWithCoverKey[]) => void) => {
         handleImagesChange(droppedImages, onChange)
     }
-
-
 
     const handleSetImageAsCover = (imageName: string) => {
         const existingImages: ImageWithCoverKey[] = getValues("images")
@@ -257,11 +268,26 @@ export default function AddNewProject({ handleCloseModal }) {
     const handleRemovingImage = (imageName: string) => {
 
         const existingImages: ImageWithCoverKey[] = getValues("images")
+        const imageToRemove = existingImages.find(existingImage => existingImage.name === imageName)
 
-        const newImages = existingImages.filter((existingImage) => existingImage?.name !== imageName)
+        let newImages: ImageWithCoverKey[];
 
-        setValue("images", newImages)
+        if (imageToRemove && imageToRemove.cover) {
+            newImages = existingImages.filter((existingImage) => existingImage?.name !== imageToRemove.name)
+            newImages = newImages.map((newImage, index) => {
+                if (index === 0) {
+                    newImage.cover = true
+                    return newImage
+                } else {
+                    return newImage
+                }
+            })
+            setValue("images", newImages)
+        } else {
+            newImages = existingImages.filter((existingImage) => existingImage?.name !== imageName)
+            setValue("images", newImages)
 
+        }
 
     }
 
