@@ -103,7 +103,7 @@ export default function ImageUpload({ maxImagesSlots, field, watch, getValues, h
 
                     if (getValues("images").find((_, index) => index === i)) {
                         return (
-                            <div key={i} className="flex justify-center items-center aspect-square w-full bg-muted rounded-lg relative group overflow-hidden">
+                            <div key={i} className="flex justify-center items-center aspect-square w-full bg-muted rounded-lg relative group overflow-hidden transform transition duration-300 ease-in-out hover:-translate-y-3 hover:drop-shadow-lg">
 
                                 <img src={URL.createObjectURL(getValues("images")[i])} alt="" className="" />
 
@@ -126,7 +126,7 @@ export default function ImageUpload({ maxImagesSlots, field, watch, getValues, h
 
                         return (
                             // <div className="">
-                            <Button key={i} type="button" className="h-full  flex justify-center items-center aspect-square w-full bg-muted hover:bg-muted/50 rounded-lg" variant="ghost" onClick={() => { document.getElementById("file-input")?.click() }}>
+                            <Button key={i} type="button" className="h-full  flex justify-center items-center aspect-square w-full bg-muted hover:bg-muted/50 rounded-lg transform transition duration-300 ease-in-out hover:-translate-y-3 hover:drop-shadow-lg" variant="ghost" onClick={() => { document.getElementById("file-input")?.click() }}>
                                 {imagePlaceHolderIcon}
                             </Button>
                             // </div>
