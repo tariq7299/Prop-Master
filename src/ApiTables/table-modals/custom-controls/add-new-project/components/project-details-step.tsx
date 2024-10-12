@@ -169,11 +169,11 @@ export default function ProjectDetailsStep({ handleCloseModal }: any) {
         <>
 
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="overflow-y-auto">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="">
 
                     {/* Modal Body  */}
                     <div className=" py-6 p-1 pb-28 md:p-6 md:pb-14 grid grid-cols-1 md:grid-cols-2 gap-y-10 md:items-center justify-items-center gap-x-10 ">
-                        {/* <div className="overflow-y-auto py-6 flex flex-col gap-y-10 items-start md:items-center"> */}
+                        {/* <div className=" py-6 flex flex-col gap-y-10 items-start md:items-center"> */}
                         {/* <h2 className="text-2xl font-medium tracking-tight">New Project</h2> */}
 
                         <div className="space-y-2 w-full max-w-sm">

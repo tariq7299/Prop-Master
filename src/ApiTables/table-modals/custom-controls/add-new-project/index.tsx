@@ -4,12 +4,13 @@ import { Separator } from '@/components/ui/separator';
 import { defineStepper } from '@stepperize/react';
 import ProjectDetailsStep from "./components/project-details-step";
 import ProjectImagesUploadStep from "./components/project-images-upload-step";
+import { Check } from 'lucide-react';
 
 
 const { useStepper, steps } = defineStepper(
     { id: 'proejctDetails', label: 'Project Details' },
     { id: 'projectImages', label: 'Project Images' },
-    { id: 'complete', label: 'Complete' }
+    { id: 'completed', label: 'Completed' }
 );
 
 export default function AddNewProject({ handleCloseModal }: any) {
@@ -58,11 +59,17 @@ export default function AddNewProject({ handleCloseModal }: any) {
                     ))}
                 </ol>
             </nav>
-            <div className="space-y-4">
+            <div className="space-y-4 overflow-auto">
                 {stepper.switch({
                     proejctDetails: () => <ProjectDetailsStep handleCloseModal={handleCloseModal} />,
                     projectImages: () => <ProjectImagesUploadStep handleCloseModal={handleCloseModal} />,
-                    complete: () => <p>COMPLELET</p>,
+                    completed: () => <div className="flex flex-col justify-center items-center py-6 gap-y-2">
+
+                        <Check className="w-1/4 h-auto rounded-full  text-success " />
+                        <p className="md:text-lg">Project Added</p>
+
+
+                    </div>,
                 })}
                 {/* {!stepper.isLast ? (
                     <div className="flex justify-end gap-4">
@@ -80,6 +87,13 @@ export default function AddNewProject({ handleCloseModal }: any) {
                 ) : (
                     <Button onClick={stepper.reset}>Reset</Button>
                 )} */}
+                {stepper.isLast && (
+                    <div className="flex justify-end gap-2">
+                        <Button className="" onClick={stepper.reset}>Add new one</Button>
+                        <Button type="button" onClick={handleCloseModal} variant="outline">Cancel</Button>
+                    </div>
+                )
+                }
             </div>
         </>
     )
