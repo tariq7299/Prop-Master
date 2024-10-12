@@ -7,6 +7,7 @@ import ProjectImagesUploadStep from "./components/project-images-upload-step";
 import { Check } from 'lucide-react';
 
 
+
 const { useStepper, steps } = defineStepper(
     { id: 'proejctDetails', label: 'Project Details' },
     { id: 'projectImages', label: 'Project Images' },
@@ -17,6 +18,15 @@ export default function AddNewProject({ handleCloseModal }: any) {
 
     const stepper = useStepper();
 
+    // Create an array of refs using useRef
+    const stepsRefs = React.useRef(Array.from({ length: stepper.all.length }, () => React.createRef()));
+
+
+    React.useEffect(() => {
+        if (stepsRefs.current) {
+            stepsRefs.current[stepper.current.index].current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }, [stepper.current.id])
 
 
 
@@ -24,12 +34,12 @@ export default function AddNewProject({ handleCloseModal }: any) {
         <>
             <nav aria-label="Checkout Steps" className="group my-4">
                 <ol
-                    className="flex items-center justify-between gap-2 overflow-auto "
+                    className="flex items-center justify-between gap-2 overflow-auto no-scrollbar "
                     aria-orientation="horizontal"
                 >
                     {stepper.all.map((step, index, array) => (
                         <React.Fragment key={step.id}>
-                            <li className="flex items-center gap-4 flex-shrink-0">
+                            <li className="flex items-center gap-4 flex-shrink-0" ref={stepsRefs.current[index]}>
                                 <Button
                                     type="button"
                                     role="tab"
@@ -42,8 +52,8 @@ export default function AddNewProject({ handleCloseModal }: any) {
                                     aria-posinset={index + 1}
                                     aria-setsize={steps.length}
                                     aria-selected={stepper.current.id === step.id}
-                                    className="flex size-10 items-center justify-center rounded-full"
-                                    onClick={() => stepper.goTo(step.id)}
+                                    className="flex size-10 items-center justify-center rounded-full cursor-default"
+                                // onClick={() => stepper.goTo(step.id)}
                                 >
                                     {index + 1}
                                 </Button>
