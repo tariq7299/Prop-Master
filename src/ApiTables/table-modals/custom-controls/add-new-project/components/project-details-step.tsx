@@ -160,6 +160,8 @@ export default function ProjectDetailsStep({ handleCloseModal }: any) {
 
         const formatedData = { ...data, delivery_time: formatDateToMMYYYY(data.delivery_time) }
         console.log("formatedData", formatedData)
+
+
         // Formate the date to "MM-YYYY" before submitting
 
     }

@@ -2,7 +2,8 @@ import { AxiosError } from 'axios';
 import { toastApiMsgs } from './toastApiMsgs';
 import axios from 'axios';
 import { ErrorCallback } from './types';
-import { toast } from '@/components/ui/use-toast'
+// import { toast } from '@/components/ui/use-toast'
+import { toast } from "sonner"
 
 
 
@@ -25,7 +26,7 @@ function handleApiError(
 
         if (statusCode === 401 || statusCode === 419 || statusCode === 403) {
             errorMessage = errorMessage || 'Unauthorized: Please log in! Redirecting to login page...';
-            toastApiMsgs(errorMessage, toast, "destructive");
+            toastApiMsgs(errorMessage, "destructive");
             setTimeout(() => {
                 window.location.href = '/sign-in';
             }, 4000);
@@ -69,14 +70,14 @@ function handleApiError(
         }
 
         if (ErrorCode !== "ERR_CANCELED") {
-            toastApiMsgs(errorMessage, toast, "destructive");
+            toastApiMsgs(errorMessage, "destructive");
         }
 
         errorCallback?.();
 
     } else {
         console.log(errResponse)
-        toastApiMsgs(errResponse?.message, toast, "destructive");
+        toastApiMsgs(errResponse?.message, "destructive");
         errorCallback?.();
 
     }

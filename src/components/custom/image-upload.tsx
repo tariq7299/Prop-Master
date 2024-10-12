@@ -11,7 +11,7 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form'
-import { X } from 'lucide-react';
+import { X, Upload } from 'lucide-react';
 import {
     Tooltip,
     TooltipContent,
@@ -292,7 +292,7 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
                                 <Tooltip>
                                     <TooltipTrigger asChild>
                                         <div className="flex flex-col items-center justify-center h-48 border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-700 transform transition hover:bg-muted/40 hover:drop-shadow-lg hover:-translate-y-2">
-                                            <UploadIcon className="w-10 h-10 text-gray-400 dark:text-gray-500" />
+                                            <Upload className="w-10 h-10 text-gray-400 dark:text-gray-500" />
                                             <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">{imagePlaceHolderText}</p>
                                         </div>
                                     </TooltipTrigger>
@@ -322,7 +322,7 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
                     </div> */}
                         <div className="flex justify-end">
                             <label htmlFor="file-input" className="button button-sm">
-                                <UploadIcon className="mr-2 h-4 w-4" />
+                                <Upload className="mr-2 h-4 w-4" />
                                 Select Files
                                 <Input {...field} value={field.value.fileName} onChange={(e) => {
                                     console.log(e)
@@ -381,26 +381,5 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
             </div >
         </TooltipProvider>
 
-    )
-}
-
-function UploadIcon(props) {
-    return (
-        <svg
-            {...props}
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        >
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-            <polyline points="17 8 12 3 7 8" />
-            <line x1="12" x2="12" y1="3" y2="15" />
-        </svg>
     )
 }

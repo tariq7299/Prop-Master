@@ -62,7 +62,7 @@ export default function Sidebar({
             : (
               <>
 
-                <div className="w-full hidden md:block p-5">
+                <div className="w-full hidden md:block p-6">
                   <PropMasterLogo2 />
                 </div>
                 <div className="flex items-center md:hidden max-w-[50px]  ">

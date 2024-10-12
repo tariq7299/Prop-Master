@@ -33,7 +33,7 @@ function handleApiSuccess(
         if (statusCode < 200 || statusCode >= 300) {
             throw new Error('An unexpected status code was received. Please contact support!');
         }
-        toastApiMsgs(successMessage, toast, "success");
+        toastApiMsgs(successMessage, "success");
     }
 
     successCallback?.();

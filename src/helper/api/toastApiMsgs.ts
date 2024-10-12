@@ -9,14 +9,15 @@ type ToasterToast = ToastProps & {
     action?: ToastActionElement
 }
 type Toast = Omit<ToasterToast, 'id'>
+import { toast } from "sonner"
 
 // type Messages = string | string[] | { [key: string]: string | string[] };
 type ToastType = 'destructive' | 'success' | 'info' | 'warning';
-type ToastVariant = 'default' | 'destructive' | 'success' | 'info' | 'warning';
+type ToastVariant = 'message' | 'error' | 'success' | 'info' | 'warning';
 
 
 
-function toastApiMsgs(messages: Messages, toast: (props: Toast) => void, toastType: ToastType,
+function toastApiMsgs(messages: Messages, toastType: ToastType,
     toastVariant?: ToastVariant) {
 
     const titles = {
@@ -26,32 +27,39 @@ function toastApiMsgs(messages: Messages, toast: (props: Toast) => void, toastTy
         warning: ["Watch out", "Caution", "Heads up"]
     };
 
+
+    console.log("toastType", toastType)
+    console.log("titles[toastType].length", titles[toastType].length)
+
     const randomTitle = titles[toastType][Math.floor(Math.random() * titles[toastType].length)];
 
     const defaultVariant: ToastVariant =
-        toastType === 'destructive' ? 'destructive' :
+        toastType === 'destructive' ? 'error' :
             toastType === 'success' ? 'success' :
                 toastType === 'info' ? 'info' :
                     toastType === 'warning' ? 'warning' :
-                        'default';
+                        'message';
 
+    console.log("toast[toastVariant || defaultVariant]", toastVariant || defaultVariant)
+    console.log("randomTitle", randomTitle)
+    console.log("defaultVariant", defaultVariant)
 
     // Handle single string error
     if (typeof messages === 'string') {
         const message = messages
-        toast({
-            title: randomTitle,
+        toast[toastVariant || defaultVariant](randomTitle, {
+            // title: randomTitle,
             description: message,
-            variant: toastVariant || defaultVariant
+            // variant: toastVariant || defaultVariant
         });
     }
     // Handle array of string messages
     else if (Array.isArray(messages)) {
         messages.forEach(message => {
-            toast({
-                title: randomTitle,
+            toast[toastVariant || defaultVariant](randomTitle, {
+                // title: randomTitle,
                 description: message,
-                variant: toastVariant || defaultVariant
+                // variant: toastVariant || defaultVariant
             });
         });
     }
@@ -63,18 +71,18 @@ function toastApiMsgs(messages: Messages, toast: (props: Toast) => void, toastTy
             if (Array.isArray(messageValue)) {
                 // Handle array of strings within the object
                 messageValue.forEach(message => {
-                    toast({
-                        title: randomTitle,
+                    toast[toastVariant || defaultVariant](randomTitle, {
+                        // title: randomTitle,
                         description: message,
-                        variant: toastVariant || defaultVariant
+                        // variant: toastVariant || defaultVariant
                     });
                 });
             } else if (typeof messageValue === 'string') {
                 // Handle single string within the object
-                toast({
-                    title: randomTitle,
+                toast[toastVariant || defaultVariant](randomTitle, {
+                    // title: randomTitle,
                     description: messageValue,
-                    variant: toastVariant || defaultVariant
+                    // variant: toastVariant || defaultVariant
                 });
             }
         });
