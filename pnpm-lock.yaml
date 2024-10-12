@@ -65,6 +65,9 @@ importers:
       '@radix-ui/react-tooltip':
         specifier: ^1.0.7
         version: 1.0.7(@types/react-dom@18.2.25)(@types/react@18.2.79)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@stepperize/react':
+        specifier: ^3.1.1
+        version: 3.1.1(react@18.2.0)
       '@tabler/icons-react':
         specifier: ^3.2.0
         version: 3.2.0(react@18.2.0)
@@ -1249,6 +1252,11 @@ packages:
     resolution: {integrity: sha512-/BypzV0H1y1HzgYpxqRaXGBRqfodgoBBCcsrujT6QRcakDQdfU+Lq9PENPh5jB4I44YWq+0C2eHsHya+nZY1sA==}
     cpu: [x64]
     os: [win32]
+
+  '@stepperize/react@3.1.1':
+    resolution: {integrity: sha512-lbi4XrDo9ifWQ1Srhh81YgibIgBME7u4E7HAqKOlgqM0k0aIKsdcG7coItLUnUYYEO2leKdH9AwsrNWDmQF7mA==}
+    peerDependencies:
+      react: ^18.0.0
 
   '@swc/core-darwin-arm64@1.4.15':
     resolution: {integrity: sha512-m1D89yN82QTp8AcSm3p9YgcfbdOqc9WmhvnMwoS0lUs6RIIFekI2tEboc9Rp9gre/1lkgzPYI+KGge1BaQzScA==}
@@ -3803,6 +3811,10 @@ snapshots:
 
   '@rollup/rollup-win32-x64-msvc@4.14.3':
     optional: true
+
+  '@stepperize/react@3.1.1(react@18.2.0)':
+    dependencies:
+      react: 18.2.0
 
   '@swc/core-darwin-arm64@1.4.15':
     optional: true

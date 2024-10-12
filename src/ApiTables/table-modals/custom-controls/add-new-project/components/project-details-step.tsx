@@ -13,7 +13,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { useForm, useFormContext } from "react-hook-form";
-import { Button } from "../../../components/custom/button";
+import { Button } from "@/components/custom/button";
 import { CirclePlus, Building2, Image, CalendarClock, Activity, LandPlot, Warehouse, MapPinHouse, ImagePlus } from 'lucide-react';
 import {
     Form,
@@ -33,7 +33,7 @@ import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod";
 import { formatDateToMMYYYY } from '@/helper/utils/dateUtils';
 import { Separator } from '@/components/ui/separator';
-import { defineStepper } from '@stepperize/react';
+// import { defineStepper } from '@stepperize/react';
 
 
 
@@ -49,8 +49,8 @@ const newProjectSchema = z
         delivery_time: z
             .date()
             .min(new Date(), { message: "Delivery date can't be in the past" }),
-        images: z
-            .any(),
+        // images: z
+        //     .any(),
         acres: z
             // THis has to be added if want the field value to be parsed and submitted as Number
             .coerce
@@ -68,7 +68,10 @@ const newProjectSchema = z
 
 type NewProjectSchema = z.infer<typeof newProjectSchema>
 
-export default function AddNewProjectTmp({ handleCloseModal }) {
+
+export default function ProjectDetailsStep({ handleCloseModal }: any) {
+
+    // const stepper = useStepper();
 
     // See how to add types to this
     const [contractors, setContractors] = React.useState([{ id: "1", name: "Emaar" }, { id: "2", name: "Amer Group" }, { id: "3", name: "New Address" }, { id: "4", name: "Nawy" }, { id: "5", name: "Madint Masr" }])
@@ -85,7 +88,7 @@ export default function AddNewProjectTmp({ handleCloseModal }) {
         defaultValues: {
             name: "",
             delivery_time: new Date(),
-            images: [],
+            // images: [],
             acres: 0,
             status: "active",
             contractor_company: contractors[0]?.id,
@@ -152,6 +155,8 @@ export default function AddNewProjectTmp({ handleCloseModal }) {
 
     // }, [])
 
+
+
     const onSubmit = (data: NewProjectSchema) => {
 
         const formatedData = { ...data, delivery_time: formatDateToMMYYYY(data.delivery_time) }
@@ -210,44 +215,6 @@ export default function AddNewProjectTmp({ handleCloseModal }) {
                             />
 
 
-                        </div>
-
-
-
-                        <div className="md:col-span-2">
-
-                            <FormField
-                                control={form.control}
-                                name='images'
-                                render={({ field }) => (
-                                    <FormItem className='space-y-1  '>
-                                        <FormControl>
-                                            <ImageUpload
-                                                // form={form}
-                                                maxImageSize={maxImageSize}
-                                                maxImagesSlots={maxImagesSlots}
-                                                field={field}
-                                                // watch={watch}
-                                                // getValues={getValues}
-                                                title={"Upload Project Images"}
-                                                description={"Drag and drop your images here or click the button to select files."}
-                                                imagePlaceHolderText={"Drag and drop your images here"}
-                                                titleIcon={(<Image className="h-5 w-5 text-secondary" />)}
-                                                imagePlaceHolderIcon={(<ImagePlus className="w-6 h-6 text-muted-foreground" />)}
-                                            />
-                                        </FormControl>
-                                        <FormMessage className="  max-w-prose" />
-                                    </FormItem>
-                                )}
-                            />
-
-                            {/* <ImageUpload
-                        title={"Upload Project Images"}
-                        description={"Drag and drop your images here or click the button to select files."}
-                        imagePlaceHolderText={"Drag and drop your images here"}
-                        titleIcon={(<Image className="h-5 w-5 text-secondary" />)}
-                        imagePlaceHolderIcon={(<ImagePlus className="w-6 h-6 text-muted-foreground" />)}
-                        /> */}
                         </div>
 
                         <div className="space-y-2 w-full max-w-sm">

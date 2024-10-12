@@ -164,7 +164,7 @@
 
 
     /* Primary default Dark theme color */
-    --primary: var(--primary-400);
+    --primary: var(--primary-500);
     --primary-foreground: 60 9.1% 97.8%;
 
     /* Secondary default Dark theme color */

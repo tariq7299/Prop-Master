@@ -18,20 +18,24 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
+// change this to sonner
+import { toast } from "@/components/ui/use-toast";
+import { useFormContext } from "react-hook-form";
 
 
 
 
 type ImageUplaod = {
     // Change this and add to filed the correct types
-    // form: any
+    // form: any,
+    maxImageSize: number
     maxImagesSlots: number
-    handleDroppingImages: any,
-    handleImagesChange: any,
-    handleSetImageAsCover: any,
-    handleRemovingImage: any,
-    watch: any,
-    getValues: any,
+    // handleDroppingImages: any,
+    // handleImagesChange: any,
+    // handleSetImageAsCover: any,
+    // handleRemovingImage: any,
+    // watch: any,
+    // getValues: any,
     // images: any
     field: any,
     title: string,
@@ -41,8 +45,214 @@ type ImageUplaod = {
     imagePlaceHolderIcon?: React.ReactNode
 }
 
-export default function ImageUpload({ maxImagesSlots, field, watch, getValues, handleDroppingImages, handleImagesChange, handleSetImageAsCover, handleRemovingImage, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon }: ImageUplaod) {
-    // console.log("images", images)
+
+type ImageWithCoverKey = File & {
+    cover?: boolean
+}
+
+export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon }: ImageUplaod) {
+    console.log("fieldd", field)
+
+    const { setValue, watch, getValues, setError, clearErrors } = useFormContext()
+    // const { setValue, watch, getValues, setError, clearErrors } = form
+
+    const validateMaxNubmerOfImages = (existingImages: ImageWithCoverKey[], uploadedImagesArray: File[], uploadedImageCount: number, existingImageCount: number): File[] => {
+
+        console.log("uploadedImagesArray", uploadedImagesArray)
+
+        // This the number of free images slots left
+        const freeImagesSlots = maxImagesSlots - existingImageCount
+
+        // This will be used in fitlering the uploaded images array from duplictaed iamges and then it will be filtered from images exceeding max lentgh of `freeImageSlots`
+        let newFilteredArray = [...uploadedImagesArray]
+
+        // If uploaded images count exceeding the free images slotes left
+        if (uploadedImageCount > freeImagesSlots) {
+
+            // Show error under the input to user
+            setError("images", { type: "maxImagesSlots", message: `You're attempting to upload ${uploadedImageCount} images, which exceeds the left free image spaces of ${freeImagesSlots}` })
+            // Also toast the same error 
+            toast({
+                title: "Max number of photos",
+                variant: "destructive",
+                description: `You're attempting to upload ${uploadedImageCount} images, which exceeds the left free image spaces of ${freeImagesSlots}`
+            })
+
+            // Filter the images from duplicated/already uploaded images
+
+            newFilteredArray = [...uploadedImagesArray.filter(uploadedImage => !existingImages.some(existingImage => (uploadedImage.name === existingImage.name)))]
+
+            // In case after we filter the uploaded from already uploaded imagees and yet still the `newFilteredArray` have images more than free slots left 
+            if (newFilteredArray.length > freeImagesSlots) {
+
+                //  Then only take number of images equal to free slotes left
+                newFilteredArray = Array.from({ length: freeImagesSlots }, (_, index) => newFilteredArray[index]);
+            }
+            // At the end return the newFilterArray
+            return newFilteredArray
+
+        } else {
+            // If number uploaded Images doesn't exceed the free images then don't do any thing and just return it
+            return uploadedImagesArray
+        }
+
+
+    }
+
+    const validateMaxImageSize = (uploadedImagesArray: File[], maxSize: number) => {
+
+        const oneOfImagesExceedMaxSize = uploadedImagesArray.some(uploadedImage => {
+            return uploadedImage.size > maxSize
+        })
+
+        if (oneOfImagesExceedMaxSize) {
+            // not working ??!??!
+            // setError("images", { type: "maxSizeOfImage", message: "Some of the images didn't got upladed as it exceed the maximum size of 2 MB!" })
+            toast({
+                title: "Max size",
+                variant: "destructive",
+                description: "Some of the images didn't got upladed as it exceed the maximum size of 2 MB!"
+            })
+        }
+
+        // Then test the max size of each image and only include equal or less than 2MB image from the uploadedImages
+        return uploadedImagesArray.filter((uploadedImage) => uploadedImage.size <= maxSize)
+    }
+
+    const validateImageType = (uploadedImagesArray: File[], validImageTypes: string[]) => {
+
+        const isAnyImageHasInvalidType = uploadedImagesArray.some(uploadedImage => !validImageTypes.includes(uploadedImage.type))
+        if (isAnyImageHasInvalidType) {
+            toast({
+                title: "Invalid type",
+                variant: "destructive",
+                description: "Some of the images didn't got upladed as has an invalid image type!, Valid types are [.png, .jpg, .jpeg]"
+            })
+        }
+        return uploadedImagesArray.filter(uploadedImage => validImageTypes.includes(uploadedImage.type))
+    }
+
+    const handleDroppingImages = (droppedImages: FileList, onChange: (e: ImageWithCoverKey[]) => void) => {
+        handleImagesChange(droppedImages, onChange)
+    }
+
+    const handleSetImageAsCover = (imageName: string) => {
+        const existingImages: ImageWithCoverKey[] = getValues("images")
+
+        const newImages = existingImages.map((existingImage) => {
+            if (existingImage?.name === imageName) {
+                existingImage["cover"] = true
+                return existingImage
+            } else {
+                existingImage["cover"] = false
+                return existingImage
+            }
+        })
+
+        setValue("images", newImages)
+
+
+    }
+
+    const handleRemovingImage = (imageName: string) => {
+
+        const existingImages: ImageWithCoverKey[] = getValues("images")
+        const imageToRemove = existingImages.find(existingImage => existingImage.name === imageName)
+
+        let newImages: ImageWithCoverKey[];
+        if (imageToRemove && imageToRemove.cover) {
+            newImages = existingImages.filter((existingImage) => existingImage?.name !== imageToRemove.name)
+            newImages = newImages.map((newImage, index) => {
+                if (index === 0) {
+                    newImage.cover = true
+                    return newImage
+                } else {
+                    return newImage
+                }
+            })
+            setValue("images", newImages)
+        } else {
+            newImages = existingImages.filter((existingImage) => existingImage?.name !== imageName)
+            setValue("images", newImages)
+
+        }
+
+    }
+
+    const handleImagesChange = (uploadedImages: FileList, onChange: (e: ImageWithCoverKey[]) => void) => {
+
+        // clear error appeared under the image input if any found
+        clearErrors("images")
+
+        // Convert the `uploadedImages` to array as it is a `FileList` object
+        let uploadedImagesArray = Array.from(uploadedImages)
+
+        const existingImages: ImageWithCoverKey[] = watch("images")
+        const validImageTypes = ["image/png", "image/jpg", "image/jpeg"]
+        const uploadedImagesCount = uploadedImagesArray.length
+        const existingImageCount = existingImages.length
+
+
+        // Validation
+        // Validate and return filtered array with correct values/images !
+        uploadedImagesArray = validateImageType(uploadedImagesArray, validImageTypes)
+        uploadedImagesArray = validateMaxImageSize(uploadedImagesArray, maxImageSize)
+        uploadedImagesArray = validateMaxNubmerOfImages(existingImages, uploadedImagesArray, uploadedImagesCount, existingImageCount)
+
+        // This
+        let newUploadedImages: ImageWithCoverKey[];
+
+        // First check if existingImages has any images becasue if not just use the uploadedImagesArray directily !
+        if (existingImages.length > 0) {
+
+            // Add cover key to each image object in uploadedImagesArray
+            // Here i want to mark all of them to be as `false` as there is already existing images and one of them is set to cover image
+            newUploadedImages = uploadedImagesArray.map((uploadedImage) => {
+                Object.assign(uploadedImage, { cover: false });
+                return uploadedImage
+            })
+
+            console.log("newUploadedImages", newUploadedImages)
+
+            // This will filter `uploadedImagesArray` to see if any image inside it has been already uploaded before
+
+            // We did this by filtring "uploadedImagesArray" by checking if any `existingImage.name` in `existingImages` equal to `uploadedImage.name` by using: 
+            // `existingImages.some(uploadedImage.name === existingImage.name)` function to each `uploadedImage`.
+
+            // Then if output of `existingImages.some()` is true then convert to `false` by using `!existingImages.some()` 
+
+            // Then that will tell uploadedImagesArray.filter() function to not return the current image ! and move to the next one 
+
+            // Finally return the filtered `uploadedImagesArray` array and `existingImages` array
+
+            newUploadedImages = [...uploadedImagesArray.filter(uploadedImage => !existingImages.some(existingImage => (uploadedImage.name === existingImage.name))), ...existingImages]
+
+
+
+            // This part of 'if' will be used if there is no existing images yet 
+        } else {
+            // Add cover key to each image object in uploadedImagesArray
+            newUploadedImages = uploadedImagesArray.map((uploadedImage, index) => {
+                // If the it is the first image in the array then mark it as a cover image
+                if (index === 0) {
+                    Object.assign(uploadedImage, { cover: true });
+                    return uploadedImage
+                } else {
+                    // If not then it is not a cover image
+                    Object.assign(uploadedImage, { cover: false });
+                    return uploadedImage
+                }
+            })
+
+
+            // newUploadedImages = [...uploadedImagesArray]
+        }
+
+
+        onChange(newUploadedImages)
+
+    }
+
     return (
         <TooltipProvider>
 

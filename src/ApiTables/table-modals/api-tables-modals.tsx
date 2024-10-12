@@ -30,7 +30,8 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import DrawerDialog from "@/components/custom/drawer-dialog.tsx"
-import AddNewProject from "./custom-controls/add-new-project.tsx"
+import AddNewProject from "./custom-controls/add-new-project/index.tsx"
+
 
 
 
