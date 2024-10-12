@@ -19,7 +19,8 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip"
 // change this to sonner
-import { toast } from "@/components/ui/use-toast";
+// import { toast } from "@/components/ui/use-toast";
+import { toast } from "sonner"
 import { useFormContext } from "react-hook-form";
 
 
@@ -72,10 +73,14 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
             // Show error under the input to user
             setError("images", { type: "maxImagesSlots", message: `You're attempting to upload ${uploadedImageCount} images, which exceeds the left free image spaces of ${freeImagesSlots}` })
             // Also toast the same error 
-            toast({
-                title: "Max number of photos",
-                variant: "destructive",
-                description: `You're attempting to upload ${uploadedImageCount} images, which exceeds the left free image spaces of ${freeImagesSlots}`
+            // toast({
+            //     title: "Max number of photos",
+            //     variant: "destructive",
+            //     description: `You're attempting to upload ${uploadedImageCount} images, which exceeds the left free image spaces of ${freeImagesSlots}`
+            // })
+            toast.error("Max number of photos", {
+                description: `You're attempting to upload ${uploadedImageCount} images, which exceeds the left free image spaces of ${freeImagesSlots}`,
+
             })
 
             // Filter the images from duplicated/already uploaded images
@@ -108,10 +113,14 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
         if (oneOfImagesExceedMaxSize) {
             // not working ??!??!
             // setError("images", { type: "maxSizeOfImage", message: "Some of the images didn't got upladed as it exceed the maximum size of 2 MB!" })
-            toast({
-                title: "Max size",
-                variant: "destructive",
-                description: "Some of the images didn't got upladed as it exceed the maximum size of 2 MB!"
+            // toast({
+            //     title: "Max size",
+            //     variant: "destructive",
+            //     description: "Some of the images didn't got upladed as it exceed the maximum size of 2 MB!"
+            // })
+            toast.error("Max size", {
+                description: "Some of the images didn't got upladed as it exceed the maximum size of 2 MB!",
+
             })
         }
 
@@ -123,10 +132,14 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
 
         const isAnyImageHasInvalidType = uploadedImagesArray.some(uploadedImage => !validImageTypes.includes(uploadedImage.type))
         if (isAnyImageHasInvalidType) {
-            toast({
-                title: "Invalid type",
-                variant: "destructive",
-                description: "Some of the images didn't got upladed as has an invalid image type!, Valid types are [.png, .jpg, .jpeg]"
+            // toast({
+            //     title: "Invalid type",
+            //     variant: "destructive",
+            //     description: "Some of the images didn't got upladed as has an invalid image type!, Valid types are [.png, .jpg, .jpeg]"
+            // })
+            toast.error("Invalid type", {
+                description: "Some of the images didn't got upladed as has an invalid image type!, Valid types are [.png, .jpg, .jpeg]",
+
             })
         }
         return uploadedImagesArray.filter(uploadedImage => validImageTypes.includes(uploadedImage.type))

@@ -34,6 +34,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { formatDateToMMYYYY } from '@/helper/utils/dateUtils';
 import { Separator } from '@/components/ui/separator';
 // import { defineStepper } from '@stepperize/react';
+import { Combobox } from "@/components/custom/combobox";
 
 
 
@@ -74,14 +75,11 @@ export default function ProjectDetailsStep({ handleCloseModal }: any) {
     // const stepper = useStepper();
 
     // See how to add types to this
-    const [contractors, setContractors] = React.useState([{ id: "1", name: "Emaar" }, { id: "2", name: "Amer Group" }, { id: "3", name: "New Address" }, { id: "4", name: "Nawy" }, { id: "5", name: "Madint Masr" }])
+    const [contractors, setContractors] = React.useState([{ value: "1", label: "Emaar" }, { value: "2", label: "Amer Group" }, { value: "3", label: "New Address" }, { value: "4", label: "Nawy" }, { value: "5", label: "Madint Masr" }])
 
     // See how to add types 
-    const [destinations, setDestinations] = React.useState([{ id: "1", name: "Alamin" }, { id: "2", name: "fNew Cairo" }, { id: "3", name: "fifth" }, { id: "4", name: "Nasr City" }, { id: "5", name: "Misr Elgededah" }])
+    const [destinations, setDestinations] = React.useState([{ value: "1", label: "Alamin" }, { value: "2", label: "fNew Cairo" }, { value: "3", label: "fifth" }, { value: "4", label: "Nasr City" }, { value: "5", label: "Misr Elgededah" }])
 
-    // Those will be used later with upload image component
-    const maxImagesSlots = 6;
-    const maxImageSize = 2097152; // Two Mega bytes
 
     const form = useForm<NewProjectSchema>({
         resolver: zodResolver(newProjectSchema),
@@ -91,8 +89,8 @@ export default function ProjectDetailsStep({ handleCloseModal }: any) {
             // images: [],
             acres: 0,
             status: "active",
-            contractor_company: contractors[0]?.id,
-            destination_id: destinations[0]?.id
+            contractor_company: contractors[0]?.value,
+            destination_id: destinations[0]?.value
         }
     })
 
@@ -226,6 +224,7 @@ export default function ProjectDetailsStep({ handleCloseModal }: any) {
                                         <div className="flex items-center space-x-2"> <FormLabel>Status</FormLabel><Activity className="h-5 w-5 text-secondary" />
                                         </div>
                                         <FormControl>
+
                                             <Select
                                                 value={field?.value}
                                                 onValueChange={field.onChange}
@@ -276,7 +275,10 @@ export default function ProjectDetailsStep({ handleCloseModal }: any) {
                                         </div>
                                         <FormControl>
                                             <div className="flex justify-center items-center gap-2 ">
-                                                <Select
+                                                <Combobox className="w-full" values={contractors} field={field}></Combobox>
+                                                <Button className="bg-foreground text-background space-x-1 text-nowrap  flex-none " size="sm"><CirclePlus className="h-4 w-4" /><span className="sr-only md:not-sr-only text-nowrap  ">New</span></Button>
+                                            </div>
+                                            {/* <Select
                                                     value={field?.value}
                                                     onValueChange={field.onChange}
                                                 >
@@ -296,7 +298,7 @@ export default function ProjectDetailsStep({ handleCloseModal }: any) {
                                                     </SelectContent>
                                                 </Select>
                                                 <Button className="bg-foreground text-background space-x-1 text-nowrap  flex-none " size="sm"><CirclePlus className="h-4 w-4" /><span className="sr-only md:not-sr-only text-nowrap  ">New</span></Button>
-                                            </div>
+                                            </div> */}
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -316,7 +318,8 @@ export default function ProjectDetailsStep({ handleCloseModal }: any) {
                                             <FormLabel>Destination</FormLabel><Warehouse className="h-5 w-5 text-secondary" />
                                         </div>
                                         <FormControl>
-                                            <Select
+                                            <Combobox className="w-full" values={destinations} field={field}></Combobox>
+                                            {/* <Select
                                                 value={field?.value}
                                                 onValueChange={field.onChange}
                                             >
@@ -334,7 +337,7 @@ export default function ProjectDetailsStep({ handleCloseModal }: any) {
                                                         })}
                                                     </SelectGroup>
                                                 </SelectContent>
-                                            </Select>
+                                            </Select> */}
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>

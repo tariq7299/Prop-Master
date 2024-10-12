@@ -7,6 +7,7 @@ import router from '@/router'
 import '@/index.css'
 import AuthProvider from './hooks/auth/auth-provider'
 import AppProvider from './hooks/app/app-provider'
+import { Toaster as SonnterToaster } from "@/components/ui/sonner"
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -15,6 +16,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <AppProvider>
           <RouterProvider router={router} />
           <Toaster />
+          <SonnterToaster expand />
         </AppProvider>
       </AuthProvider>
     </ThemeProvider>
