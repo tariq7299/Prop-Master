@@ -12,6 +12,14 @@ import {
     FormMessage,
 } from '@/components/ui/form'
 import { X } from 'lucide-react';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
+
+
 
 
 type ImageUplaod = {
@@ -36,33 +44,43 @@ type ImageUplaod = {
 export default function ImageUpload({ maxImagesSlots, field, watch, getValues, handleDroppingImages, handleImagesChange, handleSetImageAsCover, handleRemovingImage, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon }: ImageUplaod) {
     // console.log("images", images)
     return (
-        <div className="grid gap-4 max-w-lg" >
+        <TooltipProvider>
 
-            <div className="grid gap-1">
+            <div className="grid gap-4 max-w-lg" >
 
-                <div className="flex  items-center space-x-2">
-                    <h2 className="text-md font-medium">{title}</h2> {titleIcon && titleIcon}
+                <div className="grid gap-1">
+
+                    <div className="flex  items-center space-x-2">
+                        <h2 className="text-md font-medium">{title}</h2> {titleIcon && titleIcon}
+                    </div>
+
+                    {/* <p className="text-sm text-gray-500 dark:text-gray-400"> */}
+
+                    <p className="text-sm text-muted-foreground">
+                        {description}
+                    </p>
+
                 </div>
 
-                {/* <p className="text-sm text-gray-500 dark:text-gray-400"> */}
+                <Card>
+                    <CardContent className="grid gap-4 p-4">
+                        <div onDrop={(e) => { e.preventDefault(); handleDroppingImages(e.dataTransfer.files, field.onChange) }} onDragOver={(event) => event.preventDefault()}>
+                            <div>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <div className="flex flex-col items-center justify-center h-48 border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-700 transform transition hover:bg-muted/40 hover:drop-shadow-lg hover:-translate-y-2">
+                                            <UploadIcon className="w-10 h-10 text-gray-400 dark:text-gray-500" />
+                                            <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">{imagePlaceHolderText}</p>
+                                        </div>
+                                    </TooltipTrigger>
+                                    <TooltipContent className="bg-warning text-forground border-2">
+                                        <p>Drag and drop images here</p>
+                                    </TooltipContent>
+                                </Tooltip>
 
-                <p className="text-sm text-muted-foreground">
-                    {description}
-                </p>
-
-            </div>
-
-            <Card>
-                <CardContent className="grid gap-4 p-4">
-                    <div onDrop={(e) => { e.preventDefault(); handleDroppingImages(e.dataTransfer.files, field.onChange) }} onDragOver={(event) => event.preventDefault()}>
-                        <div>
-                            <div className="flex flex-col items-center justify-center h-48 border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-700 transform transition hover:bg-muted/40 hover:drop-shadow-lg hover:-translate-y-2">
-                                <UploadIcon className="w-10 h-10 text-gray-400 dark:text-gray-500" />
-                                <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">{imagePlaceHolderText}</p>
                             </div>
                         </div>
-                    </div>
-                    {/* <div className="flex justify-end">
+                        {/* <div className="flex justify-end">
                         <FormField
                             control={form.control}
                             name='delivery_time'
@@ -79,65 +97,66 @@ export default function ImageUpload({ maxImagesSlots, field, watch, getValues, h
                             )}
                         />
                     </div> */}
-                    <div className="flex justify-end">
-                        <label htmlFor="file-input" className="button button-sm">
-                            <UploadIcon className="mr-2 h-4 w-4" />
-                            Select Files
-                            <Input {...field} value={field.value.fileName} onChange={(e) => {
-                                console.log(e)
-                                console.log(e.target.files)
-                                // field.onChange(Array.from(e.target.files))
-                                handleImagesChange(e.target.files, field.onChange)
-                            }} id="file-input" type="file" multiple className="hidden" accept="image/png, image/jpg, image/jpeg" />
+                        <div className="flex justify-end">
+                            <label htmlFor="file-input" className="button button-sm">
+                                <UploadIcon className="mr-2 h-4 w-4" />
+                                Select Files
+                                <Input {...field} value={field.value.fileName} onChange={(e) => {
+                                    console.log(e)
+                                    console.log(e.target.files)
+                                    // field.onChange(Array.from(e.target.files))
+                                    handleImagesChange(e.target.files, field.onChange)
+                                }} id="file-input" type="file" multiple className="hidden" accept="image/png, image/jpg, image/jpeg" />
 
-                        </label>
-                    </div>
-                </CardContent>
-            </Card>
+                            </label>
+                        </div>
+                    </CardContent>
+                </Card>
 
-            <div className="grid grid-flow-row auto-rows-max gap-5 justify-items-stretch grid-cols-[repeat(3,_minmax(70px,_100px))] justify-center p-4">
-                {/* <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-y-3 gap-x-3 justify-items-center"> */}
+                <div className="grid grid-flow-row auto-rows-max gap-5 justify-items-stretch grid-cols-[repeat(3,_minmax(70px,_100px))] justify-center p-4">
+                    {/* <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-y-3 gap-x-3 justify-items-center"> */}
 
-                {/* Write some comments here  */}
-                {Array.from({ length: maxImagesSlots }, (_, i) => {
+                    {/* Write some comments here  */}
+                    {Array.from({ length: maxImagesSlots }, (_, i) => {
 
-                    if (getValues("images").find((_, index) => index === i)) {
-                        return (
-                            <div key={i} className="flex justify-center items-center aspect-square w-full bg-muted rounded-lg relative group overflow-hidden transform transition duration-300 ease-in-out hover:-translate-y-3 hover:drop-shadow-lg">
+                        if (getValues("images").find((_, index) => index === i)) {
+                            return (
+                                <div key={i} className="flex justify-center items-center aspect-square w-full bg-muted rounded-lg relative group overflow-hidden transform transition duration-300 ease-in-out hover:-translate-y-3 hover:drop-shadow-lg">
 
-                                <img src={URL.createObjectURL(getValues("images")[i])} alt="" className="" />
+                                    <img src={URL.createObjectURL(getValues("images")[i])} alt="" className="" />
 
-                                <Button type="button" size="sm" variant="outline" className="absolute top-2 right-2 w-max h-max p-1 block md:hidden group-hover:block"
-                                    onClick={() => handleRemovingImage(getValues("images")[i]?.name || "")}
-                                >
-                                    <X className="h-3 w-3 md:h-4 md:w-4 text-destructive" />
+                                    <Button type="button" size="sm" variant="outline" className="absolute top-2 right-2 w-max h-max p-1 block md:hidden group-hover:block"
+                                        onClick={() => handleRemovingImage(getValues("images")[i]?.name || "")}
+                                    >
+                                        <X className="h-3 w-3 md:h-4 md:w-4 text-destructive" />
+                                    </Button>
+
+                                    {
+                                        getValues("images")[i]?.cover ? (
+                                            <>
+                                                <div className="bg-primary w-full absolute bottom-4 left-[-25px]  text-background font-bold text-2xs md:text-xs text-center rotate-45 tracking-widest " ><p>COVER</p></div>
+                                            </>) : (
+                                            <Button size="sm" type="button" variant="default" className="block md:hidden group-hover:block absolute bottom-2 w-max h-max px-2 text-2xs py-1 " onClick={() => handleSetImageAsCover(getValues("images")[i]?.name || "")}>Set as cover</Button>)
+                                    }
+                                </div>
+                            )
+                        } else {
+
+                            return (
+                                // <div className="">
+                                <Button key={i} type="button" className="h-full  flex justify-center items-center aspect-square w-full bg-muted hover:bg-muted/50 rounded-lg transform transition duration-300 ease-in-out hover:-translate-y-3 hover:drop-shadow-lg" variant="ghost" onClick={() => { document.getElementById("file-input")?.click() }}>
+                                    {imagePlaceHolderIcon}
                                 </Button>
+                                // </div>
 
-                                {
-                                    getValues("images")[i]?.cover ? (
-                                        <>
-                                            <div className="bg-primary w-full absolute bottom-4 left-[-25px]  text-background font-bold text-2xs md:text-xs text-center rotate-45 tracking-widest " ><p>COVER</p></div>
-                                        </>) : (
-                                        <Button size="sm" type="button" variant="default" className="block md:hidden group-hover:block absolute bottom-2 w-max h-max px-2 text-2xs py-1 " onClick={() => handleSetImageAsCover(getValues("images")[i]?.name || "")}>Set as cover</Button>)
-                                }
-                            </div>
-                        )
-                    } else {
+                            )
+                        }
+                    })}
 
-                        return (
-                            // <div className="">
-                            <Button key={i} type="button" className="h-full  flex justify-center items-center aspect-square w-full bg-muted hover:bg-muted/50 rounded-lg transform transition duration-300 ease-in-out hover:-translate-y-3 hover:drop-shadow-lg" variant="ghost" onClick={() => { document.getElementById("file-input")?.click() }}>
-                                {imagePlaceHolderIcon}
-                            </Button>
-                            // </div>
+                </div>
 
-                        )
-                    }
-                })}
-
-            </div>
-
-        </div >
+            </div >
+        </TooltipProvider>
 
     )
 }
