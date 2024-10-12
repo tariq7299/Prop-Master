@@ -98,7 +98,7 @@ export default function ProjectImagesUploadStep({ handleCloseModal }: any) {
                 </div >
 
                 {/* Modal Footer */}
-                <div className="fixed bottom-0 right-0 p-4 pt-3 bg-background w-full flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 gap-y-2 ">
+                <div className="fixed bottom-0 right-0 p-4 pt-3 bg-background w-full flex  justify-end sm:space-x-2 gap-2 ">
                     <Button type="submit" >Add Project Images</Button>
                     <Button type="button" onClick={handleCloseModal} variant="outline">Cancel</Button>
                 </div>

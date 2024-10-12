@@ -53,7 +53,7 @@ export default function AddNewProject({ handleCloseModal }: any) {
                                     aria-setsize={steps.length}
                                     aria-selected={stepper.current.id === step.id}
                                     className="flex size-10 items-center justify-center rounded-full cursor-default"
-                                // onClick={() => stepper.goTo(step.id)}
+                                    onClick={() => stepper.goTo(step.id)}
                                 >
                                     {index + 1}
                                 </Button>
@@ -83,7 +83,7 @@ export default function AddNewProject({ handleCloseModal }: any) {
                 })}
                 {/* {!stepper.isLast ? (
                     <div className="flex justify-end gap-4">
-                        <Button
+                    <Button
                             variant="secondary"
                             onClick={stepper.prev}
                             disabled={stepper.isFirst}

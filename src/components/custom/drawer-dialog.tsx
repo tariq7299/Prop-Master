@@ -38,7 +38,7 @@ export default function DrawerDialog({ status, handleCloseModal, modalTitle, mod
     if (isDesktop) {
         return (
             <Dialog open={status} onOpenChange={handleCloseModal}>
-                <DialogContent className=" ">
+                <DialogContent className=" " onPointerDownOutside={(e) => e.preventDefault()} onInteractOutside={() => { }}>
                     <DialogHeader>
                         <DialogTitle>{modalTitle}</DialogTitle>
                         <DialogDescription>{modalDescription}</DialogDescription>
@@ -57,7 +57,7 @@ export default function DrawerDialog({ status, handleCloseModal, modalTitle, mod
 
     return (
 
-        <DrawerTest open={status} >
+        <DrawerTest open={status} modalTitle={modalTitle} modalDescription={modalDescription} >
             {children}
         </DrawerTest>
 

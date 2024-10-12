@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/select";
 import { useForm, useFormContext } from "react-hook-form";
 import { Button } from "@/components/custom/button";
-import { CirclePlus, Building2, Image, CalendarClock, Activity, LandPlot, Warehouse, MapPinHouse, ImagePlus } from 'lucide-react';
+import { CirclePlus, Building2, Image, CalendarClock, Activity, LandPlot, Warehouse, BriefcaseBusiness, MapPinHouse, ImagePlus } from 'lucide-react';
 import {
     Form,
     FormControl,
@@ -22,6 +22,7 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
+    FormDescription
 } from '@/components/ui/form'
 import useSendRequest from "@/hooks/api/use-send-request";
 import { axiosPrivate } from "@/helper/api/axiosInstances";
@@ -186,6 +187,9 @@ export default function ProjectDetailsStep({ handleCloseModal }: any) {
                                         <FormControl>
                                             <Input placeholder="Madinatiy..." type="text" {...field} />
                                         </FormControl>
+                                        <FormDescription>
+                                            Type the name of compound or project in here
+                                        </FormDescription>
                                         <FormMessage />
                                     </FormItem>
                                 )}
@@ -207,6 +211,9 @@ export default function ProjectDetailsStep({ handleCloseModal }: any) {
                                         <FormControl>
                                             <DatePicker onChange={field.onChange} value={field.value} ></DatePicker>
                                         </FormControl>
+                                        <FormDescription>
+                                            Type when the project will be deliverd
+                                        </FormDescription>
                                         <FormMessage />
                                     </FormItem>
                                 )}
@@ -242,6 +249,9 @@ export default function ProjectDetailsStep({ handleCloseModal }: any) {
                                                 </SelectContent>
                                             </Select>
                                         </FormControl>
+                                        <FormDescription>
+                                            Choose the status of the project
+                                        </FormDescription>
                                         <FormMessage />
                                     </FormItem>
                                 )}
@@ -259,6 +269,9 @@ export default function ProjectDetailsStep({ handleCloseModal }: any) {
                                         <FormControl>
                                             <Input {...field} type="number"></Input>
                                         </FormControl>
+                                        <FormDescription>
+                                            Area of the project
+                                        </FormDescription>
                                         <FormMessage />
                                     </FormItem>
                                 )}
@@ -271,7 +284,7 @@ export default function ProjectDetailsStep({ handleCloseModal }: any) {
                                 name='contractor_company'
                                 render={({ field }) => (
                                     <FormItem className='space-y-1'>
-                                        <div className="flex items-center space-x-2"> <FormLabel>Contractor Company</FormLabel><Warehouse className="h-5 w-5 text-secondary" />
+                                        <div className="flex items-center space-x-2"> <FormLabel>Contractor Company</FormLabel><BriefcaseBusiness className="h-5 w-5 text-secondary" />
                                         </div>
                                         <FormControl>
                                             <div className="flex justify-center items-center gap-2 ">
@@ -300,6 +313,9 @@ export default function ProjectDetailsStep({ handleCloseModal }: any) {
                                                 <Button className="bg-foreground text-background space-x-1 text-nowrap  flex-none " size="sm"><CirclePlus className="h-4 w-4" /><span className="sr-only md:not-sr-only text-nowrap  ">New</span></Button>
                                             </div> */}
                                         </FormControl>
+                                        <FormDescription>
+                                            Choose the developer of the project
+                                        </FormDescription>
                                         <FormMessage />
                                     </FormItem>
                                 )}
@@ -315,7 +331,7 @@ export default function ProjectDetailsStep({ handleCloseModal }: any) {
                                 render={({ field }) => (
                                     <FormItem className='space-y-1'>
                                         <div className="flex items-center space-x-2">
-                                            <FormLabel>Destination</FormLabel><Warehouse className="h-5 w-5 text-secondary" />
+                                            <FormLabel>Destination</FormLabel><MapPinHouse className="h-5 w-5 text-secondary" />
                                         </div>
                                         <FormControl>
                                             <Combobox className="w-full" values={destinations} field={field}></Combobox>
@@ -339,6 +355,9 @@ export default function ProjectDetailsStep({ handleCloseModal }: any) {
                                                 </SelectContent>
                                             </Select> */}
                                         </FormControl>
+                                        <FormDescription>
+                                            Choose the place where the project exist
+                                        </FormDescription>
                                         <FormMessage />
                                     </FormItem>
                                 )}
@@ -347,7 +366,7 @@ export default function ProjectDetailsStep({ handleCloseModal }: any) {
                     </div >
 
                     {/* Modal Footer */}
-                    <div className="fixed bottom-0 right-0 p-4 pt-3 bg-background w-full flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 gap-y-2 ">
+                    <div className="fixed bottom-0 right-0 p-4 pt-3 bg-background w-full flex  justify-end sm:space-x-2 gap-2 ">
                         <Button type="submit" >Add Project</Button>
                         <Button type="button" onClick={handleCloseModal} variant="outline">Cancel</Button>
                     </div>

@@ -274,12 +274,12 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
                 <div className="grid gap-1">
 
                     <div className="flex  items-center space-x-2">
-                        <h2 className="text-md font-medium">{title}</h2> {titleIcon && titleIcon}
+                        <h2 className="text-sm md:text-md font-medium">{title}</h2> {titleIcon && titleIcon}
                     </div>
 
                     {/* <p className="text-sm text-gray-500 dark:text-gray-400"> */}
 
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-xs md:text-sm text-muted-foreground">
                         {description}
                     </p>
 
