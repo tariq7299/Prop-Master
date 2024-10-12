@@ -97,30 +97,43 @@ export default function AddNewProject({ handleCloseModal }) {
     const { handleSubmit, register, control, setValue, resetField, watch, getValues, setError, clearErrors, formState: { dirtyFields } } = form
 
 
-    const validateMaxNubmerOfImages = (uploadedImagesArray: File[], uploadedImageCount: number, existingImageCount: number): File[] => {
+    const validateMaxNubmerOfImages = (existingImages: ImageWithCoverKey[], uploadedImagesArray: File[], uploadedImageCount: number, existingImageCount: number): File[] => {
 
+        console.log("uploadedImagesArray", uploadedImagesArray)
+
+        // This the number of free images slots left
         const freeImagesSlots = maxImagesSlots - existingImageCount
 
+        // This will be used in fitlering the uploaded images array from duplictaed iamges and then it will be filtered from images exceeding max lentgh of `freeImageSlots`
+        let newFilteredArray = [...uploadedImagesArray]
+
+        // If uploaded images count exceeding the free images slotes left
         if (uploadedImageCount > freeImagesSlots) {
+
+            // Show error under the input to user
             setError("images", { type: "maxImagesSlots", message: `You're attempting to upload ${uploadedImageCount} images, which exceeds the left free image spaces of ${freeImagesSlots}` })
+            // Also toast the same error 
             toast({
                 title: "Max number of photos",
                 variant: "destructive",
                 description: `You're attempting to upload ${uploadedImageCount} images, which exceeds the left free image spaces of ${freeImagesSlots}`
             })
 
-            console.log("Array.of(freeImagesSlots)", Array(freeImagesSlots))
+            // Filter the images from duplicated/already uploaded images
 
+            newFilteredArray = [...uploadedImagesArray.filter(uploadedImage => !existingImages.some(existingImage => (uploadedImage.name === existingImage.name)))]
 
-            const newFilteredArray = Array.from({ length: freeImagesSlots }, (_, index) => {
-                console.log("uploadedImagesArray[index]", uploadedImagesArray[index]);
-                return uploadedImagesArray[index];
-            });
+            // In case after we filter the uploaded from already uploaded imagees and yet still the `newFilteredArray` have images more than free slots left 
+            if (newFilteredArray.length > freeImagesSlots) {
 
-            console.log("uploadedImagesArrayuy", newFilteredArray)
+                //  Then only take number of images equal to free slotes left
+                newFilteredArray = Array.from({ length: freeImagesSlots }, (_, index) => newFilteredArray[index]);
+            }
+            // At the end return the newFilterArray
             return newFilteredArray
 
         } else {
+            // If number uploaded Images doesn't exceed the free images then don't do any thing and just return it
             return uploadedImagesArray
         }
 
@@ -223,9 +236,9 @@ export default function AddNewProject({ handleCloseModal }) {
 
         // Validation
         // Validate and return filtered array with correct values/images !
-        uploadedImagesArray = validateMaxNubmerOfImages(uploadedImagesArray, uploadedImagesCount, existingImageCount)
         uploadedImagesArray = validateImageType(uploadedImagesArray, validImageTypes)
         uploadedImagesArray = validateMaxImageSize(uploadedImagesArray, twoMegaBytes)
+        uploadedImagesArray = validateMaxNubmerOfImages(existingImages, uploadedImagesArray, uploadedImagesCount, existingImageCount)
 
         // This
         let newUploadedImages: ImageWithCoverKey[];
@@ -346,8 +359,6 @@ export default function AddNewProject({ handleCloseModal }) {
 
     return (
         <>
-
-
 
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="overflow-y-auto">
