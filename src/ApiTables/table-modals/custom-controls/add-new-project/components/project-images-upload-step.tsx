@@ -38,7 +38,7 @@ import { defineStepper } from '@stepperize/react';
 
 
 // Write types
-export default function ProjectImagesUploadStep({ newProject, handleCloseModal }: any) {
+export default function ProjectImagesUploadStep({ newProject, handleCloseModal, stepper }: any) {
 
     // Write types
     const form = useForm<any>({
@@ -58,6 +58,10 @@ export default function ProjectImagesUploadStep({ newProject, handleCloseModal }
     // Those will be used later with upload image component
     const maxImagesSlots = 6;
     const maxImageSize = 2097152; // Two Mega bytes
+
+    const sendRequesProps = useSendRequest();
+    const { resData: uploadedImage, isLoading: isSubmittingImage, sendRequest: uploadOneImage } = sendRequesProps
+
 
 
     return (
@@ -80,7 +84,11 @@ export default function ProjectImagesUploadStep({ newProject, handleCloseModal }
                             render={({ field }) => (
                                 <FormItem className='space-y-1  '>
                                     <FormControl>
+                                        {/* Write Types */}
                                         <ImageUpload
+                                            sendRequesProps={sendRequesProps}
+                                            // stepper={stepper}
+                                            newProject={newProject}
                                             maxImageSize={maxImageSize}
                                             maxImagesSlots={maxImagesSlots}
                                             field={field}
@@ -101,7 +109,7 @@ export default function ProjectImagesUploadStep({ newProject, handleCloseModal }
 
                 {/* Modal Footer */}
                 <div className="fixed bottom-0 right-0 p-4 pt-3 bg-background w-full flex  justify-end sm:space-x-2 gap-2 ">
-                    <Button type="submit" >Add Project Images</Button>
+                    <Button disabled={isSubmittingImage} type="submit" >Add Project Images</Button>
                     <Button type="button" onClick={handleCloseModal} variant="outline">Cancel</Button>
                 </div>
             </form>

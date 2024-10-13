@@ -77,7 +77,7 @@ export default function AddNewProject({ handleCloseModal }: any) {
             <div className="space-y-4 overflow-auto">
                 {stepper.switch({
                     proejctDetails: () => <ProjectDetailsStep addNewProject={addNewProject} isSubmittingNewProject={isSubmittingNewProject} newProject={newProject} handleCloseModal={handleCloseModal} stepper={stepper} />,
-                    projectImages: () => <ProjectImagesUploadStep newProject={newProject} handleCloseModal={handleCloseModal} />,
+                    projectImages: () => <ProjectImagesUploadStep newProject={newProject} handleCloseModal={handleCloseModal} stepper={stepper} />,
                     completed: () => <div className="flex flex-col justify-center items-center py-6 gap-y-2">
 
                         <Check className="w-1/4 h-auto rounded-full  text-success " />

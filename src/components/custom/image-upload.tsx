@@ -22,13 +22,19 @@ import {
 // import { toast } from "@/components/ui/use-toast";
 import { toast } from "sonner"
 import { useFormContext } from "react-hook-form";
+import useSendRequest from "@/hooks/api/use-send-request";
+import { SendRequest } from "@/helper/api/types"
+import { ReqOptions } from "@/helper/api/types";
+import { ApiResFuncArgs } from "@/helper/api/types";
+import { FullPageLoader } from "@/hooks/app/types";
 
-
-
-
+// Write types
 type ImageUplaod = {
     // Change this and add to filed the correct types
     // form: any,
+    sendRequesProps: any,
+    newProject: any
+    // stepper: any
     maxImageSize: number
     maxImagesSlots: number
     // handleDroppingImages: any,
@@ -46,13 +52,21 @@ type ImageUplaod = {
     imagePlaceHolderIcon?: React.ReactNode
 }
 
-
+// Write types
 type ImageWithCoverKey = File & {
+    isUploaded?: boolean
+    isUploading?: boolean
     cover?: boolean
 }
 
-export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon }: ImageUplaod) {
+export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon, newProject, sendRequesProps }: ImageUplaod) {
     console.log("fieldd", field)
+
+    const { resData: uploadedImage, sendRequest: uploadOneImage } = sendRequesProps
+
+
+    // Add types to this hook using generic types `TS`
+
 
     const { setValue, watch, getValues, setError, clearErrors } = useFormContext()
     // const { setValue, watch, getValues, setError, clearErrors } = form
@@ -221,8 +235,7 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
             // Add cover key to each image object in uploadedImagesArray
             // Here i want to mark all of them to be as `false` as there is already existing images and one of them is set to cover image
             newUploadedImages = uploadedImagesArray.map((uploadedImage) => {
-                Object.assign(uploadedImage, { cover: false });
-                Object.assign(uploadedImage, { isUploading: false });
+                Object.assign(uploadedImage, { cover: false, isUploading: false, isUploaded: false });
                 return uploadedImage
             })
 
@@ -248,13 +261,12 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
             // Add cover key to each image object in uploadedImagesArray
             newUploadedImages = uploadedImagesArray.map((uploadedImage, index) => {
                 // If the it is the first image in the array then mark it as a cover image
-                Object.assign(uploadedImage, { isUploading: false });
                 if (index === 0) {
-                    Object.assign(uploadedImage, { cover: true });
+                    Object.assign(uploadedImage, { cover: true, isUploading: false, isUploaded: false });
                     return uploadedImage
                 } else {
                     // If not then it is not a cover image
-                    Object.assign(uploadedImage, { cover: false });
+                    Object.assign(uploadedImage, { cover: false, isUploading: false, isUploaded: false });
                     return uploadedImage
                 }
             })
@@ -266,10 +278,50 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
 
         onChange(newUploadedImages)
 
+        newUploadedImages.map((newImage) => {
+            handleUploadingImage(newImage)
+        })
+
+
+    }
+
+    const handleUploadingImage = (image: ImageWithCoverKey) => {
+
+        console.log("imagex", image)
+
+        if (!image?.isUploaded) {
+            // Write comments
+            const formData = new FormData();
+            formData.append('image', image);
+
+            Object.assign(image, { isUploading: true });
+
+
+            // Write type of newProject coming after create the new project
+            const reqOptions: ReqOptions = { method: "POST", url: `/admin/projects/store-image/${newProject?.data?.id}`, header: { 'Content-Type': 'multipart/form-data' }, data: formData }
+
+            const apiResFuncArgs: ApiResFuncArgs = {
+                successCallback: (res: any) => {
+                    Object.assign(image, { isUploading: false, isUploaded: true });
+                }, errorCallBack: (res: any) => {
+                    Object.assign(image, { isUploading: false, isUploaded: false });
+                }
+            }
+
+            uploadOneImage({ reqOptions, apiResFuncArgs })
+
+            // const finalCallback = () => {
+            //     Object.assign(image, { isUploading: false });
+            // }
+
+        }
     }
 
     const test = watch()
     console.log("test", test)
+    console.log("uploadedImage", uploadedImage)
+
+
 
 
 
@@ -352,14 +404,13 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
 
                         if (getValues("images").find((_, index) => index === i)) {
                             return (
-                                <div key={i} className={`relative flex bg-muted justify-center items-center aspect-square w-full  rounded-lg group overflow-hidden transform transition duration-300 ease-in-out hover:-translate-y-3 hover:drop-shadow-lg `}>
+                                <div key={i} className={`relative flex bg-muted justify-center items-center aspect-square w-full  rounded-lg group overflow-hidden transform transition duration-300 ease-in-out hover:-translate-y-3 hover:drop-shadow-lg ${getValues("images")[i]?.isUploading ? "motion-safe:animate-bounce" : ""}`}>
 
                                     <img src={URL.createObjectURL(getValues("images")[i])} alt="" className="" />
 
                                     {getValues("images")[i]?.isUploading
                                         ? (
-                                            <div className="absolute h-full w-full z-40 bg-muted-foreground/60 inset-0 flex flex-col justify-center items-center gap-y-2">
-
+                                            <div className={`absolute h-full w-full z-40 bg-muted-foreground/60 inset-0 flex flex-col justify-center items-center gap-y-2 `}>
                                                 <Loader className="animate-spin z-50 text-primary-800 w-1/3 h-1/3" />
                                                 <div className="text-nowrap flex z-50">
                                                     <span className="text-xs text-primary-800 font-semibold italic">Uploading</span>
@@ -369,7 +420,6 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
                                         )
                                         : (
                                             <>
-
                                                 <Button type="button" size="sm" variant="outline" className="absolute top-2 right-2 w-max h-max p-1 block md:hidden group-hover:block"
                                                     onClick={() => handleRemovingImage(getValues("images")[i]?.name || "")}
                                                 >
