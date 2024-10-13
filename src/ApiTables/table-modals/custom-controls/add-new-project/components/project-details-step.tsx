@@ -60,10 +60,14 @@ const newProjectSchema = z
             .positive()
             .gte(1, { message: "Acres should at least be 1" })
             .lte(1000, { message: "Acres should not exceed 1000" }),
-        contractor_company: z
-            .string(),
+        contractor_company_id: z
+            .coerce
+            .number(),
+        // .promise(z.coerce.number()),
         destination_id: z
-            .string(),
+            .coerce
+            .number(),
+        // .promise(z.coerce.number()),
         status: z
             .string(),
     })
@@ -75,91 +79,103 @@ export default function ProjectDetailsStep({ handleCloseModal }: any) {
 
     // const stepper = useStepper();
 
+    const { resData: newProject, isLoading: isSubmittingNewProject, sendRequest: addNewProject } = useSendRequest();
+
+    console.log("newProject", newProject)
+
     // See how to add types to this
-    const [contractors, setContractors] = React.useState([{ value: "1", label: "Emaar" }, { value: "2", label: "Amer Group" }, { value: "3", label: "New Address" }, { value: "4", label: "Nawy" }, { value: "5", label: "Madint Masr" }])
+    const [contractors, setContractors] = React.useState<{ id: number, name: string }[]>([])
 
     // See how to add types 
-    const [destinations, setDestinations] = React.useState([{ value: "1", label: "Alamin" }, { value: "2", label: "fNew Cairo" }, { value: "3", label: "fifth" }, { value: "4", label: "Nasr City" }, { value: "5", label: "Misr Elgededah" }])
+    const [destinations, setDestinations] = React.useState<{ id: number, name: string }[]>([])
+    const getAllContractors = async () => {
+
+        try {
+
+            const contractorsRes = await axiosPrivate("/client/contract-company/get-all")
+
+            handleApiSuccess(contractorsRes?.data, false, '', () => {
+                console.log("contractorsRes?.data", contractorsRes?.data)
+                setContractors(contractorsRes?.data?.data)
+            })
+
+            return contractorsRes?.data?.data
+
+        } catch (error) {
+            if (axios.isAxiosError(error) || error instanceof Error) {
+                handleApiError(error)
+
+            }
+
+        }
+    }
+
+    const getAllDestinations = async () => {
+
+        try {
+
+            const destinationsRes = await axiosPrivate("/client/destination/get-all")
+
+            handleApiSuccess(destinationsRes?.data, false, '', () => {
+                console.log("destinationsRes?.data", destinationsRes?.data)
+                setDestinations(destinationsRes?.data?.data)
+            })
+
+            return destinationsRes?.data?.data
 
 
+
+        } catch (error) {
+            if (axios.isAxiosError(error) || error instanceof Error) {
+                handleApiError(error)
+
+            }
+
+        }
+    }
+    const defaultValues: NewProjectSchema = {
+        name: "",
+        delivery_time: new Date(),
+        acres: 0,
+        status: "active",
+        contractor_company_id: async () => {
+            const contractors = await getAllContractors();
+            return contractors[0]?.id || 1;
+        },
+        destination_id: async () => {
+            const destinations = await getAllDestinations();
+            return destinations[0]?.id || 1;
+        }
+    };
     const form = useForm<NewProjectSchema>({
         resolver: zodResolver(newProjectSchema),
         defaultValues: {
-            name: "",
-            delivery_time: new Date(),
-            // images: [],
-            acres: 0,
-            status: "active",
-            contractor_company: contractors[0]?.value,
-            destination_id: destinations[0]?.value
+            ...defaultValues,
+            contractor_company_id: contractors[0]?.id || 1,
+            destination_id: destinations[0]?.id || 1,
         }
     })
 
-    // const { handleSubmit, register, control, setValue, resetField, watch, getValues, setError, clearErrors, formState: { dirtyFields } } = form
 
 
-
-    // const {resData, isLoading, sendRequest} = useSendRequest();
-
-    // React.useEffect(() => {
-
-    //     const getAllContractors = async () => {
-
-    //         try {
-
-    //             const contractorsRes = await axiosPrivate("/client/contract-company")
-
-    //             handleApiSuccess(contractorsRes?.data, false, '', () => {
-    //                 console.log("contractorsRes?.data", contractorsRes?.data)
-    //                 // setContractors()
-    //             })
+    console.log("form.watch()", form.watch())
 
 
-
-    //         } catch (error) {
-    //             if (axios.isAxiosError(error) || error instanceof Error) {
-    //                 handleApiError(error)
-
-    //             }
-
-    //         }
-    //     }
-
-    //     const getAllDestinations = async () => {
-
-    //         try {
-
-    //             const destinationsRes = await axiosPrivate("/client/destination")
-
-    //             handleApiSuccess(destinationsRes?.data, false, '', () => {
-    //                 console.log("destinationsRes?.data", destinationsRes?.data)
-    //                 // setContractors()
-    //             })
-
-
-
-    //         } catch (error) {
-    //             if (axios.isAxiosError(error) || error instanceof Error) {
-    //                 handleApiError(error)
-
-    //             }
-
-    //         }
-    //     }
-
-    //     getAllContractors()
-
-    //     getAllDestinations()
-
-
-    // }, [])
+    React.useEffect(() => {
+        getAllContractors()
+        getAllDestinations()
+    }, [])
 
 
 
     const onSubmit = (data: NewProjectSchema) => {
 
         const formatedData = { ...data, delivery_time: formatDateToMMYYYY(data.delivery_time) }
+
         console.log("formatedData", formatedData)
+        const reqOptions = { method: "POST", url: "/admin/projects", data: formatedData }
+        // const apiResFuncArgs = { method: "POST", url: "/admin/projects", date: formatedData }
+        addNewProject({ reqOptions })
 
 
         // Formate the date to "MM-YYYY" before submitting
@@ -283,7 +299,7 @@ export default function ProjectDetailsStep({ handleCloseModal }: any) {
                         <div className="space-y-2 w-full max-w-sm">
                             <FormField
                                 control={form.control}
-                                name='contractor_company'
+                                name='contractor_company_id'
                                 render={({ field }) => (
                                     <FormItem className='space-y-1'>
                                         <div className="flex items-center space-x-2"> <FormLabel>Contractor Company</FormLabel><BriefcaseBusiness className="h-5 w-5 text-secondary" />
