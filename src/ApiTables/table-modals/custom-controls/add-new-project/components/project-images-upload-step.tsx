@@ -37,8 +37,8 @@ import { defineStepper } from '@stepperize/react';
 
 
 
-
-export default function ProjectImagesUploadStep({ handleCloseModal }: any) {
+// Write types
+export default function ProjectImagesUploadStep({ newProject, handleCloseModal }: any) {
 
     const form = useForm<any>({
         defaultValues: {
@@ -46,6 +46,7 @@ export default function ProjectImagesUploadStep({ handleCloseModal }: any) {
         }
     })
 
+    console.log("newProject", newProject)
     const onSubmit = (data: any) => {
 
         console.log("data", data)

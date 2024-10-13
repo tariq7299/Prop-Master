@@ -36,7 +36,7 @@ export default function Sidebar({
   return (
     <aside
       className={cn(
-        `fixed left-0 right-0 top-0 z-50 w-full border-r-2 border-r-muted transition-[width] md:bottom-0 md:right-auto md:h-svh ${isCollapsed ? 'md:w-14' : 'md:w-64'}`,
+        `fixed left-0 right-0 top-0 z-40 w-full border-r-2 border-r-muted transition-[width] md:bottom-0 md:right-auto md:h-svh ${isCollapsed ? 'md:w-14' : 'md:w-64'}`,
         className
       )}
     >
@@ -50,7 +50,7 @@ export default function Sidebar({
         {/* Header */}
         <Layout.Header
           sticky
-          className='z-50 flex justify-between px-4 py-3 shadow-sm md:px-4 '
+          className='z-40 flex justify-between px-4 py-3 shadow-sm md:px-4 '
         >
           {isCollapsed
             ? (
@@ -102,7 +102,7 @@ export default function Sidebar({
           onClick={() => setIsCollapsed((prev) => !prev)}
           size='icon'
           variant='outline'
-          className='absolute -right-5 top-1/2 z-50 hidden rounded-full md:inline-flex'
+          className='absolute -right-5 top-1/2 z-40 hidden rounded-full md:inline-flex'
         >
           <IconChevronsLeft
             stroke={1.5}

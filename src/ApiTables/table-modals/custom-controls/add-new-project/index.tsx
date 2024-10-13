@@ -5,15 +5,17 @@ import { defineStepper } from '@stepperize/react';
 import ProjectDetailsStep from "./components/project-details-step";
 import ProjectImagesUploadStep from "./components/project-images-upload-step";
 import { Check } from 'lucide-react';
+import useSendRequest from "@/hooks/api/use-send-request";
 
 
 
-const { useStepper, steps } = defineStepper(
+const { useStepper, Scoped, steps } = defineStepper(
     { id: 'proejctDetails', label: 'Project Details' },
     { id: 'projectImages', label: 'Project Images' },
     { id: 'completed', label: 'Completed' }
 );
 
+// Write types
 export default function AddNewProject({ handleCloseModal }: any) {
 
     const stepper = useStepper();
@@ -28,10 +30,13 @@ export default function AddNewProject({ handleCloseModal }: any) {
         }
     }, [stepper.current.id])
 
+    // Write comments
+    const { resData: newProject, isLoading: isSubmittingNewProject, sendRequest: addNewProject } = useSendRequest();
+
 
 
     return (
-        <>
+        <Scoped>
             <nav aria-label="Checkout Steps" className="group my-4">
                 <ol
                     className="flex items-center justify-between gap-2 overflow-auto no-scrollbar "
@@ -71,8 +76,8 @@ export default function AddNewProject({ handleCloseModal }: any) {
             </nav>
             <div className="space-y-4 overflow-auto">
                 {stepper.switch({
-                    proejctDetails: () => <ProjectDetailsStep handleCloseModal={handleCloseModal} />,
-                    projectImages: () => <ProjectImagesUploadStep handleCloseModal={handleCloseModal} />,
+                    proejctDetails: () => <ProjectDetailsStep addNewProject={addNewProject} isSubmittingNewProject={isSubmittingNewProject} newProject={newProject} handleCloseModal={handleCloseModal} stepper={stepper} />,
+                    projectImages: () => <ProjectImagesUploadStep newProject={newProject} handleCloseModal={handleCloseModal} />,
                     completed: () => <div className="flex flex-col justify-center items-center py-6 gap-y-2">
 
                         <Check className="w-1/4 h-auto rounded-full  text-success " />
@@ -105,6 +110,6 @@ export default function AddNewProject({ handleCloseModal }: any) {
                 )
                 }
             </div>
-        </>
+        </Scoped>
     )
 }

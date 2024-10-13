@@ -41,6 +41,7 @@ import { Combobox } from "@/components/custom/combobox";
 
 
 
+
 const newProjectSchema = z
     .object({
         name: z
@@ -75,11 +76,12 @@ const newProjectSchema = z
 type NewProjectSchema = z.infer<typeof newProjectSchema>
 
 
-export default function ProjectDetailsStep({ handleCloseModal }: any) {
+export default function ProjectDetailsStep({ handleCloseModal, addNewProject, isSubmittingNewProject, newProject, stepper }: any) {
+
 
     // const stepper = useStepper();
 
-    const { resData: newProject, isLoading: isSubmittingNewProject, sendRequest: addNewProject } = useSendRequest();
+
 
     console.log("newProject", newProject)
 
@@ -174,8 +176,14 @@ export default function ProjectDetailsStep({ handleCloseModal }: any) {
 
         console.log("formatedData", formatedData)
         const reqOptions = { method: "POST", url: "/admin/projects", data: formatedData }
-        // const apiResFuncArgs = { method: "POST", url: "/admin/projects", date: formatedData }
-        addNewProject({ reqOptions })
+        const apiResFuncArgs = {
+            successCallback: (res: any) => {
+                stepper.next()
+            }
+        }
+        const fullPageLoader = { isLoading: true, loadingMsg: "Saving Project...", loadingIconName: "3dLoader" }
+        addNewProject({ reqOptions, fullPageLoader, apiResFuncArgs })
+
 
 
         // Formate the date to "MM-YYYY" before submitting
@@ -278,6 +286,7 @@ export default function ProjectDetailsStep({ handleCloseModal }: any) {
 
                         <div className="space-y-2 w-full max-w-sm">
                             <FormField
+
                                 control={form.control}
                                 name='acres'
                                 render={({ field }) => (
@@ -385,7 +394,7 @@ export default function ProjectDetailsStep({ handleCloseModal }: any) {
 
                     {/* Modal Footer */}
                     <div className="fixed bottom-0 right-0 p-4 pt-3 bg-background w-full flex  justify-end sm:space-x-2 gap-2 ">
-                        <Button type="submit" >Add Project</Button>
+                        <Button loading={isSubmittingNewProject} disabled={isSubmittingNewProject} type="submit" >Add Project</Button>
                         <Button type="button" onClick={handleCloseModal} variant="outline">Cancel</Button>
                     </div>
                 </form>
