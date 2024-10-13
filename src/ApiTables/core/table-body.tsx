@@ -87,6 +87,11 @@ function TableBody() {
                                         justifyContent: 'center', padding: "1rem"
                                     }
                                 },
+                                headRow: {
+                                    style: {
+                                        backgroundColor: "hsl(var(--background))",
+                                    },
+                                },
 
                             }
                         }
