@@ -304,9 +304,9 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
 
             const apiResFuncArgs: ApiResFuncArgs = {
                 successCallback: (res: any) => {
-                    Object.assign(image, { isUploading: false, isUploaded: true });
+                    // Object.assign(image, { isUploading: false, isUploaded: true });
                 }, errorCallBack: (res: any) => {
-                    Object.assign(image, { isUploading: false, isUploaded: false });
+                    // Object.assign(image, { isUploading: false, isUploaded: false });
                 }
             }
 
@@ -410,11 +410,11 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
 
                                     {getValues("images")[i]?.isUploading
                                         ? (
-                                            <div className={`absolute h-full w-full z-40 bg-muted-foreground/60 inset-0 flex flex-col justify-center items-center gap-y-2 `}>
-                                                <Loader className="animate-spin z-50 text-primary-800 w-1/3 h-1/3" />
+                                            <div className={`absolute h-full w-full z-40 bg-muted-foreground/80 dark:bg-muted/60 inset-0 flex flex-col justify-center items-center gap-y-2 `}>
+                                                <Loader className="animate-spin z-50 text-primary-500 w-1/3 h-1/3" />
                                                 <div className="text-nowrap flex z-50">
-                                                    <span className="text-xs text-primary-800 font-semibold italic">Uploading</span>
-                                                    <Ellipsis className="animate-pulse  text-primary-800  " />
+                                                    <span className="text-xs text-primary-500 font-semibold italic">Uploading</span>
+                                                    <Ellipsis className="animate-pulse  text-primary-500  " />
                                                 </div>
                                             </div>
                                         )
