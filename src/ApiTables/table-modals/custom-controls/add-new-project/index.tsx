@@ -21,6 +21,7 @@ export default function AddNewProject({ handleCloseModal }: any) {
     const stepper = useStepper();
 
     // Create an array of refs using useRef
+    // Write types
     const stepsRefs = React.useRef(Array.from({ length: stepper.all.length }, () => React.createRef()));
 
 

@@ -60,7 +60,7 @@ type ImageWithCoverKey = File & {
 }
 
 export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon, newProject, sendRequesProps }: ImageUplaod) {
-    console.log("fieldd", field)
+    // console.log("fieldd", field)
 
     const { resData: uploadedImage, sendRequest: uploadOneImage } = sendRequesProps
 
@@ -73,7 +73,7 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
 
     const validateMaxNubmerOfImages = (existingImages: ImageWithCoverKey[], uploadedImagesArray: File[], uploadedImageCount: number, existingImageCount: number): File[] => {
 
-        console.log("uploadedImagesArray", uploadedImagesArray)
+        // console.log("uploadedImagesArray", uploadedImagesArray)
 
         // This the number of free images slots left
         const freeImagesSlots = maxImagesSlots - existingImageCount
@@ -239,7 +239,7 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
                 return uploadedImage
             })
 
-            console.log("newUploadedImages", newUploadedImages)
+            // console.log("newUploadedImages", newUploadedImages)
 
             // This will filter `uploadedImagesArray` to see if any image inside it has been already uploaded before
 
@@ -287,12 +287,14 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
 
     const handleUploadingImage = (image: ImageWithCoverKey) => {
 
-        console.log("imagex", image)
+        // console.log("imagex", image)
 
         if (!image?.isUploaded) {
             // Write comments
             const formData = new FormData();
             formData.append('image', image);
+
+            console.log("formData", formData)
 
             Object.assign(image, { isUploading: true });
 
@@ -318,8 +320,8 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
     }
 
     const test = watch()
-    console.log("test", test)
-    console.log("uploadedImage", uploadedImage)
+    // console.log("test", test)
+    // console.log("uploadedImage", uploadedImage)
 
 
 
@@ -355,8 +357,8 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
                                             <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">{imagePlaceHolderText}</p>
                                         </div>
                                     </TooltipTrigger>
-                                    <TooltipContent className="bg-warning text-forground border-2">
-                                        <p>Drag and drop images here</p>
+                                    <TooltipContent className="bg-warning text-warning-700 border-2">
+                                        <p className="text-wrap">Drag and drop images here, supported files(.png, .jpg, jpeg)</p>
                                     </TooltipContent>
                                 </Tooltip>
 
@@ -385,8 +387,6 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
                                 <Upload className="mr-2 h-4 w-4" />
                                 Select Files
                                 <Input {...field} value={field.value.fileName} onChange={(e) => {
-                                    console.log(e)
-                                    console.log(e.target.files)
                                     // field.onChange(Array.from(e.target.files))
                                     handleImagesChange(e.target.files, field.onChange)
                                 }} id="file-input" type="file" multiple className="hidden" accept="image/png, image/jpg, image/jpeg" />

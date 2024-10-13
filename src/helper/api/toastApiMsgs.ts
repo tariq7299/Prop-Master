@@ -28,9 +28,6 @@ function toastApiMsgs(messages: Messages, toastType: ToastType,
     };
 
 
-    console.log("toastType", toastType)
-    console.log("titles[toastType].length", titles[toastType].length)
-
     const randomTitle = titles[toastType][Math.floor(Math.random() * titles[toastType].length)];
 
     const defaultVariant: ToastVariant =
@@ -39,10 +36,6 @@ function toastApiMsgs(messages: Messages, toastType: ToastType,
                 toastType === 'info' ? 'info' :
                     toastType === 'warning' ? 'warning' :
                         'message';
-
-    console.log("toast[toastVariant || defaultVariant]", toastVariant || defaultVariant)
-    console.log("randomTitle", randomTitle)
-    console.log("defaultVariant", defaultVariant)
 
     // Handle single string error
     if (typeof messages === 'string') {

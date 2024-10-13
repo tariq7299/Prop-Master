@@ -109,7 +109,7 @@ export default function ProjectImagesUploadStep({ newProject, handleCloseModal, 
 
                 {/* Modal Footer */}
                 <div className="fixed bottom-0 right-0 p-4 pt-3 bg-background w-full flex  justify-end sm:space-x-2 gap-2 ">
-                    <Button disabled={isSubmittingImage} type="submit" >Add Project Images</Button>
+                    <Button disabled={isSubmittingImage || !form.formState.isDirty} type="submit" >Add Project Images</Button>
                     <Button type="button" onClick={handleCloseModal} variant="outline">Cancel</Button>
                 </div>
             </form>

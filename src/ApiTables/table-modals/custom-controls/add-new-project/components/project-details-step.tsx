@@ -90,6 +90,7 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
 
     // See how to add types 
     const [destinations, setDestinations] = React.useState<{ id: number, name: string }[]>([])
+
     const getAllContractors = async () => {
 
         try {
@@ -135,6 +136,7 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
 
         }
     }
+
     const defaultValues: NewProjectSchema = {
         name: "",
         delivery_time: new Date(),
@@ -157,6 +159,7 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
             destination_id: destinations[0]?.id || 1,
         }
     })
+
 
 
 
@@ -394,7 +397,7 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
 
                     {/* Modal Footer */}
                     <div className="fixed bottom-0 right-0 p-4 pt-3 bg-background w-full flex  justify-end sm:space-x-2 gap-2 ">
-                        <Button loading={isSubmittingNewProject} disabled={isSubmittingNewProject} type="submit" >Add Project</Button>
+                        <Button loading={isSubmittingNewProject} disabled={isSubmittingNewProject || !form.formState.isDirty} type="submit" >Add Project</Button>
                         <Button type="button" onClick={handleCloseModal} variant="outline">Cancel</Button>
                     </div>
                 </form>

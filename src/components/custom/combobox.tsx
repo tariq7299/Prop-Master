@@ -45,7 +45,7 @@ import { useFormContext } from "react-hook-form"
 // ]
 
 
-
+// Write Types
 export function Combobox({ values, field, className }) {
     const [open, setOpen] = React.useState(false)
     // const [value, setValue] = React.useState("")
@@ -72,7 +72,6 @@ export function Combobox({ values, field, className }) {
             </PopoverTrigger>
             <PopoverContent className=" p-0">
                 <Command filter={(value, search) => {
-                    // console.log("value.id", value)
                     const valueLabel = values.find((v) => v?.id === value)?.name
                     if (valueLabel && valueLabel.toLowerCase().trim().includes(search?.toLowerCase().trim())) {
                         return 1
