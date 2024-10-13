@@ -40,6 +40,7 @@ import { defineStepper } from '@stepperize/react';
 // Write types
 export default function ProjectImagesUploadStep({ newProject, handleCloseModal }: any) {
 
+    // Write types
     const form = useForm<any>({
         defaultValues: {
             images: [],

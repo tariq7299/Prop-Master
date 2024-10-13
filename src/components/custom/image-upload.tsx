@@ -11,7 +11,7 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form'
-import { X, Upload } from 'lucide-react';
+import { X, Upload, Loader, Ellipsis } from 'lucide-react';
 import {
     Tooltip,
     TooltipContent,
@@ -222,6 +222,7 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
             // Here i want to mark all of them to be as `false` as there is already existing images and one of them is set to cover image
             newUploadedImages = uploadedImagesArray.map((uploadedImage) => {
                 Object.assign(uploadedImage, { cover: false });
+                Object.assign(uploadedImage, { isUploading: false });
                 return uploadedImage
             })
 
@@ -247,6 +248,7 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
             // Add cover key to each image object in uploadedImagesArray
             newUploadedImages = uploadedImagesArray.map((uploadedImage, index) => {
                 // If the it is the first image in the array then mark it as a cover image
+                Object.assign(uploadedImage, { isUploading: false });
                 if (index === 0) {
                     Object.assign(uploadedImage, { cover: true });
                     return uploadedImage
@@ -265,6 +267,11 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
         onChange(newUploadedImages)
 
     }
+
+    const test = watch()
+    console.log("test", test)
+
+
 
     return (
         <TooltipProvider>
@@ -320,6 +327,7 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
                             )}
                         />
                     </div> */}
+                        {/* Write types */}
                         <div className="flex justify-end">
                             <label htmlFor="file-input" className="button button-sm">
                                 <Upload className="mr-2 h-4 w-4" />
@@ -344,22 +352,40 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
 
                         if (getValues("images").find((_, index) => index === i)) {
                             return (
-                                <div key={i} className="flex justify-center items-center aspect-square w-full bg-muted rounded-lg relative group overflow-hidden transform transition duration-300 ease-in-out hover:-translate-y-3 hover:drop-shadow-lg">
+                                <div key={i} className={`relative flex bg-muted justify-center items-center aspect-square w-full  rounded-lg group overflow-hidden transform transition duration-300 ease-in-out hover:-translate-y-3 hover:drop-shadow-lg `}>
 
                                     <img src={URL.createObjectURL(getValues("images")[i])} alt="" className="" />
 
-                                    <Button type="button" size="sm" variant="outline" className="absolute top-2 right-2 w-max h-max p-1 block md:hidden group-hover:block"
-                                        onClick={() => handleRemovingImage(getValues("images")[i]?.name || "")}
-                                    >
-                                        <X className="h-3 w-3 md:h-4 md:w-4 text-destructive" />
-                                    </Button>
+                                    {getValues("images")[i]?.isUploading
+                                        ? (
+                                            <div className="absolute h-full w-full z-40 bg-muted-foreground/60 inset-0 flex flex-col justify-center items-center gap-y-2">
 
-                                    {
-                                        getValues("images")[i]?.cover ? (
+                                                <Loader className="animate-spin z-50 text-primary-800 w-1/3 h-1/3" />
+                                                <div className="text-nowrap flex z-50">
+                                                    <span className="text-xs text-primary-800 font-semibold italic">Uploading</span>
+                                                    <Ellipsis className="animate-pulse  text-primary-800  " />
+                                                </div>
+                                            </div>
+                                        )
+                                        : (
                                             <>
-                                                <div className="bg-primary w-full absolute bottom-4 left-[-25px]  text-background font-bold text-2xs md:text-xs text-center rotate-45 tracking-widest " ><p>COVER</p></div>
-                                            </>) : (
-                                            <Button size="sm" type="button" variant="default" className="block md:hidden group-hover:block absolute bottom-2 w-max h-max px-2 text-2xs py-1 " onClick={() => handleSetImageAsCover(getValues("images")[i]?.name || "")}>Set as cover</Button>)
+
+                                                <Button type="button" size="sm" variant="outline" className="absolute top-2 right-2 w-max h-max p-1 block md:hidden group-hover:block"
+                                                    onClick={() => handleRemovingImage(getValues("images")[i]?.name || "")}
+                                                >
+                                                    <X className="h-3 w-3 md:h-4 md:w-4 text-destructive " />
+
+                                                </Button>
+
+                                                {getValues("images")[i]?.cover ? (
+                                                    <>
+                                                        <div className="bg-primary w-full absolute bottom-4 left-[-25px]  text-background font-bold text-2xs md:text-xs text-center rotate-45 tracking-widest " ><p>COVER</p></div>
+                                                    </>
+                                                ) : (
+                                                    <Button size="sm" type="button" variant="default" className="block md:hidden group-hover:block absolute bottom-2 w-max h-max px-2 text-2xs py-1 " onClick={() => handleSetImageAsCover(getValues("images")[i]?.name || "")}>Set as cover</Button>
+                                                )}
+                                            </>
+                                        )
                                     }
                                 </div>
                             )
@@ -367,8 +393,9 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
 
                             return (
                                 // <div className="">
-                                <Button key={i} type="button" className="h-full  flex justify-center items-center aspect-square w-full bg-muted hover:bg-muted/50 rounded-lg transform transition duration-300 ease-in-out hover:-translate-y-3 hover:drop-shadow-lg" variant="ghost" onClick={() => { document.getElementById("file-input")?.click() }}>
+                                <Button key={i} type="button" className=" h-full  flex justify-center items-center aspect-square w-full bg-muted hover:bg-muted/50 rounded-lg transform transition duration-300 ease-in-out hover:-translate-y-3 hover:drop-shadow-lg" variant="ghost" onClick={() => { document.getElementById("file-input")?.click() }}>
                                     {imagePlaceHolderIcon}
+
                                 </Button>
                                 // </div>
 
