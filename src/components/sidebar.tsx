@@ -5,9 +5,9 @@ import { Button } from './custom/button'
 import Nav from './nav'
 import { cn } from '@/lib/utils'
 import { sidelinks } from '@/data/sidelinks'
-import PropMasterLogo from './custom/prop-master'
-import PropMasterLogo2 from './custom/prop-master-logo'
-import PropMasterLogoOnly2 from './custom/prop-master-logo-slogan'
+// import PropMasterLogo from './custom/prop-master'
+import PropMasterLogoSlogan from './custom/prop-master-logo-slogan'
+import PropMasterLogo from './custom/prop-master-logo'
 
 
 
@@ -55,7 +55,7 @@ export default function Sidebar({
           {isCollapsed
             ? (
               <div className={`flex items-center w-full`}>
-                <PropMasterLogoOnly2 className='max-w-[50px] ' />
+                <PropMasterLogo className='max-w-[50px] ' />
               </div>
             )
             // THis will appear/be showd when User is on mobile view or he has collabsed the side bar when on desktop view
@@ -63,10 +63,10 @@ export default function Sidebar({
               <>
 
                 <div className="w-full hidden md:block p-6">
-                  <PropMasterLogo2 />
+                  <PropMasterLogoSlogan />
                 </div>
                 <div className="flex items-center md:hidden max-w-[50px]  ">
-                  <PropMasterLogoOnly2 className='  w-full h-auto object-contain' />
+                  <PropMasterLogo className='  w-full h-auto object-contain' />
                 </div>
               </>
             )

@@ -11,6 +11,7 @@ import { useTableBulkActions } from "../table-providers/bulk-actions-provider.ts
 import { useTableRowActions } from "../table-providers/row-actions-provider.tsx";
 import ExpandedRow from "./expanded-row.tsx";
 import { ArrowUpDown } from 'lucide-react'
+import { Skeleton } from "@/components/ui/skeleton.tsx";
 
 function TableBody() {
     const { bulkActions } = useTableBulkActions()

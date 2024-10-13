@@ -9,8 +9,14 @@
   :root {
 
     /* All of this part is fixed in light and dark themes */
+
     /* Custom CSS Variables */
-    --custom-color-1: 210 100% 12%;
+
+    --logo-500: 155 17% 30%;
+    --logo-600: 152 16% 18%;
+    --logo-foreground: 0 0% 100%;
+    --logo: var(--logo-500);
+
     --header-height: 4rem;
 
     /* Primary Shades */
