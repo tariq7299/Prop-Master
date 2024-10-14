@@ -1,21 +1,22 @@
 import { UserAuthForm } from './components/user-auth-form'
 import ViteLogo from '@/assets/vite.svg'
 import PropMasterLogoOnlny from '@/assets/prop-master-high-resolution-logo-white-transparent.svg'
-import PropMasterLogoOnly2 from '@/components/custom/prop-master-logo'
-import PropMasterLogo2 from '@/components/custom/prop-master-logo-slogan'
+import PropMasterLogo from '@/components/custom/prop-master-logo'
+import PropMasterLogoSlogan from '@/components/custom/prop-master-logo-slogan'
 
 export default function SignIn() {
   return (
     <>
       <div className='container relative grid h-svh flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0'>
 
-        <div className='relative hidden h-full flex-col bg-muted p-10  dark:border-r lg:flex'>
+        <div className='relative hidden h-full flex-col bg-background p-10   lg:flex'>
 
           {/* <div className='absolute  items-center justify-center ' /> */}
 
           <div className=' z-20 flex items-center text-lg font-medium gap-4 w-[70%] m-auto bg-back'>
 
-            <PropMasterLogoOnly2 className=' w-full ' />
+            <PropMasterLogo className=' w-full' />
+            {/* <PropMasterLogo className=' w-full ' /> */}
 
             {/* <img
               src={PropMasterLogo}
@@ -39,7 +40,8 @@ export default function SignIn() {
         </div>
 
         <div className='block lg:hidden'>
-          <PropMasterLogo2 />
+          {/* <PropMasterLogoSlogan /> */}
+          <PropMasterLogoSlogan />
 
         </div>
 

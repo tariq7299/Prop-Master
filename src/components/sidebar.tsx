@@ -12,6 +12,7 @@ import PropMasterLogo from './custom/prop-master-logo'
 
 
 
+
 interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
   isCollapsed: boolean
   setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>
