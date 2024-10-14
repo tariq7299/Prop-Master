@@ -304,9 +304,9 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
 
             const apiResFuncArgs: ApiResFuncArgs = {
                 successCallback: (res: any) => {
-                    // Object.assign(image, { isUploading: false, isUploaded: true });
+                    Object.assign(image, { isUploading: false, isUploaded: true });
                 }, errorCallBack: (res: any) => {
-                    // Object.assign(image, { isUploading: false, isUploaded: false });
+                    Object.assign(image, { isUploading: false, isUploaded: false });
                 }
             }
 

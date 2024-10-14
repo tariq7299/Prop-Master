@@ -38,7 +38,7 @@ export default function AddNewProject({ handleCloseModal }: any) {
 
     return (
         <Scoped>
-            <nav aria-label="Checkout Steps" className="group my-4">
+            <nav aria-label="Checkout Steps" className="group my-3 md:my-4">
                 <ol
                     className="flex items-center justify-between gap-2 overflow-auto no-scrollbar snap-x px-4 snap-mandatory "
                     aria-orientation="horizontal"

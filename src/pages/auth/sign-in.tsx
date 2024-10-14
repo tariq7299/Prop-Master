@@ -7,13 +7,13 @@ import PropMasterLogoSlogan from '@/components/custom/prop-master-logo-slogan'
 export default function SignIn() {
   return (
     <>
-      <div className='container relative grid h-svh flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0'>
+      <div className='container relative grid h-svh flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0 bg-background'>
 
-        <div className='relative hidden h-full flex-col bg-background p-10   lg:flex'>
+        <div className='relative hidden h-full flex-col bg-background p-10 lg:flex'>
 
           {/* <div className='absolute  items-center justify-center ' /> */}
 
-          <div className=' z-20 flex items-center text-lg font-medium gap-4 w-[70%] m-auto bg-back'>
+          <div className=' z-20 flex items-center text-lg font-medium gap-4 w-[70%] m-auto bg-background'>
 
             <PropMasterLogo className=' w-full' />
             {/* <PropMasterLogo className=' w-full ' /> */}
@@ -46,7 +46,7 @@ export default function SignIn() {
         </div>
 
 
-        <div className='lg:p-8 '>
+        <div className='lg:p-8 bg-background'>
           <div className='mx-auto flex w-full flex-col justify-center space-y-2 sm:w-[350px]'>
             <div className='flex flex-col space-y-2 text-left'>
               <h1 className='text-2xl font-semibold tracking-tight'>Login</h1>

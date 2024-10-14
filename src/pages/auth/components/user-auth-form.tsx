@@ -48,19 +48,21 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className='grid gap-2'>
             <FormField
+              disabled={isLoading.status}
               control={form.control}
               name='email'
               render={({ field }) => (
                 <FormItem className='space-y-1'>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder='tariq.7299@example.com' {...field} />
+                    <Input placeholder='admin@gmail.com...' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <FormField
+              disabled={isLoading.status}
               control={form.control}
               name='password'
               render={({ field }) => (
