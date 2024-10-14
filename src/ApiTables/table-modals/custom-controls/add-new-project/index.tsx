@@ -12,7 +12,7 @@ import useSendRequest from "@/hooks/api/use-send-request";
 const { useStepper, Scoped, steps } = defineStepper(
     { id: 'proejctDetails', label: 'Project Details' },
     { id: 'projectImages', label: 'Project Images' },
-    { id: 'completed', label: 'Completed' }
+    { id: 'completed', label: 'Completed' },
 );
 
 // Write types
@@ -40,12 +40,12 @@ export default function AddNewProject({ handleCloseModal }: any) {
         <Scoped>
             <nav aria-label="Checkout Steps" className="group my-4">
                 <ol
-                    className="flex items-center justify-between gap-2 overflow-auto no-scrollbar "
+                    className="flex items-center justify-between gap-2 overflow-auto no-scrollbar snap-x px-4 snap-mandatory "
                     aria-orientation="horizontal"
                 >
                     {stepper.all.map((step, index, array) => (
                         <React.Fragment key={step.id}>
-                            <li className="flex items-center gap-4 flex-shrink-0" ref={stepsRefs.current[index]}>
+                            <li className="snap-always snap-center flex items-center gap-4 flex-shrink-0" ref={stepsRefs.current[index]}>
                                 <Button
                                     type="button"
                                     role="tab"
@@ -67,7 +67,7 @@ export default function AddNewProject({ handleCloseModal }: any) {
                             </li>
                             {index < array.length - 1 && (
                                 <Separator
-                                    className={`flex-shrink flex-grow w-20 ${index < stepper.current.index ? 'bg-primary' : 'bg-muted'
+                                    className={`flex-shrink flex-grow md:w-20 ${index < stepper.current.index ? 'bg-primary' : 'bg-muted'
                                         }`}
                                 />
                             )}
