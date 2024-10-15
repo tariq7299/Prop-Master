@@ -10,7 +10,7 @@ import { useTableNewRowActions } from "./table-providers/new-row-actions-provide
 // import useAuth from "../hooks/useAuth"
 
 function ApiTablesController({ table, params, customElement }: any) {
-    // const { appAuth } = useAuth()
+    // const { appAuth } = useAut
     // const { accessibilitySettings } = useApp()
     const { bulkActionsDispatcher } = useTableBulkActions()
     const { appliedFilters, currentPage, tableSorting, pageSize, tableCoreDispatcher, tableName } = useTableCore()
