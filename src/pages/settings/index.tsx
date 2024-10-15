@@ -19,7 +19,6 @@ export default function Settings() {
     <Layout fixed>
       {/* ===== Top Heading ===== */}
       <Layout.Header>
-        <Search />
         <div className='ml-auto flex items-center space-x-4'>
           <ThemeSwitch />
           <UserNav />

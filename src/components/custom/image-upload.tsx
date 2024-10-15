@@ -282,12 +282,10 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
             handleUploadingImage(newImage)
         })
 
-
     }
 
     const handleUploadingImage = (image: ImageWithCoverKey) => {
 
-        // console.log("imagex", image)
 
         if (!image?.isUploaded) {
             // Write comments

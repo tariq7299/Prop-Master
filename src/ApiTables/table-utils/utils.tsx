@@ -225,7 +225,6 @@ export function restructureSelectedFilters(data: any, dirtyFields: any, structur
         }
     })
 
-    console.log("rrenderedFilters", renderedFilters)
     return renderedFilters
 }
 

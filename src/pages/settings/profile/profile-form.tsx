@@ -31,20 +31,21 @@ export default function ProfileForm() {
   const { isLoading: isSubmittingNewProfileInfo, sendRequest: changeProfileInfo } = useSendRequest();
   const { isLoading: isSubmittingNewPassword, sendRequest: changePassword } = useSendRequest();
 
-  const adminDataResponse = useLoaderData() as SuccessApiResponse | Error;
+  // This was used to fetch the user using loader function found in 115:router.tsx.
+  // const adminDataResponse = useLoaderData() as SuccessApiResponse | Error;
 
   // If the response wasn't succesfull then render an Error Page
-  if (!('success' in adminDataResponse)) {
-    return <GeneralError />;
-  }
+  // if (!('success' in adminDataResponse)) {
+  // return <GeneralError />;
+  // }
 
-  useEffect(() => {
-    if (('user' in adminDataResponse.data)) {
-      setUser({ ...adminDataResponse?.data?.user })
-    } else {
-      setUser(defaultUserValue)
-    }
-  }, [adminDataResponse])
+  // useEffect(() => {
+  //   if (('user' in adminDataResponse.data)) {
+  //     setUser({ ...adminDataResponse?.data?.user })
+  //   } else {
+  //     setUser(defaultUserValue)
+  //   }
+  // }, [adminDataResponse])
 
   const defaultValues: PersonalFormValues = {
     name: user.name,
@@ -61,8 +62,14 @@ export default function ProfileForm() {
 
   const passwordInfoForm = useForm<PasswordFormValues>({
     resolver: zodResolver(passwordFormSchema),
+    defaultValues: {
+      current_password: '',
+      password: '',
+      password_confirmation: '',
+    },
     mode: 'onChange',
   })
+
 
   function handleSubmittingPersonalInfo(data: PersonalFormValues) {
 
@@ -96,6 +103,7 @@ export default function ProfileForm() {
           <div className='space-y-8 pb-8'>
 
             <FormField
+              disabled={isSubmittingNewProfileInfo}
               control={personalInfoForm.control}
               name='name'
               render={({ field }) => (
@@ -113,6 +121,7 @@ export default function ProfileForm() {
             />
 
             <FormField
+              disabled={isSubmittingNewProfileInfo}
               control={personalInfoForm.control}
               name='email'
               render={({ field }) => (
@@ -129,6 +138,7 @@ export default function ProfileForm() {
               )}
             />
             <FormField
+              disabled={isSubmittingNewProfileInfo}
               control={personalInfoForm.control}
               name='phone_number'
               render={({ field }) => (
@@ -146,6 +156,7 @@ export default function ProfileForm() {
             />
 
             <FormField
+              disabled={isSubmittingNewProfileInfo}
               control={personalInfoForm.control}
               name='company'
               render={({ field }) => (
@@ -162,7 +173,7 @@ export default function ProfileForm() {
               )}
             />
           </div>
-          <Button loading={isSubmittingNewProfileInfo} type='submit'>Update personal info</Button>
+          <Button disabled={!personalInfoForm.formState.isDirty} loading={isSubmittingNewProfileInfo} type='submit'>Update personal info</Button>
         </form>
       </Form>
 
@@ -171,6 +182,7 @@ export default function ProfileForm() {
 
           <div className="space-y-5 pb-8">
             <FormField
+              disabled={isSubmittingNewPassword}
               control={passwordInfoForm.control}
               name='current_password'
               render={({ field }) => (
@@ -184,6 +196,7 @@ export default function ProfileForm() {
               )}
             />
             <FormField
+              disabled={isSubmittingNewPassword}
               control={passwordInfoForm.control}
               name='password'
               render={({ field }) => (
@@ -197,6 +210,7 @@ export default function ProfileForm() {
               )}
             />
             <FormField
+              disabled={isSubmittingNewPassword}
               control={passwordInfoForm.control}
               name='password_confirmation'
               render={({ field }) => (
@@ -211,7 +225,7 @@ export default function ProfileForm() {
             />
           </div>
 
-          <Button loading={isSubmittingNewPassword} type='submit'>Change password</Button>
+          <Button disabled={!passwordInfoForm.formState.isDirty} loading={isSubmittingNewPassword} type='submit'>Change password</Button>
         </form>
       </Form>
     </>

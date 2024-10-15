@@ -112,8 +112,8 @@ const router = createBrowserRouter([
                 lazy: async () => ({
                   Component: (await import('./pages/settings/profile')).default,
                 }),
-                loader: async () => await
-                  handleGettingRouteData("/auth/get-user-data", false)
+                // loader: async () => await
+                // handleGettingRouteData("/auth/get-user-data", false)
               },
               {
                 path: 'account',

@@ -35,7 +35,7 @@ function ApiTablesController({ table, params, customElement }: any) {
     useEffect(() => {
         bulkActionsDispatcher({ type: 'GET_STRUCTURE_BULK_ACTIONS', payload: table?.bulkActions })
         tableCoreDispatcher({ type: 'GET_TABLE_COMPONENTS', payload: { ...table } })
-        bulkActionsDispatcher({ type: 'GET_STRUCTURE_BULK_ACTIONS', payload: table?.bulkActions })
+        // bulkActionsDispatcher({ type: 'GET_STRUCTURE_BULK_ACTIONS', payload: table?.bulkActions })
         rowActionsDispatcher({ type: 'GET_STRUCTURE_ROW_ACTIONS', payload: flattenMultiCellsActions(table?.rowActions) })
         newRowActionsDispatcher({ type: 'EXTRACT_NEW_ROW_ACTIONS', payload: flattenMultiCellsActions(table?.newRowActions) })
         if (checkActionsInRegularCells(table?.rowActions)) {
@@ -56,7 +56,9 @@ function ApiTablesController({ table, params, customElement }: any) {
 
 
     useEffect(() => {
+
         const controller = new AbortController();
+
         if (tableName) {
             tableFetchingHandler({
                 tableName, currentPage, pageSize, appliedFilters, tableSorting, signal: controller.signal, params
@@ -66,7 +68,8 @@ function ApiTablesController({ table, params, customElement }: any) {
         return () => {
             controller.abort()
         }
-    }, [/*appAuth*/, tableName, currentPage, pageSize, appliedFilters, tableSorting])
+
+    }, [tableName, currentPage, pageSize, appliedFilters, tableSorting])
 
 
     return <ApiTablesComponent customElement={customElement} />

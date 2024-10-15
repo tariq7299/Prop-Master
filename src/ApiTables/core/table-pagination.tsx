@@ -10,9 +10,9 @@ function TablePagination() {
     const { tablePagination, currentPage, tableCoreDispatcher } = useTableCore()
 
     function setCurrentPageHandler(link: any) {
-        if (link?.label?.includes('الصفحة التالية')) {
+        if (link?.label?.includes('Next')) {
             tableCoreDispatcher({ type: 'SET_CURRENT_PAGE', payload: currentPage + 1 })
-        } else if (link?.label?.includes('الصفحة السابقة')) {
+        } else if (link?.label?.includes('Previous')) {
             tableCoreDispatcher({ type: 'SET_CURRENT_PAGE', payload: currentPage - 1 })
         } else {
             tableCoreDispatcher({ type: 'SET_CURRENT_PAGE', payload: Number(link?.label) })

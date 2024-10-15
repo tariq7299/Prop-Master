@@ -61,7 +61,6 @@ function tableRowActionsReducer(state: any, action: any) {
         }
     }
     if (action.type === 'GET_CUSTOM_CONTROL_REQUEST') {
-        console.log("action in dispatch", action)
         return {
             ...state,
             customControlAction: action?.payload

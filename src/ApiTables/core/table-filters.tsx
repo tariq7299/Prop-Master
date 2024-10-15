@@ -150,12 +150,12 @@ function TableFilters() {
                                                         name={`${filter?.filter_name}.fieldValue`}
 
                                                         render={({ field }) => (
-                                                            <FormItem className=''>
+                                                            <FormItem className={` ${renderOperator(filter) ? ' z-20' : ''}`}>
                                                                 <FormLabel className='text-muted-foreground'>{filter?.label}</FormLabel>
                                                                 <FormControl>
                                                                     <Select defaultValue="" value={field?.value} onValueChange={field.onChange}
                                                                     >
-                                                                        <SelectTrigger className={`w-full ${renderOperator(filter) ? 'border-r-0 rounded-r-none z-20' : ''}`}>
+                                                                        <SelectTrigger className={`w-full ${renderOperator(filter) ? 'border-r-0 rounded-r-none' : ''}`}>
                                                                             <SelectValue placeholder="Choose">
                                                                             </SelectValue>
                                                                         </SelectTrigger>
@@ -181,10 +181,10 @@ function TableFilters() {
                                                         name={`${filter?.filter_name}.fieldValue`}
                                                         defaultValue=""
                                                         render={({ field }) => (
-                                                            <FormItem className=' w-full'>
+                                                            <FormItem className={`w-full ${renderOperator(filter) ? ' z-20' : ''}`}>
                                                                 <FormLabel className='text-muted-foreground'>{filter?.label}</FormLabel>
                                                                 <FormControl>
-                                                                    <Input  {...field} className={`w-full ${renderOperator(filter) ? 'border-r-0 rounded-r-none z-20' : ''}`} type={filter?.type} id={filter?.label} placeholder={filter?.label} />
+                                                                    <Input  {...field} className={`w-full ${renderOperator(filter) ? 'border-r-0 rounded-r-none' : ''}`} type={filter?.type} id={filter?.label} placeholder={filter?.label} />
                                                                 </FormControl>
                                                                 <FormMessage />
                                                             </FormItem>
@@ -200,10 +200,10 @@ function TableFilters() {
                                                         name={`${filter?.filter_name}.fieldValue`}
                                                         defaultValue=""
                                                         render={({ field }) => (
-                                                            <FormItem className=' w-full'>
+                                                            <FormItem className={`w-full ${renderOperator(filter) ? ' z-20' : ''}`}>
                                                                 <FormLabel className='text-muted-foreground'>{filter?.label}</FormLabel>
                                                                 <FormControl>
-                                                                    <Input {...field} className={`w-full ${renderOperator(filter) ? 'border-r-0 rounded-r-none z-20' : ''}`} type="text" id={filter?.label} placeholder={filter?.label} />
+                                                                    <Input {...field} className={`w-full ${renderOperator(filter) ? 'border-r-0 rounded-r-none ' : ''}`} type="text" id={filter?.label} placeholder={filter?.label} />
                                                                 </FormControl>
                                                                 <FormMessage />
                                                             </FormItem>
@@ -222,7 +222,7 @@ function TableFilters() {
                                                         {/* <FormLabel className='text-muted-foreground'>{filter?.label}</FormLabel> */}
                                                         <FormControl>
                                                             <Select onValueChange={field.onChange} defaultValue={getOperators(filter)[0]} >
-                                                                <SelectTrigger className={`${(renderOperator(filter) && filter?.type !== 'select' && filter?.type !== 'null' && filter?.type !== 'boolean') ? 'w-fit border-l-0 rounded-l-none bg-muted text-xs font-light' : 'hidden'}`}>
+                                                                <SelectTrigger className={`${(renderOperator(filter) && filter?.type !== 'select' && filter?.type !== 'null' && filter?.type !== 'boolean') ? 'w-fit border-l-0 rounded-l-none bg-muted text-xs font-light z-20' : 'hidden'}`}>
                                                                     <SelectValue placeholder="Choose" />
                                                                 </SelectTrigger>
                                                                 <SelectContent>

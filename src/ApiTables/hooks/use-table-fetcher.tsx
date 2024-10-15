@@ -8,14 +8,12 @@ import tablesItems from "../../pages/projects/data/tableItems.ts"
 import tablesPagenation from "../../pages/projects/data/tablesPagenation.ts"
 import { axiosPrivate } from "@/helper/api/axiosInstances.ts"
 
-const useTableFetcher = () => {
+function useTableFetcher() {
     // const { axiosPrivate } = useAuth()
     const { tableCoreDispatcher } = useTableCore()
     const { tableColumnsDispatcher, toggledClearRows } = useTableColumns()
 
     async function tableFetchingHandler({ tableName, signal, pageSize, currentPage, appliedFilters, tableSorting, params }: any) {
-
-        console.log("appliedFilters", appliedFilters)
 
         tableCoreDispatcher({ type: 'SET_TABLE_LOADING', payload: true })
         tableColumnsDispatcher({ type: 'SET_SELECTED_ROWS', payload: [] })
@@ -31,12 +29,11 @@ const useTableFetcher = () => {
                     sorts: tableSorting,
                     ...(params ? { params } : {}),
                 },
-                signal
+                // signal
             })
 
             // Make Backend send success key from backend and remove the following line !
             const newData = { ...response?.data, success: true }
-
 
 
             handleApiSuccess(newData, false, '', () => {

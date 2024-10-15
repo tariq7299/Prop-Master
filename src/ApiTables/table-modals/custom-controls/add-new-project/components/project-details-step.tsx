@@ -81,10 +81,6 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
 
     // const stepper = useStepper();
 
-
-
-    console.log("newProject", newProject)
-
     // See how to add types to this
     const [contractors, setContractors] = React.useState<{ id: number, name: string }[]>([])
 
@@ -98,7 +94,6 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
             const contractorsRes = await axiosPrivate("/client/contract-company/get-all")
 
             handleApiSuccess(contractorsRes?.data, false, '', () => {
-                console.log("contractorsRes?.data", contractorsRes?.data)
                 setContractors(contractorsRes?.data?.data)
             })
 
@@ -120,7 +115,6 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
             const destinationsRes = await axiosPrivate("/client/destination/get-all")
 
             handleApiSuccess(destinationsRes?.data, false, '', () => {
-                console.log("destinationsRes?.data", destinationsRes?.data)
                 setDestinations(destinationsRes?.data?.data)
             })
 
@@ -160,10 +154,6 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
         }
     })
 
-
-
-
-    console.log("form.watch()", form.watch())
 
 
     React.useEffect(() => {
