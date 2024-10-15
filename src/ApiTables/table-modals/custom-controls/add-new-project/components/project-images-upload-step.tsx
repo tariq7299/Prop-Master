@@ -104,6 +104,47 @@ export default function ProjectImagesUploadStep({ newProject, handleCloseModal, 
         }
     }
 
+    // Write logic if any image is pending or failed
+
+    const test = [
+        {
+            "cover": false,
+            "uploadingStatus": "succeeded"
+        },
+        {
+            "cover": false,
+            "uploadingStatus": "succeeded"
+        },
+        {
+            "cover": false,
+            "uploadingStatus": "succeeded"
+        },
+        {
+            "cover": true,
+            "uploadingStatus": "succeeded"
+        }
+    ]
+
+    const images = form.getValues("images")
+
+    // Write types
+    const oneImageHasFailedUploading = React.useMemo(() => images.some((image) => image.uploadingStatus === "failed") && images.length > 0, [images])
+
+    const oneImageAtLeastIsUploading = React.useMemo(() => images.some((image) => image.uploadingStatus === "uploading") && images.length > 0, [images])
+
+    const allImagesHasBeenUploaded = React.useMemo(() => !images.some((image) => image.uploadingStatus !== "succeeded") && images.length > 0, [images])
+
+    const oneImageHasBeenUploaded = React.useMemo(() => images.some((image) => image.uploadingStatus === "succeeded") && images.length > 0, [images])
+
+    const defaultImagesStatus = React.useMemo(() => !oneImageHasFailedUploading && !oneImageAtLeastIsUploading && !allImagesHasBeenUploaded && !oneImageHasBeenUploaded, [images])
+
+
+    console.log("oneImageHasFailedUploading", oneImageHasFailedUploading)
+    console.log("oneImageAtLeastIsUploading", oneImageAtLeastIsUploading)
+    console.log("allImagesHasBeenUploaded", allImagesHasBeenUploaded)
+    console.log("defaultImagesStatus", defaultImagesStatus)
+
+    console.log("IMAGES", form.getValues("images"))
 
 
 
@@ -152,9 +193,23 @@ export default function ProjectImagesUploadStep({ newProject, handleCloseModal, 
                 </div >
 
                 {/* Modal Footer */}
-                <div className="fixed bottom-0 right-0 p-2 pt-3 bg-background w-full flex  justify-end sm:space-x-2 gap-2">
-                    <Button disabled={isSubmittingImage || !form.formState.isDirty} type="submit" >Add Project Images</Button>
-                    <Button type="button" onClick={handleCloseModal} variant="outline">Cancel</Button>
+                <div className="fixed bottom-0 right-0 p-2 pt-3 bg-background w-full flex  justify-end gap-2">
+
+                    {((images.length > 0)) && (
+                        <Button disabled={isSubmittingImage || !form.formState.isDirty} type="submit" variant="secondary" >
+                            {oneImageHasFailedUploading ? "Retry uploading" : "Upload Images"}
+                        </Button>
+                    )}
+
+                    <Button disabled={isSubmittingImage || !form.formState.isDirty || !oneImageHasBeenUploaded} type="submit" >
+                        {(oneImageHasFailedUploading && oneImageHasBeenUploaded && (images.length > 0))
+                            ?
+                            "Skip"
+                            :
+                            "Finish"
+                        }
+                    </Button>
+
                 </div>
             </form>
         </Form >
