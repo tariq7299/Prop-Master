@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/select";
 import { useForm, useFormContext } from "react-hook-form";
 import { Button } from "@/components/custom/button";
-import { CirclePlus, Building2, Image, CalendarClock, Activity, LandPlot, Warehouse, MapPinHouse, ImagePlus } from 'lucide-react';
+import { CirclePlus, Building2, Image, CalendarClock, BadgeCheck, Activity, LandPlot, Warehouse, MapPinHouse, ImagePlus } from 'lucide-react';
 import {
     Form,
     FormControl,
@@ -34,11 +34,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { formatDateToMMYYYY } from '@/helper/utils/dateUtils';
 import { Separator } from '@/components/ui/separator';
 import { defineStepper } from '@stepperize/react';
+import { SendRequest } from "@/helper/api/types"
+import { ReqOptions } from "@/helper/api/types";
+import { ApiResFuncArgs } from "@/helper/api/types";
+import { FullPageLoader } from "@/hooks/app/types";
 
 
 
 // Write types
 export default function ProjectImagesUploadStep({ newProject, handleCloseModal, stepper }: any) {
+
+
 
     // Write types
     const form = useForm<any>({
@@ -47,10 +53,12 @@ export default function ProjectImagesUploadStep({ newProject, handleCloseModal, 
         }
     })
 
-    console.log("newProject", newProject)
     const onSubmit = (data: any) => {
 
-        console.log("data", data)
+        const newUploadedImages = data?.images
+        newUploadedImages.map((newImage) => {
+            handleUploadingImage(newImage)
+        })
 
     }
 
@@ -61,6 +69,69 @@ export default function ProjectImagesUploadStep({ newProject, handleCloseModal, 
 
     const sendRequesProps = useSendRequest();
     const { resData: uploadedImage, isLoading: isSubmittingImage, sendRequest: uploadOneImage } = sendRequesProps
+
+    const handleUploadingImage = (image: ImageWithCoverKey) => {
+
+
+        if (image?.uploadingStatus !== "succeeded") {
+
+            // Write comments
+            const formData = new FormData();
+            formData.append('image', image);
+            formData.append('is_cover', image?.isCover);
+
+            Object.assign(image, { uploadingStatus: "uploading" });
+
+
+            // Write type of newProject coming after create the new project
+            const reqOptions: ReqOptions = { method: "POST", url: `/admin/projects/store-image/${newProject?.data?.id}`, header: { 'Content-Type': 'multipart/form-data' }, data: formData }
+
+            const apiResFuncArgs: ApiResFuncArgs = {
+                successCallback: (res: any) => {
+                    Object.assign(image, { uploadingStatus: "succeeded" });
+                }, errorCallBack: (res: any) => {
+                    Object.assign(image, { uploadingStatus: "failed" });
+                }
+            }
+
+            uploadOneImage({ reqOptions, apiResFuncArgs })
+
+
+            // const finalCallback = () => {
+            //     Object.assign(image, { isUploading: false });
+            // }
+
+        }
+    }
+
+    // Write logic if any image is pending or failed
+
+
+    const images = form.getValues("images")
+    const imagesStatus = images.map((image) => image.uploadingStatus).join()
+
+
+    // Write types
+    // Write comments
+    // const oneImageAtLeastIsUploading = React.useMemo(() => images.some((image) => image.uploadingStatus === "uploading") && images.length > 0, [images, isSubmittingImage])
+
+
+
+    const oneImageHasFailedUploading = React.useMemo(() => images.some((image) => image.uploadingStatus === "failed") && images.length > 0, [images, imagesStatus])
+
+    const oneImageAtLeastIsUploading = React.useMemo(() => images.some((image) => image.uploadingStatus === "uploading") && images.length > 0, [images, imagesStatus])
+
+    const allImagesHasBeenUploaded = React.useMemo(() => !images.some((image) => image.uploadingStatus !== "succeeded") && images.length > 0, [images, imagesStatus])
+
+    const oneImageHasBeenUploaded = React.useMemo(() => images.some((image) => image.uploadingStatus === "succeeded") && images.length > 0, [images, imagesStatus])
+
+    // const isCoverImageHasBeenUploaded = React.useMemo(() => {
+    //     const coverImage = images.filter(image=>image.isCover)
+    //     coverImage.uploadingStatus
+
+    //     images.some((image) => image.uploadingStatus === "succeeded") && images.length > 0}, [images, imagesStatus])
+
+    const defaultImagesStatus = React.useMemo(() => !oneImageHasFailedUploading && !allImagesHasBeenUploaded && !oneImageHasBeenUploaded, [images, imagesStatus])
 
 
 
@@ -88,6 +159,7 @@ export default function ProjectImagesUploadStep({ newProject, handleCloseModal, 
                                         <ImageUpload
                                             sendRequesProps={sendRequesProps}
                                             // stepper={stepper}
+                                            handleUploadingImage={handleUploadingImage}
                                             newProject={newProject}
                                             maxImageSize={maxImageSize}
                                             maxImagesSlots={maxImagesSlots}
@@ -108,9 +180,23 @@ export default function ProjectImagesUploadStep({ newProject, handleCloseModal, 
                 </div >
 
                 {/* Modal Footer */}
-                <div className="fixed bottom-0 right-0 p-2 pt-3 bg-background w-full flex  justify-end sm:space-x-2 gap-2">
-                    <Button disabled={isSubmittingImage || !form.formState.isDirty} type="submit" >Add Project Images</Button>
-                    <Button type="button" onClick={handleCloseModal} variant="outline">Cancel</Button>
+                <div className="fixed bottom-0 right-0 p-2 pt-3 bg-background w-full flex  justify-end gap-2">
+
+                    {((images.length > 0 && !allImagesHasBeenUploaded)) && (
+                        <Button disabled={isSubmittingImage || !form.formState.isDirty || oneImageAtLeastIsUploading} type="submit" variant="secondary" >
+                            {oneImageHasFailedUploading ? "Retry uploading" : "Upload Images"}
+                        </Button>
+                    )}
+
+                    <Button disabled={isSubmittingImage || !form.formState.isDirty || !oneImageHasBeenUploaded || oneImageAtLeastIsUploading} type="button" onClick={() => stepper.next()}>
+                        {(oneImageHasFailedUploading && oneImageHasBeenUploaded && (images.length > 0))
+                            ?
+                            "Skip"
+                            :
+                            "Finish"
+                        }
+                    </Button>
+
                 </div>
             </form>
         </Form >

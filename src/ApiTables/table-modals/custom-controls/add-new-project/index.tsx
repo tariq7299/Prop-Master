@@ -36,6 +36,10 @@ export default function AddNewProject({ handleCloseModal }: any) {
 
 
 
+
+
+
+
     return (
         <Scoped>
             <nav aria-label="Checkout Steps" className="group my-3 md:my-4">

@@ -93,70 +93,11 @@ export default function AddNewProjectTmp({ handleCloseModal }) {
         }
     })
 
-    // const { handleSubmit, register, control, setValue, resetField, watch, getValues, setError, clearErrors, formState: { dirtyFields } } = form
-
-
-
-    // const {resData, isLoading, sendRequest} = useSendRequest();
-
-    // React.useEffect(() => {
-
-    //     const getAllContractors = async () => {
-
-    //         try {
-
-    //             const contractorsRes = await axiosPrivate("/client/contract-company")
-
-    //             handleApiSuccess(contractorsRes?.data, false, '', () => {
-    //                 console.log("contractorsRes?.data", contractorsRes?.data)
-    //                 // setContractors()
-    //             })
-
-
-
-    //         } catch (error) {
-    //             if (axios.isAxiosError(error) || error instanceof Error) {
-    //                 handleApiError(error)
-
-    //             }
-
-    //         }
-    //     }
-
-    //     const getAllDestinations = async () => {
-
-    //         try {
-
-    //             const destinationsRes = await axiosPrivate("/client/destination")
-
-    //             handleApiSuccess(destinationsRes?.data, false, '', () => {
-    //                 console.log("destinationsRes?.data", destinationsRes?.data)
-    //                 // setContractors()
-    //             })
-
-
-
-    //         } catch (error) {
-    //             if (axios.isAxiosError(error) || error instanceof Error) {
-    //                 handleApiError(error)
-
-    //             }
-
-    //         }
-    //     }
-
-    //     getAllContractors()
-
-    //     getAllDestinations()
-
-
-    // }, [])
 
     const onSubmit = (data: NewProjectSchema) => {
-
+        // Formate the date to "MM-YYYY" before submitting
         const formatedData = { ...data, delivery_time: formatDateToMMYYYY(data.delivery_time) }
         console.log("formatedData", formatedData)
-        // Formate the date to "MM-YYYY" before submitting
 
     }
 

@@ -11,7 +11,7 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form'
-import { X, Upload, Loader, Ellipsis } from 'lucide-react';
+import { X, Upload, Loader, Ellipsis, BadgeCheck, Trash2, Repeat2, BadgeAlert } from 'lucide-react';
 import {
     Tooltip,
     TooltipContent,
@@ -32,6 +32,7 @@ import { FullPageLoader } from "@/hooks/app/types";
 type ImageUplaod = {
     // Change this and add to filed the correct types
     // form: any,
+    handleUploadingImage: any,
     sendRequesProps: any,
     newProject: any
     // stepper: any
@@ -54,15 +55,15 @@ type ImageUplaod = {
 
 // Write types
 type ImageWithCoverKey = File & {
-    isUploaded?: boolean
-    isUploading?: boolean
-    cover?: boolean
+    // isUploaded?: boolean
+    // isUploading?: boolean
+    uploadingStatus: "pending" | "uploading" | "succeeded" | "failed"
+    isCover?: boolean
 }
 
-export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon, newProject, sendRequesProps }: ImageUplaod) {
-    // console.log("fieldd", field)
+export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon, newProject, sendRequesProps, handleUploadingImage }: ImageUplaod) {
 
-    const { resData: uploadedImage, sendRequest: uploadOneImage } = sendRequesProps
+    // const { resData: uploadedImage, sendRequest: uploadOneImage } = sendRequesProps
 
 
     // Add types to this hook using generic types `TS`
@@ -73,7 +74,6 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
 
     const validateMaxNubmerOfImages = (existingImages: ImageWithCoverKey[], uploadedImagesArray: File[], uploadedImageCount: number, existingImageCount: number): File[] => {
 
-        // console.log("uploadedImagesArray", uploadedImagesArray)
 
         // This the number of free images slots left
         const freeImagesSlots = maxImagesSlots - existingImageCount
@@ -168,10 +168,10 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
 
         const newImages = existingImages.map((existingImage) => {
             if (existingImage?.name === imageName) {
-                existingImage["cover"] = true
+                existingImage["isCover"] = true
                 return existingImage
             } else {
-                existingImage["cover"] = false
+                existingImage["isCover"] = false
                 return existingImage
             }
         })
@@ -187,11 +187,11 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
         const imageToRemove = existingImages.find(existingImage => existingImage.name === imageName)
 
         let newImages: ImageWithCoverKey[];
-        if (imageToRemove && imageToRemove.cover) {
+        if (imageToRemove && imageToRemove.isCover) {
             newImages = existingImages.filter((existingImage) => existingImage?.name !== imageToRemove.name)
             newImages = newImages.map((newImage, index) => {
                 if (index === 0) {
-                    newImage.cover = true
+                    newImage.isCover = true
                     return newImage
                 } else {
                     return newImage
@@ -232,14 +232,14 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
         // First check if existingImages has any images becasue if not just use the uploadedImagesArray directily !
         if (existingImages.length > 0) {
 
-            // Add cover key to each image object in uploadedImagesArray
-            // Here i want to mark all of them to be as `false` as there is already existing images and one of them is set to cover image
+            // Add isCover key to each image object in uploadedImagesArray
+            // Here i want to mark all of them to be as `false` as there is already existing images and one of them is set to isCover image
             newUploadedImages = uploadedImagesArray.map((uploadedImage) => {
-                Object.assign(uploadedImage, { cover: false, isUploading: false, isUploaded: false });
+                // Object.assign(uploadedImage, { isCover: false, isUploading: false, isUploaded: false });
+                Object.assign(uploadedImage, { isCover: false, uploadingStatus: "pending", });
                 return uploadedImage
             })
 
-            // console.log("newUploadedImages", newUploadedImages)
 
             // This will filter `uploadedImagesArray` to see if any image inside it has been already uploaded before
 
@@ -258,15 +258,17 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
 
             // This part of 'if' will be used if there is no existing images yet 
         } else {
-            // Add cover key to each image object in uploadedImagesArray
+            // Add isCover key to each image object in uploadedImagesArray
             newUploadedImages = uploadedImagesArray.map((uploadedImage, index) => {
-                // If the it is the first image in the array then mark it as a cover image
+                // If the it is the first image in the array then mark it as a isCover image
                 if (index === 0) {
-                    Object.assign(uploadedImage, { cover: true, isUploading: false, isUploaded: false });
+                    // Object.assign(uploadedImage, { isCover: true, isUploading: false, isUploaded: false });
+                    Object.assign(uploadedImage, { isCover: true, uploadingStatus: "pending", });
                     return uploadedImage
                 } else {
-                    // If not then it is not a cover image
-                    Object.assign(uploadedImage, { cover: false, isUploading: false, isUploaded: false });
+                    // If not then it is not a isCover image
+                    // Object.assign(uploadedImage, { isCover: false, isUploading: false, isUploaded: false });
+                    Object.assign(uploadedImage, { isCover: false, uploadingStatus: "pending", });
                     return uploadedImage
                 }
             })
@@ -278,51 +280,7 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
 
         onChange(newUploadedImages)
 
-        newUploadedImages.map((newImage) => {
-            handleUploadingImage(newImage)
-        })
-
     }
-
-    const handleUploadingImage = (image: ImageWithCoverKey) => {
-
-
-        if (!image?.isUploaded) {
-            // Write comments
-            const formData = new FormData();
-            formData.append('image', image);
-
-            console.log("formData", formData)
-
-            Object.assign(image, { isUploading: true });
-
-
-            // Write type of newProject coming after create the new project
-            const reqOptions: ReqOptions = { method: "POST", url: `/admin/projects/store-image/${newProject?.data?.id}`, header: { 'Content-Type': 'multipart/form-data' }, data: formData }
-
-            const apiResFuncArgs: ApiResFuncArgs = {
-                successCallback: (res: any) => {
-                    Object.assign(image, { isUploading: false, isUploaded: true });
-                }, errorCallBack: (res: any) => {
-                    Object.assign(image, { isUploading: false, isUploaded: false });
-                }
-            }
-
-            uploadOneImage({ reqOptions, apiResFuncArgs })
-
-            // const finalCallback = () => {
-            //     Object.assign(image, { isUploading: false });
-            // }
-
-        }
-    }
-
-    const test = watch()
-    // console.log("test", test)
-    // console.log("uploadedImage", uploadedImage)
-
-
-
 
 
     return (
@@ -402,21 +360,12 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
 
                         if (getValues("images").find((_, index) => index === i)) {
                             return (
-                                <div key={i} className={`relative flex bg-muted justify-center items-center aspect-square w-full  rounded-lg group overflow-hidden transform transition duration-300 ease-in-out hover:-translate-y-3 hover:drop-shadow-lg ${getValues("images")[i]?.isUploading ? "motion-safe:animate-bounce" : ""}`}>
+                                <div key={i} className={`relative flex bg-muted justify-center items-center aspect-square w-full  rounded-lg group overflow-hidden transform transition duration-300 ease-in-out hover:-translate-y-3 hover:drop-shadow-lg ${getValues("images")[i]?.uploadingStatus === "uploading" ? "motion-safe:animate-bounce" : ""}`}>
 
                                     <img src={URL.createObjectURL(getValues("images")[i])} alt="" className="" />
 
-                                    {getValues("images")[i]?.isUploading
+                                    {getValues("images")[i]?.uploadingStatus === "pending"
                                         ? (
-                                            <div className={`absolute h-full w-full z-40 bg-muted-foreground/80 dark:bg-muted/60 inset-0 flex flex-col justify-center items-center gap-y-2 `}>
-                                                <Loader className="animate-spin z-50 text-primary-500 w-1/3 h-1/3" />
-                                                <div className="text-nowrap flex z-50">
-                                                    <span className="text-xs text-primary-500 font-semibold italic">Uploading</span>
-                                                    <Ellipsis className="animate-pulse  text-primary-500  " />
-                                                </div>
-                                            </div>
-                                        )
-                                        : (
                                             <>
                                                 <Button type="button" size="sm" variant="outline" className="absolute top-2 right-2 w-max h-max p-1 block md:hidden group-hover:block"
                                                     onClick={() => handleRemovingImage(getValues("images")[i]?.name || "")}
@@ -425,16 +374,59 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
 
                                                 </Button>
 
-                                                {getValues("images")[i]?.cover ? (
-                                                    <>
-                                                        <div className="bg-primary w-full absolute bottom-4 left-[-25px]  text-background font-bold text-2xs md:text-xs text-center rotate-45 tracking-widest " ><p>COVER</p></div>
-                                                    </>
-                                                ) : (
-                                                    <Button size="sm" type="button" variant="default" className="block md:hidden group-hover:block absolute bottom-2 w-max h-max px-2 text-2xs py-1 " onClick={() => handleSetImageAsCover(getValues("images")[i]?.name || "")}>Set as cover</Button>
+                                                {!getValues("images")[i]?.isCover && (
+                                                    <Button size="sm" type="button" variant="default" className="block md:hidden group-hover:block absolute bottom-2 w-max h-max px-2 text-2xs py-1 " onClick={() => handleSetImageAsCover(getValues("images")[i]?.name || "")}>Set as isCover</Button>
                                                 )}
                                             </>
+
                                         )
+                                        : getValues("images")[i]?.uploadingStatus === "uploading" ?
+                                            (
+                                                <div className={`absolute h-full w-full z-40 bg-muted-foreground/80 dark:bg-muted/60 inset-0 flex flex-col justify-center items-center gap-y-2 `}>
+
+                                                    <Loader className="animate-spin z-50 text-primary-500 w-1/3 h-1/3" />
+                                                    <div className="text-nowrap flex z-50">
+                                                        <span className="text-xs text-primary-500 font-semibold italic">Uploading</span>
+                                                        <Ellipsis className="animate-pulse  text-primary-500  " />
+                                                    </div>
+                                                </div>
+                                            )
+                                            : getValues("images")[i]?.uploadingStatus === "succeeded" ?
+                                                (
+
+                                                    <div className={`absolute h-full w-full z-40 bg-muted-foreground/80 dark:bg-muted/60 inset-0 flex flex-col justify-center items-center gap-y-2 `}>
+                                                        {/* <Loader className="animate-spin z-50 text-primary-500 w-1/3 h-1/3" /> */}
+                                                        <BadgeCheck className="w-1/3 h-auto rounded-full  text-success z-50 " />
+                                                        <div className="text-nowrap flex z-50">
+                                                            <span className="text-xs text-success font-semibold">Uploaded</span>
+                                                        </div>
+                                                    </div>
+                                                ) : getValues("images")[i]?.uploadingStatus === "failed" ?
+                                                    (<div className={`absolute h-full w-full z-40 bg-muted-foreground/80 dark:bg-muted/60 inset-0 flex flex-col justify-center items-center gap-y-2 `}>
+
+                                                        <BadgeAlert className="w-1/4 h-auto rounded-full  text-destructive z-50 " />
+                                                        <div className="text-nowrap flex z-50">
+                                                            <span className="text-xs text-destructive font-semibold">Failed</span>
+                                                        </div>
+
+                                                        <div className="flex gap-x-2">
+                                                            <Button type="button" size="sm" variant="outline" className="p-x-1  text-xs h-7"
+                                                                onClick={() => handleRemovingImage(getValues("images")[i]?.name || "")}
+                                                            >
+                                                                <Trash2 className="h-3 w-3 md:h-4 md:w-4 text-destructive " />
+                                                            </Button>
+                                                            <Button type="button" size="sm" variant="outline" className="p-x-1  text-xs h-7"
+                                                                onClick={() => handleUploadingImage(getValues("images")[i])}
+                                                            >
+                                                                <Repeat2 className="h-3 w-3 md:h-4 md:w-4 text-destructive " />
+                                                            </Button>
+                                                        </div>
+                                                    </div>
+                                                    ) : (null)
                                     }
+                                    {getValues("images")[i]?.isCover && (
+                                        <div className="bg-primary w-full absolute bottom-4 left-[-25px]  text-background font-bold text-2xs md:text-xs text-center rotate-45 tracking-widest " ><p>COVER</p></div>
+                                    )}
                                 </div>
                             )
                         } else {
@@ -443,7 +435,6 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
                                 // <div className="">
                                 <Button key={i} type="button" className=" h-full  flex justify-center items-center aspect-square w-full bg-muted hover:bg-muted/50 rounded-lg transform transition duration-300 ease-in-out hover:-translate-y-3 hover:drop-shadow-lg" variant="ghost" onClick={() => { document.getElementById("file-input")?.click() }}>
                                     {imagePlaceHolderIcon}
-
                                 </Button>
                                 // </div>
 
