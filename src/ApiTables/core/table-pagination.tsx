@@ -33,7 +33,7 @@ function TablePagination() {
             </div>
 
             {tablePagination?.links?.length > 1 && (
-                <div className="flex overflow-scroll flex-wrap items-center justify-center lg:order-2">
+                <div className="flex overflow-x-auto flex-wrap items-center justify-center lg:order-2 no-scrollbar">
                     {
                         tablePagination?.links?.map((link: any, index: any) => {
                             return (
