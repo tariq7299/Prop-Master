@@ -29,7 +29,7 @@ function useTableFetcher() {
                     sorts: tableSorting,
                     ...(params ? { params } : {}),
                 },
-                // signal
+                signal
             })
 
             // Make Backend send success key from backend and remove the following line !

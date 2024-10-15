@@ -55,6 +55,13 @@ function ApiTablesController({ table, params, customElement }: any) {
     // }, [accessibilitySettings.tablePageSize])
 
 
+    const allFiltersValues = React.useMemo(() => {
+        return Object.keys(appliedFilters).map((filter) => {
+            return appliedFilters[filter]?.value
+        }).join()
+    }, [appliedFilters])
+
+
     useEffect(() => {
 
         const controller = new AbortController();
@@ -69,7 +76,7 @@ function ApiTablesController({ table, params, customElement }: any) {
             controller.abort()
         }
 
-    }, [tableName, currentPage, pageSize, appliedFilters, tableSorting])
+    }, [tableName, currentPage, pageSize, allFiltersValues, tableSorting])
 
 
     return <ApiTablesComponent customElement={customElement} />
