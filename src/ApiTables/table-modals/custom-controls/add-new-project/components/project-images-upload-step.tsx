@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/select";
 import { useForm, useFormContext } from "react-hook-form";
 import { Button } from "@/components/custom/button";
-import { CirclePlus, Building2, Image, CalendarClock, Activity, LandPlot, Warehouse, MapPinHouse, ImagePlus } from 'lucide-react';
+import { CirclePlus, Building2, Image, CalendarClock, BadgeCheck, Activity, LandPlot, Warehouse, MapPinHouse, ImagePlus } from 'lucide-react';
 import {
     Form,
     FormControl,
@@ -34,6 +34,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { formatDateToMMYYYY } from '@/helper/utils/dateUtils';
 import { Separator } from '@/components/ui/separator';
 import { defineStepper } from '@stepperize/react';
+import { SendRequest } from "@/helper/api/types"
+import { ReqOptions } from "@/helper/api/types";
+import { ApiResFuncArgs } from "@/helper/api/types";
+import { FullPageLoader } from "@/hooks/app/types";
 
 
 
@@ -51,6 +55,10 @@ export default function ProjectImagesUploadStep({ newProject, handleCloseModal, 
     const onSubmit = (data: any) => {
 
         console.log("data", data)
+        const newUploadedImages = data?.images
+        newUploadedImages.map((newImage) => {
+            handleUploadingImage(newImage)
+        })
 
     }
 
@@ -61,6 +69,42 @@ export default function ProjectImagesUploadStep({ newProject, handleCloseModal, 
 
     const sendRequesProps = useSendRequest();
     const { resData: uploadedImage, isLoading: isSubmittingImage, sendRequest: uploadOneImage } = sendRequesProps
+
+    const handleUploadingImage = (image: ImageWithCoverKey) => {
+
+
+        if (image?.uploadingStatus !== "succeeded") {
+            // Write comments
+            const formData = new FormData();
+            formData.append('image', image);
+            formData.append('is_cover', image?.cover);
+
+            console.log("formData", formData)
+
+            Object.assign(image, { uploadingStatus: "uploading" });
+
+
+            // Write type of newProject coming after create the new project
+            const reqOptions: ReqOptions = { method: "POST", url: `/admin/projects/store-image/${newProject?.data?.id}`, header: { 'Content-Type': 'multipart/form-data' }, data: formData }
+
+            const apiResFuncArgs: ApiResFuncArgs = {
+                successCallback: (res: any) => {
+                    Object.assign(image, { uploadingStatus: "succeeded" });
+                }, errorCallBack: (res: any) => {
+                    Object.assign(image, { uploadingStatus: "failed" });
+                }
+            }
+
+            uploadOneImage({ reqOptions, apiResFuncArgs })
+
+            // const finalCallback = () => {
+            //     Object.assign(image, { isUploading: false });
+            // }
+
+        }
+    }
+
+
 
 
 
