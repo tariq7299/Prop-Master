@@ -44,6 +44,8 @@ import { FullPageLoader } from "@/hooks/app/types";
 // Write types
 export default function ProjectImagesUploadStep({ newProject, handleCloseModal, stepper }: any) {
 
+
+
     // Write types
     const form = useForm<any>({
         defaultValues: {
@@ -51,7 +53,7 @@ export default function ProjectImagesUploadStep({ newProject, handleCloseModal, 
         }
     })
 
-    console.log("newProject", newProject)
+    // console.log("newProject", newProject)
     const onSubmit = (data: any) => {
 
         console.log("data", data)
@@ -74,6 +76,7 @@ export default function ProjectImagesUploadStep({ newProject, handleCloseModal, 
 
 
         if (image?.uploadingStatus !== "succeeded") {
+
             // Write comments
             const formData = new FormData();
             formData.append('image', image);
@@ -97,6 +100,7 @@ export default function ProjectImagesUploadStep({ newProject, handleCloseModal, 
 
             uploadOneImage({ reqOptions, apiResFuncArgs })
 
+
             // const finalCallback = () => {
             //     Object.assign(image, { isUploading: false });
             // }
@@ -106,45 +110,39 @@ export default function ProjectImagesUploadStep({ newProject, handleCloseModal, 
 
     // Write logic if any image is pending or failed
 
-    const test = [
-        {
-            "cover": false,
-            "uploadingStatus": "succeeded"
-        },
-        {
-            "cover": false,
-            "uploadingStatus": "succeeded"
-        },
-        {
-            "cover": false,
-            "uploadingStatus": "succeeded"
-        },
-        {
-            "cover": true,
-            "uploadingStatus": "succeeded"
-        }
-    ]
 
     const images = form.getValues("images")
+    const imagesStatus = images.map((image) => image.uploadingStatus).join()
+
+    console.log("imagesStatus", imagesStatus)
+
 
     // Write types
-    const oneImageHasFailedUploading = React.useMemo(() => images.some((image) => image.uploadingStatus === "failed") && images.length > 0, [images])
+    // Write comments
+    // const oneImageAtLeastIsUploading = React.useMemo(() => images.some((image) => image.uploadingStatus === "uploading") && images.length > 0, [images, isSubmittingImage])
 
-    const oneImageAtLeastIsUploading = React.useMemo(() => images.some((image) => image.uploadingStatus === "uploading") && images.length > 0, [images])
 
-    const allImagesHasBeenUploaded = React.useMemo(() => !images.some((image) => image.uploadingStatus !== "succeeded") && images.length > 0, [images])
 
-    const oneImageHasBeenUploaded = React.useMemo(() => images.some((image) => image.uploadingStatus === "succeeded") && images.length > 0, [images])
+    const oneImageHasFailedUploading = React.useMemo(() => images.some((image) => image.uploadingStatus === "failed") && images.length > 0, [images, imagesStatus])
 
-    const defaultImagesStatus = React.useMemo(() => !oneImageHasFailedUploading && !oneImageAtLeastIsUploading && !allImagesHasBeenUploaded && !oneImageHasBeenUploaded, [images])
+    const oneImageAtLeastIsUploading = React.useMemo(() => images.some((image) => image.uploadingStatus === "uploading") && images.length > 0, [images, imagesStatus])
+
+    const allImagesHasBeenUploaded = React.useMemo(() => !images.some((image) => image.uploadingStatus !== "succeeded") && images.length > 0, [images, imagesStatus])
+
+    const oneImageHasBeenUploaded = React.useMemo(() => images.some((image) => image.uploadingStatus === "succeeded") && images.length > 0, [images, imagesStatus])
+
+    const defaultImagesStatus = React.useMemo(() => !oneImageHasFailedUploading && !allImagesHasBeenUploaded && !oneImageHasBeenUploaded, [images, imagesStatus])
 
 
     console.log("oneImageHasFailedUploading", oneImageHasFailedUploading)
-    console.log("oneImageAtLeastIsUploading", oneImageAtLeastIsUploading)
     console.log("allImagesHasBeenUploaded", allImagesHasBeenUploaded)
     console.log("defaultImagesStatus", defaultImagesStatus)
+    console.log("oneImageHasBeenUploaded", oneImageHasBeenUploaded)
+    console.log("oneImageAtLeastIsUploading", oneImageAtLeastIsUploading)
 
-    console.log("IMAGES", form.getValues("images"))
+    // console.log("IMAGES", form.getValues("images"))
+
+    // Create a useEffect that will depend on images and image changing
 
 
 
@@ -195,13 +193,13 @@ export default function ProjectImagesUploadStep({ newProject, handleCloseModal, 
                 {/* Modal Footer */}
                 <div className="fixed bottom-0 right-0 p-2 pt-3 bg-background w-full flex  justify-end gap-2">
 
-                    {((images.length > 0)) && (
-                        <Button disabled={isSubmittingImage || !form.formState.isDirty} type="submit" variant="secondary" >
+                    {((images.length > 0 && !allImagesHasBeenUploaded)) && (
+                        <Button disabled={isSubmittingImage || !form.formState.isDirty || oneImageAtLeastIsUploading} type="submit" variant="secondary" >
                             {oneImageHasFailedUploading ? "Retry uploading" : "Upload Images"}
                         </Button>
                     )}
 
-                    <Button disabled={isSubmittingImage || !form.formState.isDirty || !oneImageHasBeenUploaded} type="submit" >
+                    <Button disabled={isSubmittingImage || !form.formState.isDirty || !oneImageHasBeenUploaded || oneImageAtLeastIsUploading} type="button" >
                         {(oneImageHasFailedUploading && oneImageHasBeenUploaded && (images.length > 0))
                             ?
                             "Skip"
