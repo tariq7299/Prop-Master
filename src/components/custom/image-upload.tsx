@@ -32,6 +32,7 @@ import { FullPageLoader } from "@/hooks/app/types";
 type ImageUplaod = {
     // Change this and add to filed the correct types
     // form: any,
+    handleUploadingImage: any,
     sendRequesProps: any,
     newProject: any
     // stepper: any
@@ -60,7 +61,7 @@ type ImageWithCoverKey = File & {
     cover?: boolean
 }
 
-export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon, newProject, sendRequesProps }: ImageUplaod) {
+export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon, newProject, sendRequesProps, handleUploadingImage }: ImageUplaod) {
     // console.log("fieldd", field)
 
     const { resData: uploadedImage, sendRequest: uploadOneImage } = sendRequesProps
@@ -437,7 +438,7 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
                                                                 <Trash2 className="h-3 w-3 md:h-4 md:w-4 text-destructive " />
                                                             </Button>
                                                             <Button type="button" size="sm" variant="outline" className="p-x-1  text-xs h-7"
-                                                                onClick={() => handleRemovingImage(getValues("images")[i]?.name || "")}
+                                                                onClick={() => handleUploadingImage(getValues("images")[i])}
                                                             >
                                                                 <Repeat2 className="h-3 w-3 md:h-4 md:w-4 text-destructive " />
                                                             </Button>
@@ -445,42 +446,9 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
                                                     </div>
                                                     ) : (null)
                                     }
-                                    {/* {getValues("images")[i]?.uploadingStatus === "uploading"
-                                        ? (
-                                            <div className={`absolute h-full w-full z-40 bg-muted-foreground/80 dark:bg-muted/60 inset-0 flex flex-col justify-center items-center gap-y-2 `}>
-                                                <Loader className="animate-spin z-50 text-primary-500 w-1/3 h-1/3" />
-                                                <div className="text-nowrap flex z-50">
-                                                    <span className="text-xs text-primary-500 font-semibold italic">Uploading</span>
-                                                    <Ellipsis className="animate-pulse  text-primary-500  " />
-                                                </div>
-                                            </div>
-                                        )
-                                        : getValues("images")[i]?.uploadingStatus === "pending" ?
-                                            (
-                                                <>
-                                                    <Button type="button" size="sm" variant="outline" className="absolute top-2 right-2 w-max h-max p-1 block md:hidden group-hover:block"
-                                                        onClick={() => handleRemovingImage(getValues("images")[i]?.name || "")}
-                                                    >
-                                                        <X className="h-3 w-3 md:h-4 md:w-4 text-destructive " />
-
-                                                    </Button>
-
-                                                    {getValues("images")[i]?.cover ? (
-                                                        <>
-                                                            <div className="bg-primary w-full absolute bottom-4 left-[-25px]  text-background font-bold text-2xs md:text-xs text-center rotate-45 tracking-widest " ><p>COVER</p></div>
-                                                        </>
-                                                    ) : (
-                                                        <Button size="sm" type="button" variant="default" className="block md:hidden group-hover:block absolute bottom-2 w-max h-max px-2 text-2xs py-1 " onClick={() => handleSetImageAsCover(getValues("images")[i]?.name || "")}>Set as cover</Button>
-                                                    )}
-                                                </>
-                                            )
-                                            : getValues("images")[i]?.uploadingStatus === "succeeded" ?
-                                                (
-                                                    "DONE"
-                                                ) : getValues("images")[i]?.uploadingStatus === "failed" ? (
-                                                    "failed"
-                                                ) : (null)
-                                    } */}
+                                    {getValues("images")[i]?.cover && (
+                                        <div className="bg-primary w-full absolute bottom-4 left-[-25px]  text-background font-bold text-2xs md:text-xs text-center rotate-45 tracking-widest " ><p>COVER</p></div>
+                                    )}
                                 </div>
                             )
                         } else {

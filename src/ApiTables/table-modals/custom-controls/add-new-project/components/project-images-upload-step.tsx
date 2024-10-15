@@ -95,6 +95,9 @@ export default function ProjectImagesUploadStep({ newProject, handleCloseModal, 
                     Object.assign(image, { uploadingStatus: "succeeded" });
                 }, errorCallBack: (res: any) => {
                     Object.assign(image, { uploadingStatus: "failed" });
+                    if (image.cover) {
+
+                    }
                 }
             }
 
@@ -171,6 +174,7 @@ export default function ProjectImagesUploadStep({ newProject, handleCloseModal, 
                                         <ImageUpload
                                             sendRequesProps={sendRequesProps}
                                             // stepper={stepper}
+                                            handleUploadingImage={handleUploadingImage}
                                             newProject={newProject}
                                             maxImageSize={maxImageSize}
                                             maxImagesSlots={maxImagesSlots}
@@ -199,7 +203,7 @@ export default function ProjectImagesUploadStep({ newProject, handleCloseModal, 
                         </Button>
                     )}
 
-                    <Button disabled={isSubmittingImage || !form.formState.isDirty || !oneImageHasBeenUploaded || oneImageAtLeastIsUploading} type="button" >
+                    <Button disabled={isSubmittingImage || !form.formState.isDirty || !oneImageHasBeenUploaded || oneImageAtLeastIsUploading} type="button" onClick={() => stepper.next()}>
                         {(oneImageHasFailedUploading && oneImageHasBeenUploaded && (images.length > 0))
                             ?
                             "Skip"
