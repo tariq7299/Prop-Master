@@ -30,7 +30,7 @@ export function UserNav() {
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
-      {/* <DropdownMenuContent className='w-56' align='end' forceMount>
+      <DropdownMenuContent className='w-56' align='end' forceMount>
         <DropdownMenuLabel className='font-normal'>
           <div className='flex flex-col space-y-1'>
             <p className='text-sm font-medium leading-none'>{user.name}</p>
@@ -40,7 +40,7 @@ export function UserNav() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuGroup>
+        {/* <DropdownMenuGroup>
           <DropdownMenuItem>
             Profile
             <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
@@ -55,12 +55,12 @@ export function UserNav() {
           </DropdownMenuItem>
           <DropdownMenuItem>New Team</DropdownMenuItem>
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
+        <DropdownMenuSeparator /> */}
         <DropdownMenuItem onClick={() => signOut(setIsLoading)} disabled={isLoading.status}>
           {isLoading.type === "signing out" && isLoading.status ? isLoading.message : "Log out"}
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
-      </DropdownMenuContent> */}
+      </DropdownMenuContent>
     </DropdownMenu>
   )
 }
