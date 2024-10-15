@@ -58,13 +58,12 @@ type ImageWithCoverKey = File & {
     // isUploaded?: boolean
     // isUploading?: boolean
     uploadingStatus: "pending" | "uploading" | "succeeded" | "failed"
-    cover?: boolean
+    isCover?: boolean
 }
 
 export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon, newProject, sendRequesProps, handleUploadingImage }: ImageUplaod) {
-    // console.log("fieldd", field)
 
-    const { resData: uploadedImage, sendRequest: uploadOneImage } = sendRequesProps
+    // const { resData: uploadedImage, sendRequest: uploadOneImage } = sendRequesProps
 
 
     // Add types to this hook using generic types `TS`
@@ -75,7 +74,6 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
 
     const validateMaxNubmerOfImages = (existingImages: ImageWithCoverKey[], uploadedImagesArray: File[], uploadedImageCount: number, existingImageCount: number): File[] => {
 
-        // console.log("uploadedImagesArray", uploadedImagesArray)
 
         // This the number of free images slots left
         const freeImagesSlots = maxImagesSlots - existingImageCount
@@ -170,10 +168,10 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
 
         const newImages = existingImages.map((existingImage) => {
             if (existingImage?.name === imageName) {
-                existingImage["cover"] = true
+                existingImage["isCover"] = true
                 return existingImage
             } else {
-                existingImage["cover"] = false
+                existingImage["isCover"] = false
                 return existingImage
             }
         })
@@ -189,11 +187,11 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
         const imageToRemove = existingImages.find(existingImage => existingImage.name === imageName)
 
         let newImages: ImageWithCoverKey[];
-        if (imageToRemove && imageToRemove.cover) {
+        if (imageToRemove && imageToRemove.isCover) {
             newImages = existingImages.filter((existingImage) => existingImage?.name !== imageToRemove.name)
             newImages = newImages.map((newImage, index) => {
                 if (index === 0) {
-                    newImage.cover = true
+                    newImage.isCover = true
                     return newImage
                 } else {
                     return newImage
@@ -234,15 +232,14 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
         // First check if existingImages has any images becasue if not just use the uploadedImagesArray directily !
         if (existingImages.length > 0) {
 
-            // Add cover key to each image object in uploadedImagesArray
-            // Here i want to mark all of them to be as `false` as there is already existing images and one of them is set to cover image
+            // Add isCover key to each image object in uploadedImagesArray
+            // Here i want to mark all of them to be as `false` as there is already existing images and one of them is set to isCover image
             newUploadedImages = uploadedImagesArray.map((uploadedImage) => {
-                // Object.assign(uploadedImage, { cover: false, isUploading: false, isUploaded: false });
-                Object.assign(uploadedImage, { cover: false, uploadingStatus: "pending", });
+                // Object.assign(uploadedImage, { isCover: false, isUploading: false, isUploaded: false });
+                Object.assign(uploadedImage, { isCover: false, uploadingStatus: "pending", });
                 return uploadedImage
             })
 
-            // console.log("newUploadedImages", newUploadedImages)
 
             // This will filter `uploadedImagesArray` to see if any image inside it has been already uploaded before
 
@@ -261,17 +258,17 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
 
             // This part of 'if' will be used if there is no existing images yet 
         } else {
-            // Add cover key to each image object in uploadedImagesArray
+            // Add isCover key to each image object in uploadedImagesArray
             newUploadedImages = uploadedImagesArray.map((uploadedImage, index) => {
-                // If the it is the first image in the array then mark it as a cover image
+                // If the it is the first image in the array then mark it as a isCover image
                 if (index === 0) {
-                    // Object.assign(uploadedImage, { cover: true, isUploading: false, isUploaded: false });
-                    Object.assign(uploadedImage, { cover: true, uploadingStatus: "pending", });
+                    // Object.assign(uploadedImage, { isCover: true, isUploading: false, isUploaded: false });
+                    Object.assign(uploadedImage, { isCover: true, uploadingStatus: "pending", });
                     return uploadedImage
                 } else {
-                    // If not then it is not a cover image
-                    // Object.assign(uploadedImage, { cover: false, isUploading: false, isUploaded: false });
-                    Object.assign(uploadedImage, { cover: false, uploadingStatus: "pending", });
+                    // If not then it is not a isCover image
+                    // Object.assign(uploadedImage, { isCover: false, isUploading: false, isUploaded: false });
+                    Object.assign(uploadedImage, { isCover: false, uploadingStatus: "pending", });
                     return uploadedImage
                 }
             })
@@ -283,22 +280,7 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
 
         onChange(newUploadedImages)
 
-        console.log("newUploadedImages", newUploadedImages)
-
-        // newUploadedImages.map((newImage) => {
-        //     handleUploadingImage(newImage)
-        // })
-
     }
-
-
-
-    const test = watch()
-    // console.log("test", test)
-    // console.log("uploadedImage", uploadedImage)
-
-
-
 
 
     return (
@@ -392,12 +374,8 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
 
                                                 </Button>
 
-                                                {getValues("images")[i]?.cover ? (
-                                                    <>
-                                                        <div className="bg-primary w-full absolute bottom-4 left-[-25px]  text-background font-bold text-2xs md:text-xs text-center rotate-45 tracking-widest " ><p>COVER</p></div>
-                                                    </>
-                                                ) : (
-                                                    <Button size="sm" type="button" variant="default" className="block md:hidden group-hover:block absolute bottom-2 w-max h-max px-2 text-2xs py-1 " onClick={() => handleSetImageAsCover(getValues("images")[i]?.name || "")}>Set as cover</Button>
+                                                {!getValues("images")[i]?.isCover && (
+                                                    <Button size="sm" type="button" variant="default" className="block md:hidden group-hover:block absolute bottom-2 w-max h-max px-2 text-2xs py-1 " onClick={() => handleSetImageAsCover(getValues("images")[i]?.name || "")}>Set as isCover</Button>
                                                 )}
                                             </>
 
@@ -446,7 +424,7 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
                                                     </div>
                                                     ) : (null)
                                     }
-                                    {getValues("images")[i]?.cover && (
+                                    {getValues("images")[i]?.isCover && (
                                         <div className="bg-primary w-full absolute bottom-4 left-[-25px]  text-background font-bold text-2xs md:text-xs text-center rotate-45 tracking-widest " ><p>COVER</p></div>
                                     )}
                                 </div>

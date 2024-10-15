@@ -53,10 +53,8 @@ export default function ProjectImagesUploadStep({ newProject, handleCloseModal, 
         }
     })
 
-    // console.log("newProject", newProject)
     const onSubmit = (data: any) => {
 
-        console.log("data", data)
         const newUploadedImages = data?.images
         newUploadedImages.map((newImage) => {
             handleUploadingImage(newImage)
@@ -80,9 +78,7 @@ export default function ProjectImagesUploadStep({ newProject, handleCloseModal, 
             // Write comments
             const formData = new FormData();
             formData.append('image', image);
-            formData.append('is_cover', image?.cover);
-
-            console.log("formData", formData)
+            formData.append('is_cover', image?.isCover);
 
             Object.assign(image, { uploadingStatus: "uploading" });
 
@@ -95,9 +91,6 @@ export default function ProjectImagesUploadStep({ newProject, handleCloseModal, 
                     Object.assign(image, { uploadingStatus: "succeeded" });
                 }, errorCallBack: (res: any) => {
                     Object.assign(image, { uploadingStatus: "failed" });
-                    if (image.cover) {
-
-                    }
                 }
             }
 
@@ -117,8 +110,6 @@ export default function ProjectImagesUploadStep({ newProject, handleCloseModal, 
     const images = form.getValues("images")
     const imagesStatus = images.map((image) => image.uploadingStatus).join()
 
-    console.log("imagesStatus", imagesStatus)
-
 
     // Write types
     // Write comments
@@ -134,19 +125,13 @@ export default function ProjectImagesUploadStep({ newProject, handleCloseModal, 
 
     const oneImageHasBeenUploaded = React.useMemo(() => images.some((image) => image.uploadingStatus === "succeeded") && images.length > 0, [images, imagesStatus])
 
+    // const isCoverImageHasBeenUploaded = React.useMemo(() => {
+    //     const coverImage = images.filter(image=>image.isCover)
+    //     coverImage.uploadingStatus
+
+    //     images.some((image) => image.uploadingStatus === "succeeded") && images.length > 0}, [images, imagesStatus])
+
     const defaultImagesStatus = React.useMemo(() => !oneImageHasFailedUploading && !allImagesHasBeenUploaded && !oneImageHasBeenUploaded, [images, imagesStatus])
-
-
-    console.log("oneImageHasFailedUploading", oneImageHasFailedUploading)
-    console.log("allImagesHasBeenUploaded", allImagesHasBeenUploaded)
-    console.log("defaultImagesStatus", defaultImagesStatus)
-    console.log("oneImageHasBeenUploaded", oneImageHasBeenUploaded)
-    console.log("oneImageAtLeastIsUploading", oneImageAtLeastIsUploading)
-
-    // console.log("IMAGES", form.getValues("images"))
-
-    // Create a useEffect that will depend on images and image changing
-
 
 
 
