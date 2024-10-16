@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build-vercel-skipType-2": "tsc --skipLibCheck --noEmit && vite build",
+    "build-vercel-skipType": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "format:check": "prettier --check .",

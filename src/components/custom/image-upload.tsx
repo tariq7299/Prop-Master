@@ -86,15 +86,15 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
         if (uploadedImageCount > freeImagesSlots) {
 
             // Show error under the input to user
-            setError("images", { type: "maxImagesSlots", message: `You're attempting to upload ${uploadedImageCount} images, which exceeds the left free image spaces of ${freeImagesSlots}` })
+            setError("images", { type: "maxImagesSlots", message: `You are trying to upload ${uploadedImageCount} images, but only ${freeImagesSlots} image slots are available.` })
             // Also toast the same error 
             // toast({
             //     title: "Max number of photos",
             //     variant: "destructive",
             //     description: `You're attempting to upload ${uploadedImageCount} images, which exceeds the left free image spaces of ${freeImagesSlots}`
             // })
-            toast.error("Max number of photos", {
-                description: `You're attempting to upload ${uploadedImageCount} images, which exceeds the left free image spaces of ${freeImagesSlots}`,
+            toast.warning("Max number of photos", {
+                description: `You are trying to upload ${uploadedImageCount} images, but only ${freeImagesSlots} image slots are available.`,
 
             })
 
@@ -133,7 +133,7 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
             //     variant: "destructive",
             //     description: "Some of the images didn't got upladed as it exceed the maximum size of 2 MB!"
             // })
-            toast.error("Max size", {
+            toast.warning("Max size", {
                 description: "Some of the images didn't got upladed as it exceed the maximum size of 2 MB!",
 
             })
@@ -152,7 +152,7 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
             //     variant: "destructive",
             //     description: "Some of the images didn't got upladed as has an invalid image type!, Valid types are [.png, .jpg, .jpeg]"
             // })
-            toast.error("Invalid type", {
+            toast.warning("Invalid type", {
                 description: "Some of the images didn't got upladed as has an invalid image type!, Valid types are [.png, .jpg, .jpeg]",
 
             })
@@ -290,8 +290,8 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
 
                 <div className="grid gap-1">
 
-                    <div className="flex  items-center space-x-2">
-                        <h2 className="text-sm md:text-md font-medium">{title}</h2> {titleIcon && titleIcon}
+                    <div className="flex items-center space-x-2">
+                        <h2 className="text-sm md:text-base font-medium">{title}</h2> {titleIcon && titleIcon}
                     </div>
 
                     {/* <p className="text-sm text-gray-500 dark:text-gray-400"> */}

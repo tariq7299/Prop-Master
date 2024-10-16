@@ -29,7 +29,7 @@ import DrawerTest from "./DrawerTest";
 // import Drawer from 'react-modern-drawer'
 
 
-export default function DrawerDialog({ status, handleCloseModal, modalTitle, modalDescription, modalFooter, children }: any) {
+export default function DrawerDialog({ status, handleCloseModal, modalTitle, modalDescription, modalFooter, children, hasCloseButton, className }: any) {
     // const [open, setOpen] = React.useState(false)
     const isDesktop = useMediaQuery("(min-width: 768px)")
 
@@ -38,7 +38,7 @@ export default function DrawerDialog({ status, handleCloseModal, modalTitle, mod
     if (isDesktop) {
         return (
             <Dialog open={status} onOpenChange={handleCloseModal}>
-                <DialogContent className=" " onPointerDownOutside={(e) => e.preventDefault()} onInteractOutside={() => { }}>
+                <DialogContent className={className} hasCloseButton={hasCloseButton} onPointerDownOutside={(e) => e.preventDefault()} onInteractOutside={() => { }}>
                     <DialogHeader>
                         <DialogTitle>{modalTitle}</DialogTitle>
                         <DialogDescription>{modalDescription}</DialogDescription>

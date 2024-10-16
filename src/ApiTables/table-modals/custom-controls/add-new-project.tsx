@@ -105,10 +105,10 @@ export default function AddNewProjectTmp({ handleCloseModal }) {
         <>
 
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="overflow-y-auto">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="overflow-y-auto h-full">
 
                     {/* Modal Body  */}
-                    <div className=" py-6 p-1 pb-28 md:p-6 md:pb-14 grid grid-cols-1 md:grid-cols-2 gap-y-10 md:items-center justify-items-center gap-x-10 ">
+                    <div className=" py-6 p-1 pb-28 md:p-6 md:pb-14 grid grid-cols-1 md:grid-cols-2 gap-y-10 md:items-center justify-center gap-x-10 h-full">
                         {/* <div className="overflow-y-auto py-6 flex flex-col gap-y-10 items-start md:items-center"> */}
                         {/* <h2 className="text-2xl font-medium tracking-tight">New Project</h2> */}
 

@@ -68,10 +68,12 @@ function ApiTablesModals() {
             {/* Custom Control Modals */}
 
             <DrawerDialog
+                className="w-[60%]"
                 action={customControlAction}
                 handleCloseModal={handleCloseModal}
                 status={customControlAction?.action_key === "addNewProject"}
                 modalTitle={(<p className="text-xl">{customControlAction?.button?.label}</p>)} modalDescription="Fill in the details of the new project"
+                hasCloseButton={false}
             // modalFooter={(<Button >Add Project</Button>)}
             >
                 <AddNewProject handleCloseModal={handleCloseModal} />

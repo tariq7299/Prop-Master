@@ -44,7 +44,7 @@ export default function SidebarNav({
               <SelectItem key={item.href} value={item.href}>
                 <div className='flex gap-x-4 px-2 py-1'>
                   <span className='scale-125'>{item.icon}</span>
-                  <span className='text-md'>{item.title}</span>
+                  <span className='text-base'>{item.title}</span>
                 </div>
               </SelectItem>
             ))}

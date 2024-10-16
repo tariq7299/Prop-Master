@@ -24,7 +24,7 @@ export default function Otp() {
           </div>
           <Card className='p-6'>
             <div className='mb-2 flex flex-col space-y-2 text-left'>
-              <h1 className='text-md font-semibold tracking-tight'>
+              <h1 className='text-base font-semibold tracking-tight'>
                 Two-factor Authentication
               </h1>
               <p className='text-sm text-muted-foreground'>

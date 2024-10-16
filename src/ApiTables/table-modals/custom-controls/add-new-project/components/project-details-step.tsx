@@ -49,14 +49,14 @@ const newProjectSchema = z
             .max(90, { message: "Project name must't exceed 90 characters long" }),
         delivery_time: z
             .date()
-            .refine((date) => date > new Date(), { message: "Delivery date can't be in the past" }),
+            .refine((date) => date > new Date(), { message: "Delivery time can't be in the past" }),
         // images: z
         //     .any(),
         acres: z
             // THis has to be added if want the field value to be parsed and submitted as Number
             .coerce
             .number()
-            .positive()
+            .positive({ message: "Acres Should be greater than 1" })
             .gte(1, { message: "Acres should at least be 1" })
             .lte(1000, { message: "Acres should not exceed 1000" }),
         contractor_company_id: z
@@ -184,13 +184,10 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
         <>
 
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="h-full">
 
                     {/* Modal Body  */}
-                    <div className=" py-6 p-1 pb-28 md:p-6 md:pb-14 grid grid-cols-1 md:grid-cols-2 gap-y-10 md:items-center justify-items-center gap-x-10 ">
-                        {/* <div className=" py-6 flex flex-col gap-y-10 items-start md:items-center"> */}
-                        {/* <h2 className="text-2xl font-medium tracking-tight">New Project</h2> */}
-
+                    <div className=" py-6 p-1 pb-28 lg:p-6 lg:pb-14 grid grid-cols-1 lg:grid-cols-2 gap-y-10 lg:content-center justify-items-center gap-x-10 h-full   ">
                         <div className="space-y-2 w-full max-w-sm">
                             <FormField
                                 control={form.control}
@@ -204,14 +201,12 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
                                             <Input placeholder="Madinatiy..." type="text" {...field} />
                                         </FormControl>
                                         <FormDescription>
-                                            Type the name of compound or project in here
+                                            Type the name of compound or project
                                         </FormDescription>
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
-                            {/* <div className="flex items-center space-x-2"><Label className="text-md font-medium ">Project Name</Label> <Building2 className="h-5 w-5 text-secondary" /></div>
-                            <Input className=" " name="name" type="text"></Input> */}
                         </div>
 
                         <div className="space-y-2 w-full max-w-sm">
@@ -259,7 +254,7 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
                                                     <SelectGroup>
                                                         <SelectLabel>Choose Status</SelectLabel>
                                                         <SelectItem value="active" >Active</SelectItem>
-                                                        <SelectItem value="not-active" >Not active</SelectItem>
+                                                        <SelectItem value="inactive" >Inactive</SelectItem>
                                                     </SelectGroup>
                                                 </SelectContent>
                                             </Select>
@@ -305,7 +300,7 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
                                         <FormControl>
                                             <div className="flex justify-center items-center gap-2 ">
                                                 <Combobox placeholder="Search company..." className="w-full" values={contractors} field={field}></Combobox>
-                                                <Button className="bg-foreground text-background space-x-1 text-nowrap  flex-none " size="sm"><CirclePlus className="h-4 w-4" /><span className="sr-only md:not-sr-only text-nowrap  ">New</span></Button>
+                                                {/* <Button className="bg-foreground text-background space-x-1 text-nowrap  flex-none " size="sm"><CirclePlus className="h-4 w-4" /><span className="sr-only md:not-sr-only text-nowrap  ">New</span></Button> */}
                                             </div>
                                             {/* <Select
                                                     value={field?.value}

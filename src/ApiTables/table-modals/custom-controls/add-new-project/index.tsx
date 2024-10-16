@@ -63,7 +63,7 @@ export default function AddNewProject({ handleCloseModal }: any) {
                                     aria-setsize={steps.length}
                                     aria-selected={stepper.current.id === step.id}
                                     className="flex size-10 items-center justify-center rounded-full cursor-default"
-                                    onClick={() => stepper.goTo(step.id)}
+                                // onClick={() => stepper.goTo(step.id)}
                                 >
                                     {index + 1}
                                 </Button>
@@ -79,14 +79,14 @@ export default function AddNewProject({ handleCloseModal }: any) {
                     ))}
                 </ol>
             </nav>
-            <div className="space-y-4 overflow-auto">
+            <div className="space-y-4 overflow-auto h-full">
                 {stepper.switch({
                     proejctDetails: () => <ProjectDetailsStep addNewProject={addNewProject} isSubmittingNewProject={isSubmittingNewProject} newProject={newProject} handleCloseModal={handleCloseModal} stepper={stepper} />,
                     projectImages: () => <ProjectImagesUploadStep newProject={newProject} handleCloseModal={handleCloseModal} stepper={stepper} />,
                     completed: () => <div className="flex flex-col justify-center items-center py-6 gap-y-2">
 
                         <Check className="w-1/4 h-auto rounded-full  text-success " />
-                        <p className="md:text-lg">Project Added</p>
+                        <p className="md:text-lg font-bold tracking-wider text-success-600">Project Added</p>
 
 
                     </div>,
@@ -109,7 +109,7 @@ export default function AddNewProject({ handleCloseModal }: any) {
                 )} */}
                 {stepper.isLast && (
                     <div className="flex justify-end gap-2">
-                        <Button className="" onClick={stepper.reset}>Add new one</Button>
+                        <Button className="" onClick={stepper.reset}>Add new project</Button>
                         <Button type="button" onClick={handleCloseModal} variant="outline">Cancel</Button>
                     </div>
                 )
