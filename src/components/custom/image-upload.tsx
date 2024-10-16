@@ -63,8 +63,9 @@ type ImageWithCoverKey = File & {
 
 export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon, newProject, sendRequesProps, handleUploadingImage }: ImageUplaod) {
 
-    // const { resData: uploadedImage, sendRequest: uploadOneImage } = sendRequesProps
-
+    // Write types
+    // // I added this line because the ref 
+    const fileInputRef = React.useRef(null)
 
     // Add types to this hook using generic types `TS`
 
@@ -201,7 +202,6 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
         } else {
             newImages = existingImages.filter((existingImage) => existingImage?.name !== imageName)
             setValue("images", newImages)
-
         }
 
     }

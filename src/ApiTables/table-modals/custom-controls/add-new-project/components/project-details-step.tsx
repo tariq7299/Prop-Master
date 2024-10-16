@@ -36,9 +36,7 @@ import { formatDateToMMYYYY } from '@/helper/utils/dateUtils';
 import { Separator } from '@/components/ui/separator';
 // import { defineStepper } from '@stepperize/react';
 import { Combobox } from "@/components/custom/combobox";
-
-
-
+// import { watch } from "fs";
 
 
 
@@ -51,7 +49,7 @@ const newProjectSchema = z
             .max(90, { message: "Project name must't exceed 90 characters long" }),
         delivery_time: z
             .date()
-            .min(new Date(), { message: "Delivery date can't be in the past" }),
+            .refine((date) => date > new Date(), { message: "Delivery date can't be in the past" }),
         // images: z
         //     .any(),
         acres: z
@@ -77,7 +75,6 @@ type NewProjectSchema = z.infer<typeof newProjectSchema>
 
 
 export default function ProjectDetailsStep({ handleCloseModal, addNewProject, isSubmittingNewProject, newProject, stepper }: any) {
-
 
     // const stepper = useStepper();
 
@@ -145,6 +142,7 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
             return destinations[0]?.id || 1;
         }
     };
+
     const form = useForm<NewProjectSchema>({
         resolver: zodResolver(newProjectSchema),
         defaultValues: {
@@ -154,20 +152,19 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
         }
     })
 
-
-
     React.useEffect(() => {
         getAllContractors()
         getAllDestinations()
     }, [])
 
 
-
     const onSubmit = (data: NewProjectSchema) => {
+
+        console.log("data", data)
 
         const formatedData = { ...data, delivery_time: formatDateToMMYYYY(data.delivery_time) }
 
-        console.log("formatedData", formatedData)
+        // console.log("formatedData", formatedData)
         const reqOptions = { method: "POST", url: "/admin/projects", data: formatedData }
         const apiResFuncArgs = {
             successCallback: (res: any) => {
@@ -250,7 +247,6 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
                                         <div className="flex items-center space-x-2"> <FormLabel>Status</FormLabel><Activity className="h-5 w-5 text-secondary" />
                                         </div>
                                         <FormControl>
-
                                             <Select
                                                 value={field?.value}
                                                 onValueChange={field.onChange}
@@ -308,7 +304,7 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
                                         </div>
                                         <FormControl>
                                             <div className="flex justify-center items-center gap-2 ">
-                                                <Combobox className="w-full" values={contractors} field={field}></Combobox>
+                                                <Combobox placeholder="Search company..." className="w-full" values={contractors} field={field}></Combobox>
                                                 <Button className="bg-foreground text-background space-x-1 text-nowrap  flex-none " size="sm"><CirclePlus className="h-4 w-4" /><span className="sr-only md:not-sr-only text-nowrap  ">New</span></Button>
                                             </div>
                                             {/* <Select
@@ -354,7 +350,7 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
                                             <FormLabel>Destination</FormLabel><MapPinHouse className="h-5 w-5 text-secondary" />
                                         </div>
                                         <FormControl>
-                                            <Combobox className="w-full" values={destinations} field={field}></Combobox>
+                                            <Combobox placeholder="Search destination..." className="w-full" values={destinations} field={field}></Combobox>
                                             {/* <Select
                                                 value={field?.value}
                                                 onValueChange={field.onChange}
