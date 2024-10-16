@@ -165,9 +165,12 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
 
     const onSubmit = (data: NewProjectSchema) => {
 
+        // console.log(data)
+
+
         const formatedData = { ...data, delivery_time: formatDateToMMYYYY(data.delivery_time) }
 
-        console.log("formatedData", formatedData)
+        // console.log("formatedData", formatedData)
         const reqOptions = { method: "POST", url: "/admin/projects", data: formatedData }
         const apiResFuncArgs = {
             successCallback: (res: any) => {
