@@ -250,7 +250,6 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
                                         <div className="flex items-center space-x-2"> <FormLabel>Status</FormLabel><Activity className="h-5 w-5 text-secondary" />
                                         </div>
                                         <FormControl>
-
                                             <Select
                                                 value={field?.value}
                                                 onValueChange={field.onChange}
@@ -308,7 +307,7 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
                                         </div>
                                         <FormControl>
                                             <div className="flex justify-center items-center gap-2 ">
-                                                <Combobox className="w-full" values={contractors} field={field}></Combobox>
+                                                <Combobox placeholder="Search company..." className="w-full" values={contractors} field={field}></Combobox>
                                                 <Button className="bg-foreground text-background space-x-1 text-nowrap  flex-none " size="sm"><CirclePlus className="h-4 w-4" /><span className="sr-only md:not-sr-only text-nowrap  ">New</span></Button>
                                             </div>
                                             {/* <Select
@@ -354,7 +353,7 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
                                             <FormLabel>Destination</FormLabel><MapPinHouse className="h-5 w-5 text-secondary" />
                                         </div>
                                         <FormControl>
-                                            <Combobox className="w-full" values={destinations} field={field}></Combobox>
+                                            <Combobox placeholder="Search destination..." className="w-full" values={destinations} field={field}></Combobox>
                                             {/* <Select
                                                 value={field?.value}
                                                 onValueChange={field.onChange}

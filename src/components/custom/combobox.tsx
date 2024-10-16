@@ -46,7 +46,7 @@ import { useFormContext } from "react-hook-form"
 
 
 // Write Types
-export function Combobox({ values, field, className }) {
+export function Combobox({ values, field, className, placeholder = "Search..." }) {
     const [open, setOpen] = React.useState(false)
     // const [value, setValue] = React.useState("")
     const form = useFormContext()
@@ -72,14 +72,14 @@ export function Combobox({ values, field, className }) {
             </PopoverTrigger>
             <PopoverContent className=" p-0">
                 <Command filter={(value, search) => {
-                    const valueLabel = values.find((v) => v?.id === value)?.name
-                    if (valueLabel && valueLabel.toLowerCase().trim().includes(search?.toLowerCase().trim())) {
+                    if (search && value.toLowerCase().trim().includes(search?.toLowerCase().trim())) {
                         return 1
                     }
                     return 0
+
                 }}
                 >
-                    <CommandInput placeholder="Search framework..." />
+                    <CommandInput placeholder={placeholder} />
                     <CommandList>
                         {values.length <= 0
                             ? (

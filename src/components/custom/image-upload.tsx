@@ -201,7 +201,6 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
         } else {
             newImages = existingImages.filter((existingImage) => existingImage?.name !== imageName)
             setValue("images", newImages)
-
         }
 
     }
