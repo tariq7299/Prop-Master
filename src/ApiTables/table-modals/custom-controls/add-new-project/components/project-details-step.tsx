@@ -36,9 +36,7 @@ import { formatDateToMMYYYY } from '@/helper/utils/dateUtils';
 import { Separator } from '@/components/ui/separator';
 // import { defineStepper } from '@stepperize/react';
 import { Combobox } from "@/components/custom/combobox";
-
-
-
+// import { watch } from "fs";
 
 
 
@@ -51,7 +49,7 @@ const newProjectSchema = z
             .max(90, { message: "Project name must't exceed 90 characters long" }),
         delivery_time: z
             .date()
-            .min(new Date(), { message: "Delivery date can't be in the past" }),
+            .refine((date) => date > new Date(), { message: "Delivery date can't be in the past" }),
         // images: z
         //     .any(),
         acres: z
@@ -77,7 +75,6 @@ type NewProjectSchema = z.infer<typeof newProjectSchema>
 
 
 export default function ProjectDetailsStep({ handleCloseModal, addNewProject, isSubmittingNewProject, newProject, stepper }: any) {
-
 
     // const stepper = useStepper();
 
@@ -145,6 +142,7 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
             return destinations[0]?.id || 1;
         }
     };
+
     const form = useForm<NewProjectSchema>({
         resolver: zodResolver(newProjectSchema),
         defaultValues: {
@@ -154,19 +152,15 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
         }
     })
 
-
-
     React.useEffect(() => {
         getAllContractors()
         getAllDestinations()
     }, [])
 
 
-
     const onSubmit = (data: NewProjectSchema) => {
 
-        // console.log(data)
-
+        console.log("data", data)
 
         const formatedData = { ...data, delivery_time: formatDateToMMYYYY(data.delivery_time) }
 
