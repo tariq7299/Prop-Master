@@ -57,7 +57,7 @@ function ApiTablesController({ table, params, customElement }: any) {
 
     const allFiltersValues = React.useMemo(() => {
         return Object.keys(appliedFilters).map((filter) => {
-            return appliedFilters[filter]?.value
+            return `${appliedFilters[filter]?.value}-${appliedFilters[filter]?.operator}`
         }).join()
     }, [appliedFilters])
 

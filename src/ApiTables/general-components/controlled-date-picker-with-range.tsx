@@ -29,8 +29,6 @@ export function DatePickerWithRange({
     max
 }: DatePickerWithRangeProps) {
 
-    console.log("value", value)
-
     return (
         <div className={cn("grid gap-2", className)}>
             <Popover>

@@ -87,7 +87,7 @@ export default function BulkActionsProvider({ children }: any) {
 
         // Add full page loader to function
         // loaderInfo && setMainLoader(true, loaderInfo?.msg, loaderInfo?.icon)
-        fullPageLoader && appDispatch({ type: "FULL_PAGE_LOADING", payload: { isLoading: fullPageLoader?.isLoading || false, loadingMsg: fullPageLoader?.loadingMsg || "Processing...", loadingIconName: fullPageLoader?.loadingIconName || "3dLoader" } })
+        fullPageLoader && appDispatch({ type: "FULL_PAGE_LOADING", payload: { isLoading: fullPageLoader?.isLoading || false, loadingMsg: fullPageLoader?.loadingMsg || "Processing...", loadingIconName: fullPageLoader?.loadingIconName || "loader--1" } })
 
 
         try {

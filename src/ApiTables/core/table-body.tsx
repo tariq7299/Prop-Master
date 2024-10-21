@@ -56,7 +56,7 @@ function TableBody() {
                         selectableRowsComponent={Checkbox}
                         sortServer
                         onSort={sortingTableHandler}
-                        noDataComponent={(<div className="py-4 bg-background w-full text-foreground flex justify-center"> No resultes ! </div>)}
+                        noDataComponent={(<div className="py-4 bg-background w-full text-foreground flex justify-center"> No results ! </div>)}
                         persistTableHead={true}
                         selectableRows={!tableFetchingLoading && (bulkActions.length > 0 || (structureRowActions?.filter((action: any) => action?.applicableAsBulkAction)?.length > 0)) ? true : false}
                         customStyles={

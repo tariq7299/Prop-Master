@@ -4,8 +4,6 @@ import { formatDateNoTime } from "../table-utils/utils.tsx"
 import { RiCloseCircleFill } from "react-icons/ri";
 import { Button } from "@/components/custom/button.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
-import { CircleX } from 'lucide-react';
-
 
 
 function AppliedFilters({ setValue, resetField }: any) {
@@ -27,8 +25,6 @@ function AppliedFilters({ setValue, resetField }: any) {
         tableCoreDispatcher({ type: 'SET_CURRENT_PAGE', payload: 1 })
 
     }
-
-    // console.log("renderedFilters", renderedFilters)
 
     return (
         <>

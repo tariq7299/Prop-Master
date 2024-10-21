@@ -27,6 +27,14 @@ type PersonalFormValues = z.infer<typeof personalInfoFormSchema>
 type PasswordFormValues = z.infer<typeof passwordFormSchema>
 
 export default function ProfileForm() {
+
+  useEffect(() => {
+    document.title = 'Prop Master - Profile';
+    return () => {
+      document.title = 'Prop Master';
+    }
+  }, []);
+
   const { user, setUser } = useAuth()
   const { isLoading: isSubmittingNewProfileInfo, sendRequest: changeProfileInfo } = useSendRequest();
   const { isLoading: isSubmittingNewPassword, sendRequest: changePassword } = useSendRequest();
@@ -145,7 +153,7 @@ export default function ProfileForm() {
                 <FormItem className='space-y-1'>
                   <FormLabel>Phone Number</FormLabel>
                   <FormControl>
-                    <PhoneInput defaultCountry='EG' placeholder='01099133377' {...field} />
+                    <PhoneInput countries={['EG']} defaultCountry='EG' placeholder='01099133377' {...field} />
                   </FormControl>
                   <FormDescription>
                     You can change your phone number from here

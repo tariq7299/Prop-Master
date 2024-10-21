@@ -19,7 +19,7 @@ function useSendRequest() {
     async function sendRequest({ reqOptions, apiResFuncArgs, fullPageLoader, finalCallback }: SendRequest) {
 
         setIsLoading(true)
-        appDispatch({ type: "FULL_PAGE_LOADING", payload: { isLoading: fullPageLoader?.isLoading || false, loadingMsg: fullPageLoader?.loadingMsg || "Processing...", loadingIconName: fullPageLoader?.loadingIconName || "3dLoader" } })
+        appDispatch({ type: "FULL_PAGE_LOADING", payload: { isLoading: fullPageLoader?.isLoading || false, loadingMsg: fullPageLoader?.loadingMsg || "Processing...", loadingIconName: fullPageLoader?.loadingIconName || "loader--1" } })
 
         try {
             const response = await axiosPrivate({

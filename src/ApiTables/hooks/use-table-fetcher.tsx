@@ -1,12 +1,10 @@
-import * as React from "react"
 import { useTableColumns } from "../table-providers/table-columns-provider.tsx"
 import { useTableCore } from "../table-providers/table-core-provider.tsx"
 import { handleApiSuccess } from '@/helper/api/handleApiSuccess.ts'
 import { handleApiError } from '@/helper/api/handleApiError.ts'
 import axios from 'axios'
-import tablesItems from "../../pages/projects/data/tableItems.ts"
-import tablesPagenation from "../../pages/projects/data/tablesPagenation.ts"
 import { axiosPrivate } from "@/helper/api/axiosInstances.ts"
+
 
 function useTableFetcher() {
     // const { axiosPrivate } = useAuth()
@@ -18,6 +16,8 @@ function useTableFetcher() {
         tableCoreDispatcher({ type: 'SET_TABLE_LOADING', payload: true })
         tableColumnsDispatcher({ type: 'SET_SELECTED_ROWS', payload: [] })
         tableColumnsDispatcher({ type: 'SET_TOGGLED_CLEAR_ROW', payload: !toggledClearRows })
+
+
         try {
             const response = await axiosPrivate({
                 method: 'POST',
@@ -34,7 +34,6 @@ function useTableFetcher() {
 
             // Make Backend send success key from backend and remove the following line !
             const newData = { ...response?.data, success: true }
-
 
             handleApiSuccess(newData, false, '', () => {
                 tableCoreDispatcher({ type: 'GET_TABLE_DATA', payload: response?.data?.items })

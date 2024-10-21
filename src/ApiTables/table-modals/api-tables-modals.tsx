@@ -2,43 +2,27 @@ import * as React from "react"
 import Popup from '@/components/custom/popup.tsx'
 import { useTableBulkActions } from '../table-providers/bulk-actions-provider.tsx'
 import { useTableRowActions } from '../table-providers/row-actions-provider.tsx'
-import { SendToMails } from "./bulk-actions-modals.tsx"
 import { ConfirmationModal, ViewRowData } from "./columns-static-modals.tsx"
-// import EditConsigneeInfoForm from "./custom-controls/edit-consignee-info.tsx"
-
-import { cn } from "@/lib/utils"
-import { useMediaQuery } from "@/hooks/use-media-query"
-import { Button } from "@/components/ui/button"
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
-import {
-    Drawer,
-    DrawerClose,
-    DrawerContent,
-    DrawerDescription,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerTitle,
-    DrawerTrigger,
-} from "@/components/ui/drawer"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import DrawerDialog from "@/components/custom/drawer-dialog.tsx"
 import AddNewProject from "./custom-controls/add-new-project/index.tsx"
-
-
+import AddNewProjectsByExcel from "./custom-controls/add-new-projects-by-excel/index.tsx"
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { Button } from "@/components/custom/button.tsx"
 
 
 function ApiTablesModals() {
     const { selectedBulkAction, bulkActionsDispatcher } = useTableBulkActions()
     const { clickedRowAction, clickedRowActionResponse, rowActionsDispatcher, customControlAction } = useTableRowActions()
-
 
     function handleCloseModal() {
         rowActionsDispatcher({ type: 'GET_CLICKED_ROW_ACTION_RESPONSE', payload: null })
@@ -55,18 +39,15 @@ function ApiTablesModals() {
             </Popup> */}
 
             {/* ... Row Actions Modals */}
-            <Popup hasDissmissButton={true} status={clickedRowActionResponse} closeModal={handleCloseModal}>
-                {clickedRowAction?.onSuccess === 'DisplayOnModal' && <ViewRowData data={clickedRowActionResponse} />}
-                {/* {clickedRowAction?.onSuccess === 'DisplayOnModalCustom' && <AnnouncementModal />} */}
-            </Popup>
+            {/* <Popup hasDissmissButton={true} status={clickedRowActionResponse} closeModal={handleCloseModal}>
+                {clickedRowAction?.onSuccess === 'DisplayOnModal' && <ViewRowData data={clickedRowActionResponse} />} */}
+            {/* {clickedRowAction?.onSuccess === 'DisplayOnModalCustom' && <AnnouncementModal />} */}
+            {/* </Popup> */}
 
-            {/* ... Confirmation Modal */}
-            <Popup hasDissmissButton={true} status={clickedRowAction?.need_confirmation || selectedBulkAction?.need_confirmation} closeModal={handleCloseModal}>
-                <ConfirmationModal closeModal={handleCloseModal} confirmationFor={clickedRowAction ? 'rowAction' : selectedBulkAction && 'bulkAction'} /* isBulk={clickedRowAction?.isBulk}*/ />
-            </Popup>
+
+            <ConfirmationModal status={clickedRowAction?.need_confirmation || selectedBulkAction?.need_confirmation} handleCloseModal={handleCloseModal} confirmationFor={clickedRowAction ? 'rowAction' : selectedBulkAction && 'bulkAction'} />
 
             {/* Custom Control Modals */}
-
             <DrawerDialog
                 className="w-[60%]"
                 action={customControlAction}
@@ -77,6 +58,18 @@ function ApiTablesModals() {
             // modalFooter={(<Button >Add Project</Button>)}
             >
                 <AddNewProject handleCloseModal={handleCloseModal} />
+            </DrawerDialog >
+
+            <DrawerDialog
+                className="w-[50%]"
+                action={customControlAction}
+                handleCloseModal={handleCloseModal}
+                status={customControlAction?.action_key === "addNewProjectsByExcel"}
+                modalTitle={(<p className="text-xl">{customControlAction?.button?.label}</p>)} modalDescription="Follow steps to upload your sheet"
+                hasCloseButton={false}
+            // modalFooter={(<Button >Add Project</Button>)}
+            >
+                <AddNewProjectsByExcel handleCloseModal={handleCloseModal} />
             </DrawerDialog >
 
 

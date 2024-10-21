@@ -21,39 +21,11 @@ import {
 } from "@/components/ui/popover"
 import { useFormContext } from "react-hook-form"
 
-// const values = [
-//     {
-//         value: "next.js",
-//         label: "Next.js",
-//     },
-//     {
-//         value: "sveltekit",
-//         label: "SvelteKit",
-//     },
-//     {
-//         value: "nuxt.js",
-//         label: "Nuxt.js",
-//     },
-//     {
-//         value: "remix",
-//         label: "Remix",
-//     },
-//     {
-//         value: "astro",
-//         label: "Astro",
-//     },
-// ]
-
 
 // Write Types
 export function Combobox({ values, field, className, placeholder = "Search..." }) {
     const [open, setOpen] = React.useState(false)
     // const [value, setValue] = React.useState("")
-    const form = useFormContext()
-
-    // console.log("field", field)
-    // console.log("values", values)
-
 
     return (
         <Popover open={open} onOpenChange={setOpen} >
@@ -86,7 +58,7 @@ export function Combobox({ values, field, className, placeholder = "Search..." }
                                 <CommandLoading>Hang on…</CommandLoading>)
                             : (
                                 <>
-                                    <CommandEmpty>No framework found.</CommandEmpty>
+                                    <CommandEmpty>No value found.</CommandEmpty>
                                     <CommandGroup>
 
                                         {values.map((value: { id: number, name: string }) => (

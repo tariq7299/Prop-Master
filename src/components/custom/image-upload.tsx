@@ -3,14 +3,6 @@ import * as React from "react";
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "./button"
 import { Input } from "../ui/input";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from '@/components/ui/form'
 import { X, Upload, Loader, Ellipsis, BadgeCheck, Trash2, Repeat2, BadgeAlert } from 'lucide-react';
 import {
     Tooltip,
@@ -18,33 +10,16 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
-// change this to sonner
-// import { toast } from "@/components/ui/use-toast";
 import { toast } from "sonner"
 import { useFormContext } from "react-hook-form";
-import useSendRequest from "@/hooks/api/use-send-request";
-import { SendRequest } from "@/helper/api/types"
-import { ReqOptions } from "@/helper/api/types";
-import { ApiResFuncArgs } from "@/helper/api/types";
-import { FullPageLoader } from "@/hooks/app/types";
 
 // Write types
 type ImageUplaod = {
-    // Change this and add to filed the correct types
-    // form: any,
     handleUploadingImage: any,
     sendRequesProps: any,
     newProject: any
-    // stepper: any
     maxImageSize: number
     maxImagesSlots: number
-    // handleDroppingImages: any,
-    // handleImagesChange: any,
-    // handleSetImageAsCover: any,
-    // handleRemovingImage: any,
-    // watch: any,
-    // getValues: any,
-    // images: any
     field: any,
     title: string,
     description: string,
@@ -55,8 +30,6 @@ type ImageUplaod = {
 
 // Write types
 type ImageWithCoverKey = File & {
-    // isUploaded?: boolean
-    // isUploading?: boolean
     uploadingStatus: "pending" | "uploading" | "succeeded" | "failed"
     isCover?: boolean
 }
@@ -65,10 +38,9 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
 
     // Write types
     // // I added this line because the ref 
-    const fileInputRef = React.useRef(null)
+    const _ = React.useRef(null)
 
-    // Add types to this hook using generic types `TS`
-
+    // Write types to this hook using generic types `TS`
 
     const { setValue, watch, getValues, setError, clearErrors } = useFormContext()
     // const { setValue, watch, getValues, setError, clearErrors } = form
@@ -88,11 +60,6 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
             // Show error under the input to user
             setError("images", { type: "maxImagesSlots", message: `You are trying to upload ${uploadedImageCount} images, but only ${freeImagesSlots} image slots are available.` })
             // Also toast the same error 
-            // toast({
-            //     title: "Max number of photos",
-            //     variant: "destructive",
-            //     description: `You're attempting to upload ${uploadedImageCount} images, which exceeds the left free image spaces of ${freeImagesSlots}`
-            // })
             toast.warning("Max number of photos", {
                 description: `You are trying to upload ${uploadedImageCount} images, but only ${freeImagesSlots} image slots are available.`,
 
@@ -128,11 +95,6 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
         if (oneOfImagesExceedMaxSize) {
             // not working ??!??!
             // setError("images", { type: "maxSizeOfImage", message: "Some of the images didn't got upladed as it exceed the maximum size of 2 MB!" })
-            // toast({
-            //     title: "Max size",
-            //     variant: "destructive",
-            //     description: "Some of the images didn't got upladed as it exceed the maximum size of 2 MB!"
-            // })
             toast.warning("Max size", {
                 description: "Some of the images didn't got upladed as it exceed the maximum size of 2 MB!",
 
@@ -147,11 +109,6 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
 
         const isAnyImageHasInvalidType = uploadedImagesArray.some(uploadedImage => !validImageTypes.includes(uploadedImage.type))
         if (isAnyImageHasInvalidType) {
-            // toast({
-            //     title: "Invalid type",
-            //     variant: "destructive",
-            //     description: "Some of the images didn't got upladed as has an invalid image type!, Valid types are [.png, .jpg, .jpeg]"
-            // })
             toast.warning("Invalid type", {
                 description: "Some of the images didn't got upladed as has an invalid image type!, Valid types are [.png, .jpg, .jpeg]",
 
@@ -219,7 +176,6 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
         const uploadedImagesCount = uploadedImagesArray.length
         const existingImageCount = existingImages.length
 
-
         // Validation
         // Validate and return filtered array with correct values/images !
         uploadedImagesArray = validateImageType(uploadedImagesArray, validImageTypes)
@@ -254,32 +210,22 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
 
             newUploadedImages = [...uploadedImagesArray.filter(uploadedImage => !existingImages.some(existingImage => (uploadedImage.name === existingImage.name))), ...existingImages]
 
-
-
             // This part of 'if' will be used if there is no existing images yet 
         } else {
             // Add isCover key to each image object in uploadedImagesArray
             newUploadedImages = uploadedImagesArray.map((uploadedImage, index) => {
                 // If the it is the first image in the array then mark it as a isCover image
                 if (index === 0) {
-                    // Object.assign(uploadedImage, { isCover: true, isUploading: false, isUploaded: false });
                     Object.assign(uploadedImage, { isCover: true, uploadingStatus: "pending", });
                     return uploadedImage
                 } else {
                     // If not then it is not a isCover image
-                    // Object.assign(uploadedImage, { isCover: false, isUploading: false, isUploaded: false });
                     Object.assign(uploadedImage, { isCover: false, uploadingStatus: "pending", });
                     return uploadedImage
                 }
             })
-
-
-            // newUploadedImages = [...uploadedImagesArray]
         }
-
-
         onChange(newUploadedImages)
-
     }
 
 
@@ -293,8 +239,6 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
                     <div className="flex items-center space-x-2">
                         <h2 className="text-sm md:text-base font-medium">{title}</h2> {titleIcon && titleIcon}
                     </div>
-
-                    {/* <p className="text-sm text-gray-500 dark:text-gray-400"> */}
 
                     <p className="text-xs md:text-sm text-muted-foreground">
                         {description}
@@ -317,26 +261,8 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
                                         <p className="text-wrap">Drag and drop images here, supported files(.png, .jpg, jpeg)</p>
                                     </TooltipContent>
                                 </Tooltip>
-
                             </div>
                         </div>
-                        {/* <div className="flex justify-end">
-                        <FormField
-                            control={form.control}
-                            name='delivery_time'
-                            render={({ field }) => (
-                                <FormItem className='space-y-1'>
-                                    <div className="flex items-center space-x-2">
-                                        <FormLabel htmlFor="file-input" className="button button-sm"> Select Files <UploadIcon className="mr-2 h-4 w-4" /> </FormLabel>
-                                        <Input {...field} id="file-input" type="file" multiple className="hidden" />
-                                    </div>
-                                    <FormControl>
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div> */}
                         {/* Write types */}
                         <div className="flex justify-end">
                             <label htmlFor="file-input" className="button button-sm">
@@ -375,7 +301,7 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
                                                 </Button>
 
                                                 {!getValues("images")[i]?.isCover && (
-                                                    <Button size="sm" type="button" variant="default" className="block md:hidden group-hover:block absolute bottom-2 w-max h-max px-2 text-2xs py-1 " onClick={() => handleSetImageAsCover(getValues("images")[i]?.name || "")}>Set as isCover</Button>
+                                                    <Button size="sm" type="button" variant="default" className="block md:hidden group-hover:block absolute bottom-2 w-max h-max px-2 text-2xs py-1 " onClick={() => handleSetImageAsCover(getValues("images")[i]?.name || "")}>set as cover</Button>
                                                 )}
                                             </>
 
@@ -432,12 +358,9 @@ export default function ImageUpload({ maxImagesSlots, maxImageSize, field, title
                         } else {
 
                             return (
-                                // <div className="">
                                 <Button key={i} type="button" className=" h-full  flex justify-center items-center aspect-square w-full bg-muted hover:bg-muted/50 rounded-lg transform transition duration-300 ease-in-out hover:-translate-y-3 hover:drop-shadow-lg" variant="ghost" onClick={() => { document.getElementById("file-input")?.click() }}>
                                     {imagePlaceHolderIcon}
                                 </Button>
-                                // </div>
-
                             )
                         }
                     })}

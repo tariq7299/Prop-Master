@@ -5,7 +5,7 @@ import { type AppContext } from "./types"
 const initialAppState = {
     isLoading: false,
     loadingMsg: 'Processing...',
-    loadingIconName: "3dLoader",
+    loadingIconName: "loader--1",
 }
 
 

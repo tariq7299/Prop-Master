@@ -7,7 +7,7 @@ import { appReducer } from "./app-reducer"
 const initialAppState = {
     isLoading: false,
     loadingMsg: 'Processing...',
-    loadingIconName: "3dLoader",
+    loadingIconName: "loader--2",
 }
 
 

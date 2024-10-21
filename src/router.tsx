@@ -4,8 +4,6 @@ import NotFoundError from './pages/errors/not-found-error'
 import MaintenanceError from './pages/errors/maintenance-error'
 import UnauthorisedError from './pages/errors/unauthorised-error.tsx'
 import PrivateRoute from './components/private-route.tsx'
-import { handleGettingRouteData } from './helper/api/handleGettingRouteData.ts'
-
 
 const router = createBrowserRouter([
 
@@ -79,9 +77,29 @@ const router = createBrowserRouter([
           {
             path: 'projects',
             lazy: async () => ({
-              Component: (await import('@/pages/projects')).default,
+              Component: (await import('@/pages/projects/all-projects.tsx')).default,
             }),
           },
+          {
+            path: 'projects-upload-history',
+            children: [
+              {
+                index: true, // or path: ''
+                //  path: '', or
+                lazy: async () => ({
+                  Component: (await import('@/pages/projects/upload-history')).default,
+                }),
+
+              },
+              {
+                path: ':sheetId',
+                lazy: async () => ({
+                  Component: (await import('@/pages/projects/upload-history/sheet-analysis.tsx')).default,
+                }),
+              },
+            ]
+          },
+
           // {
           //   path: 'users',
           //   lazy: async () => ({

@@ -7,7 +7,7 @@ import { restructureSelectedFilters } from '../table-utils/utils.tsx'
 import { useTableCore } from '../table-providers/table-core-provider.tsx';
 // import useApp from "../../hooks/useApp"
 import AppliedFilters from "./applied-filters.tsx";
-import { DatePickerWithRange } from '../../pages/projects/components/controlled-date-picker-with-range.tsx';
+import { DatePickerWithRange } from '../general-components/controlled-date-picker-with-range.tsx';
 import {
     Select,
     SelectContent,
@@ -16,6 +16,7 @@ import {
     SelectLabel,
     SelectTrigger,
     SelectValue,
+    SelectSeparator
 } from "@/components/ui/select"
 import { Input } from '@/components/ui/input.tsx';
 import { Button } from '@/components/ui/button.tsx';
@@ -118,7 +119,7 @@ function TableFilters() {
                                             defaultValue={{ from: new Date(filter?.min), to: new Date(filter?.max) }}
                                             name={`${filter?.filter_name}.fieldValue`}
                                             render={({ field }) => (
-                                                <FormItem className='space-y-1'>
+                                                <FormItem className='space-y-2'>
                                                     <FormLabel className='text-muted-foreground' htmlFor={filter?.filter_name}>{filter?.label}</FormLabel>
                                                     <FormControl>
                                                         <DatePickerWithRange min={new Date(filter?.min)} max={new Date(filter?.max)} onChange={field.onChange} value={field.value} className='w-full' id={filter?.filter_name} ></DatePickerWithRange>
@@ -158,10 +159,25 @@ function TableFilters() {
                                                                         <SelectTrigger className={`w-full ${renderOperator(filter) ? 'border-r-0 rounded-r-none' : ''}`}>
                                                                             <SelectValue placeholder="Choose">
                                                                             </SelectValue>
+
                                                                         </SelectTrigger>
                                                                         <SelectContent>
                                                                             <SelectGroup>
-                                                                                <SelectLabel>{filter?.label}</SelectLabel>
+
+                                                                                <div className='flex justify-between'>
+                                                                                    <SelectLabel>{filter?.label}</SelectLabel>
+                                                                                    <Button
+                                                                                        disabled={!field?.value}
+                                                                                        variant="secondary"
+                                                                                        size="sm"
+                                                                                        onClick={(e) => {
+                                                                                            e.stopPropagation()
+                                                                                            setValue(`${filter?.filter_name}.fieldValue`, "")
+                                                                                        }}
+                                                                                    >
+                                                                                        Clear
+                                                                                    </Button>
+                                                                                </div>
                                                                                 {objectToArrayKeyVal(filter?.props?.select_options)?.sort((a, b) => (a.value === '' ? -1 : b.value === '' ? 1 : 0))?.map(opt => (
                                                                                     <SelectItem value={opt?.value} key={opt?.value}>{opt?.key}</SelectItem>
                                                                                 ))}
@@ -184,7 +200,7 @@ function TableFilters() {
                                                             <FormItem className={`w-full ${renderOperator(filter) ? ' z-20' : ''}`}>
                                                                 <FormLabel className='text-muted-foreground'>{filter?.label}</FormLabel>
                                                                 <FormControl>
-                                                                    <Input  {...field} className={`w-full ${renderOperator(filter) ? 'border-r-0 rounded-r-none' : ''}`} type={filter?.type} id={filter?.label} placeholder={filter?.label} />
+                                                                    <Input min={0}  {...field} className={`w-full ${renderOperator(filter) ? 'border-r-0 rounded-r-none' : ''}`} type={filter?.type} id={filter?.label} placeholder={filter?.label} />
                                                                 </FormControl>
                                                                 <FormMessage />
                                                             </FormItem>

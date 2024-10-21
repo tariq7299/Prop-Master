@@ -1,12 +1,13 @@
 import { UserAuthForm } from './components/user-auth-form'
-import ViteLogo from '@/assets/vite.svg'
-import PropMasterLogoOnlny from '@/assets/prop-master-high-resolution-logo-white-transparent.svg'
 import PropMasterLogo from '@/components/custom/prop-master-logo'
 import PropMasterLogoSlogan from '@/components/custom/prop-master-logo-slogan'
+import AddToasterSonner from '@/components/custom/add-toaster-sonner'
 
 export default function SignIn() {
   return (
     <>
+      {/* I added this commonenet here to add Sonner toaster provider to all children of AppShell (all app excep auth) */}
+      <AddToasterSonner />
       <div className='container relative grid h-svh flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0 bg-background'>
 
         <div className='relative hidden h-full flex-col bg-background p-10 lg:flex'>

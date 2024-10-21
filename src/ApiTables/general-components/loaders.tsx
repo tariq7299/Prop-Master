@@ -5,8 +5,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function TableLoader({ count }: any) {
 
-    console.log("count", count)
-
     return (
 
         <div className="grid items-center gap-2 w-full py-3 bg-background">

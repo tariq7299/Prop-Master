@@ -1,6 +1,4 @@
 import * as React from "react";
-import ImageUpload from "@/components/custom/image-upload";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import DatePicker from "@/components/custom/date-picker";
 import {
@@ -12,9 +10,9 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { useForm, useFormContext } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Button } from "@/components/custom/button";
-import { CirclePlus, Building2, Image, CalendarClock, Activity, LandPlot, Warehouse, BriefcaseBusiness, MapPinHouse, ImagePlus } from 'lucide-react';
+import { Building2, CalendarClock, Activity, LandPlot, BriefcaseBusiness, MapPinHouse } from 'lucide-react';
 import {
     Form,
     FormControl,
@@ -24,20 +22,14 @@ import {
     FormMessage,
     FormDescription
 } from '@/components/ui/form'
-import useSendRequest from "@/hooks/api/use-send-request";
 import { axiosPrivate } from "@/helper/api/axiosInstances";
 import { handleApiError } from "@/helper/api/handleApiError";
 import { handleApiSuccess } from "@/helper/api/handleApiSuccess";
 import axios from "axios";
-import { toast } from "@/components/ui/use-toast";
 import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod";
 import { formatDateToMMYYYY } from '@/helper/utils/dateUtils';
-import { Separator } from '@/components/ui/separator';
-// import { defineStepper } from '@stepperize/react';
 import { Combobox } from "@/components/custom/combobox";
-// import { watch } from "fs";
-
 
 
 const newProjectSchema = z
@@ -59,13 +51,14 @@ const newProjectSchema = z
             .positive({ message: "Acres Should be greater than 1" })
             .gte(1, { message: "Acres should at least be 1" })
             .lte(1000, { message: "Acres should not exceed 1000" }),
-        contractor_company_id: z
-            .coerce
-            .number(),
+        contractor_company_id: z.nullable(z.coerce
+            .number()
+        ).refine((value) => value !== null, { message: "You a have to choose a contractor" }),
         // .promise(z.coerce.number()),
-        destination_id: z
-            .coerce
-            .number(),
+        destination_id: z.nullable(z.coerce
+            .number()
+        ).refine((value) => value !== null, { message: "You a have to choose a destination" }),
+
         // .promise(z.coerce.number()),
         status: z
             .string(),
@@ -76,12 +69,10 @@ type NewProjectSchema = z.infer<typeof newProjectSchema>
 
 export default function ProjectDetailsStep({ handleCloseModal, addNewProject, isSubmittingNewProject, newProject, stepper }: any) {
 
-    // const stepper = useStepper();
-
-    // See how to add types to this
+    // Write types
     const [contractors, setContractors] = React.useState<{ id: number, name: string }[]>([])
 
-    // See how to add types 
+    // Write types
     const [destinations, setDestinations] = React.useState<{ id: number, name: string }[]>([])
 
     const getAllContractors = async () => {
@@ -104,7 +95,6 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
 
         }
     }
-
     const getAllDestinations = async () => {
 
         try {
@@ -133,23 +123,18 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
         delivery_time: new Date(),
         acres: 0,
         status: "active",
-        contractor_company_id: async () => {
-            const contractors = await getAllContractors();
-            return contractors[0]?.id || 1;
-        },
-        destination_id: async () => {
-            const destinations = await getAllDestinations();
-            return destinations[0]?.id || 1;
-        }
+        contractor_company_id: null,
+        destination_id: null
     };
 
     const form = useForm<NewProjectSchema>({
         resolver: zodResolver(newProjectSchema),
-        defaultValues: {
-            ...defaultValues,
-            contractor_company_id: contractors[0]?.id || 1,
-            destination_id: destinations[0]?.id || 1,
-        }
+        defaultValues
+        // defaultValues: {
+        //     ...defaultValues,
+        //     contractor_company_id: contractors[0]?.id || 1,
+        //     destination_id: destinations[0]?.id || 1,
+        // }
     })
 
     React.useEffect(() => {
@@ -164,19 +149,14 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
 
         const formatedData = { ...data, delivery_time: formatDateToMMYYYY(data.delivery_time) }
 
-        // console.log("formatedData", formatedData)
         const reqOptions = { method: "POST", url: "/admin/projects", data: formatedData }
         const apiResFuncArgs = {
             successCallback: (res: any) => {
                 stepper.next()
             }
         }
-        const fullPageLoader = { isLoading: true, loadingMsg: "Saving Project...", loadingIconName: "3dLoader" }
+        const fullPageLoader = { isLoading: true, loadingMsg: "Saving Project...", loadingIconName: "loader--1" }
         addNewProject({ reqOptions, fullPageLoader, apiResFuncArgs })
-
-
-
-        // Formate the date to "MM-YYYY" before submitting
 
     }
 
@@ -300,29 +280,7 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
                                         <FormControl>
                                             <div className="flex justify-center items-center gap-2 ">
                                                 <Combobox placeholder="Search company..." className="w-full" values={contractors} field={field}></Combobox>
-                                                {/* <Button className="bg-foreground text-background space-x-1 text-nowrap  flex-none " size="sm"><CirclePlus className="h-4 w-4" /><span className="sr-only md:not-sr-only text-nowrap  ">New</span></Button> */}
                                             </div>
-                                            {/* <Select
-                                                    value={field?.value}
-                                                    onValueChange={field.onChange}
-                                                >
-                                                    <SelectTrigger className="grow">
-                                                        <SelectValue placeholder="Choose Contractor">
-                                                        </SelectValue>
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectGroup>
-                                                            <SelectLabel>Conractor Company</SelectLabel>
-                                                            {contractors.map((contractor) => {
-                                                                return (
-                                                                    <SelectItem key={contractor.id} value={contractor.id} >{contractor.name}</SelectItem>
-                                                                )
-                                                            })}
-                                                        </SelectGroup>
-                                                    </SelectContent>
-                                                </Select>
-                                                <Button className="bg-foreground text-background space-x-1 text-nowrap  flex-none " size="sm"><CirclePlus className="h-4 w-4" /><span className="sr-only md:not-sr-only text-nowrap  ">New</span></Button>
-                                            </div> */}
                                         </FormControl>
                                         <FormDescription>
                                             Choose the developer of the project
@@ -346,25 +304,6 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
                                         </div>
                                         <FormControl>
                                             <Combobox placeholder="Search destination..." className="w-full" values={destinations} field={field}></Combobox>
-                                            {/* <Select
-                                                value={field?.value}
-                                                onValueChange={field.onChange}
-                                            >
-                                                <SelectTrigger className="w-full">
-                                                    <SelectValue placeholder="Choose Contractor">
-                                                    </SelectValue>
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectGroup>
-                                                        <SelectLabel>Destination</SelectLabel>
-                                                        {destinations.map((destination) => {
-                                                            return (
-                                                                <SelectItem key={destination.id} value={destination.id} >{destination.name}</SelectItem>
-                                                            )
-                                                        })}
-                                                    </SelectGroup>
-                                                </SelectContent>
-                                            </Select> */}
                                         </FormControl>
                                         <FormDescription>
                                             Choose the place where the project exist

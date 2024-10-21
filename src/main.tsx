@@ -9,14 +9,18 @@ import AuthProvider from './hooks/auth/auth-provider'
 import AppProvider from './hooks/app/app-provider'
 import { Toaster } from 'sonner'
 
+
+
 if (import.meta.env.VITE_ENV === "Development") {
+
+
   ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
-      <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
+      <ThemeProvider>
         <AuthProvider>
           <AppProvider>
             <RouterProvider router={router} />
-            <Toaster expand={true} richColors={true} />
+            {/* <Toaster theme={currentTheme} closeButton expand={true} richColors={true} /> */}
             {/* <Toaster /> */}
           </AppProvider>
         </AuthProvider>
@@ -25,12 +29,11 @@ if (import.meta.env.VITE_ENV === "Development") {
   )
 } else {
   ReactDOM.createRoot(document.getElementById('root')!).render(
-    <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
+    <ThemeProvider>
       <AuthProvider>
         <AppProvider>
           <RouterProvider router={router} />
-          <Toaster expand={true} richColors={true} />
-          {/* <Toaster /> */}
+          {/* <Toaster theme={currentTheme} closeButton expand={true} richColors={true} /> */}
         </AppProvider>
       </AuthProvider>
     </ThemeProvider>

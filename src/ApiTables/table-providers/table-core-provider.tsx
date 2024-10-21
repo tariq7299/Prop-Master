@@ -13,7 +13,7 @@ const initialState = {
     currentPage: 1,
     pageSize: 10,
     tablePagination: null,
-    tableFetchingLoading: false
+    tableFetchingLoading: true
 };
 
 // Reducer function

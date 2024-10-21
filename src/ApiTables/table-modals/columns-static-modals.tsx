@@ -10,6 +10,16 @@ import { copyToClipboard } from "../table-utils/utils.tsx"
 // import { Link } from "@inertiajs/react";
 import { useTableBulkActions } from "../table-providers/bulk-actions-provider.tsx"
 import { useTableCore } from "../table-providers/table-core-provider.tsx"
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 
 
 // ... Show More Info About the row
@@ -50,7 +60,8 @@ export function ViewRowData({ data }: any) {
 
 
 // ... Row Action Confirmation Modal
-export function ConfirmationModal({ closeModal, confirmationFor }: any) {
+export function ConfirmationModal({ status, handleCloseModal, className = "", confirmationFor }: any) {
+
     const { clickedRowAction, rowActionPostLoading, rowActionsPostHandler } = useTableRowActions()
     const { appliedFilters } = useTableCore()
     const { bulkActionsPostHandler, selectedBulkAction, bulkActionPostLoading } = useTableBulkActions()
@@ -71,25 +82,71 @@ export function ConfirmationModal({ closeModal, confirmationFor }: any) {
     }
 
     return (
-        <div className="text-center">
-            <p className="h6 mb-4">هل أنت متأكد من القيام بهذا الإجراء</p>
-            <div className="row g-2">
-                <div className="col-6">
-                    <button disabled={rowActionPostLoading || bulkActionPostLoading} className={`btn py-2 btn-opac-primary w-100`}
-                        onClick={fireRowAction}>
-                        {(rowActionPostLoading || bulkActionPostLoading) ? 'جاري التأكيد....' : 'تأكيد'}
-                    </button>
-                </div>
-                <div className="col-6">
-                    <button className="btn py-2 btn-opac-dark w-100"
-                        onClick={closeModal}
-                    >إغلاق</button>
-                </div>
-            </div>
-        </div>
+        <AlertDialog className={className} open={status} onOpenChange={handleCloseModal}>
+            <AlertDialogContent onCloseAutoFocus={(event) => {
+                event.preventDefault();
+                // I had to manually reset the pointerEvents for the document after closing and i don't know why !!
+                document.body.style.pointerEvents = 'auto';
+            }}>
+                <AlertDialogHeader>
+                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    {/* <AlertDialogDescription>
+                        This action cannot be undone.
+                    </AlertDialogDescription> */}
+                </AlertDialogHeader>
+
+                <AlertDialogFooter>
+                    <AlertDialogCancel onClick={handleCloseModal}>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={fireRowAction} disabled={rowActionPostLoading || bulkActionPostLoading}> {(rowActionPostLoading || bulkActionPostLoading) ? 'Loading...' : 'Confirm'}</AlertDialogAction>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
+
     )
 
 }
+
+// // ... Row Action Confirmation Modal
+// export function ConfirmationModal({ closeModal, confirmationFor }: any) {
+//     const { clickedRowAction, rowActionPostLoading, rowActionsPostHandler } = useTableRowActions()
+//     const { appliedFilters } = useTableCore()
+//     const { bulkActionsPostHandler, selectedBulkAction, bulkActionPostLoading } = useTableBulkActions()
+//     const { selectedIds } = useTableColumns()
+
+//     function fireRowAction() {
+//         if (confirmationFor === 'rowAction')
+//             rowActionsPostHandler(clickedRowAction?.method, clickedRowAction?.isBulk ? clickedRowAction?.bulk_actions_url?.web : clickedRowAction?.action?.web, { selected_ids: selectedIds }, clickedRowAction)
+//         if (confirmationFor === 'bulkAction') {
+//             bulkActionsPostHandler(
+//                 selectedBulkAction?.method,
+//                 selectedBulkAction?.action.web,
+//                 { filters: appliedFilters, selected_ids: selectedIds },
+//                 null,
+//                 selectedBulkAction
+//             )
+//         }
+//     }
+
+//     return (
+//         <div className="text-center">
+//             <p className="h6 mb-4">هل أنت متأكد من القيام بهذا الإجراء</p>
+//             <div className="row g-2">
+//                 <div className="col-6">
+//                     <button disabled={rowActionPostLoading || bulkActionPostLoading} className={`btn py-2 btn-opac-primary w-100`}
+//                         onClick={fireRowAction}>
+//                         {(rowActionPostLoading || bulkActionPostLoading) ? 'جاري التأكيد....' : 'تأكيد'}
+//                     </button>
+//                 </div>
+//                 <div className="col-6">
+//                     <button className="btn py-2 btn-opac-dark w-100"
+//                         onClick={closeModal}
+//                     >إغلاق</button>
+//                 </div>
+//             </div>
+//         </div>
+//     )
+
+// }
 
 // // ... Announcement Viewing Modal
 // export function AnnouncementModal({ announce_for="" }) {

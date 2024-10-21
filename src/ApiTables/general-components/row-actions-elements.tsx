@@ -39,9 +39,16 @@ export const ToggleRowActionElement = ({ action, isBulk = false }: any) => {
 
 export const RedirectRowActionElement = ({ action }: any) => {
     return (
-        <Link to={action?.redirect_routes?.web} className={` ${action?.button?.btnClasses?.join(' ') || ''} w-full`}>
-            {action?.button?.label}
+        // <Link to={action?.redirect_routes?.web} className={` ${action?.button?.btnClasses?.join(' ') || ''} w-full`}>
+        //     {action?.button?.label}
+        // </Link>
+        // Make onClick redirects users
+        <Link to={action?.redirect_routes?.api} className="w-full">
+            <Button variant="link" className="w-full">
+                {action?.button?.label}
+            </Button>
         </Link>
+
     )
 }
 
@@ -74,11 +81,14 @@ export const GeneralRowActionElement = ({ action, isBulk = false }: any) => {
             )
         }
     }
+    console.log("action?.button?.btnClasses?.join(' ')", action?.button?.btnClasses?.join(' '))
 
     return (
         <Button
             size="sm"
-            className={` ${action?.button?.btnClasses?.join(' ') || ''} w-full`}
+            // variant={`${action?.button?.btnClasses?.join(' ')} || default`}
+            variant={`${action?.button?.btnClasses?.join(' ') || 'default'}`}
+            className="w-full"
             disabled={rowActionPostLoading}
             onClick={() => { fireRowAction(action) }}
         >

@@ -1,8 +1,7 @@
+import * as React from "react";
+import { FileClock } from 'lucide-react';
 import { Layout } from '@/components/custom/layout'
-import React, { useEffect, useState } from 'react'
-import ReactApiTable from '../../ApiTables/react-api-table'
-import tables from './data/tables'
-import { TopNav } from '@/components/top-nav'
+import ReactApiTable from "@/ApiTables/react-api-table";
 import { UserNav } from '@/components/user-nav'
 import ThemeSwitch from '@/components/theme-switch'
 import {
@@ -13,31 +12,34 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import { Building2 } from 'lucide-react';
-import { Button } from '@/components/custom/button'
 import { axiosPrivate } from '@/helper/api/axiosInstances'
 import { handleApiSuccess } from '@/helper/api/handleApiSuccess'
 import { handleApiError } from '@/helper/api/handleApiError'
 import axios from 'axios'
 
 
-export default function Projects() {
+function UploadHistory() {
 
-    // I have added the object of newRowActions manually here instead of backend 
-    // Then i add it to tableStructure coming from backend --> setTableStructure({ ...tableStructure, ...response?.data?.data })
-    const [tableStructure, setTableStructure] = useState({
+    React.useEffect(() => {
+        document.title = 'Prop Master - Upload History';
+        return () => {
+            document.title = 'Prop Master';
+        }
+    }, []);
+
+    const [tableStructure, setTableStructure] = React.useState({
         "newRowActions": {
-            "addNewProject": {
-                "action_key": "addNewProject",
+            "addNewProjectByExcel": {
+                "action_key": "addNewProjectsByExcel",
                 // The real purpose of this key is to not apply the styling of redirect/toggle button and 
                 "action_type": "custom_control",
-                "label": "Add New Project",
+                "label": "Add New Projects By Excel",
                 "action": {
                     // This should change from API
                     // "web": "/admin/projects",
                 },
                 "button": {
-                    "label": "Add New Project",
+                    "label": "Add New Projects By Excel",
                     "btnClasses": []
                 },
                 "method": "post",
@@ -50,39 +52,36 @@ export default function Projects() {
         }
     })
 
-    useEffect(() => {
+    const getUploadHistoryTableStructrue = async () => {
 
-        const getTable = async () => {
+        try {
+            const response = await axiosPrivate("admin/import-sheet-hd")
 
-            try {
-                const response = await axiosPrivate("/client/projects")
+            handleApiSuccess(response?.data, false, "", () => {
+                setTableStructure({ ...tableStructure, ...response?.data?.data })
+            })
 
-
-                handleApiSuccess(response?.data, false, "", () => {
-                    setTableStructure({ ...tableStructure, ...response?.data?.data })
-                    // console.log("{ ...tableStructure, ...response?.data?.data }", { ...tableStructure, ...response?.data?.data })
-                })
-
-            } catch (error: unknown) {
-                if (axios.isAxiosError(error) || (error instanceof Error)) {
-                    handleApiError(error);
-                    return error
-                } else {
-                    console.error(error)
-                }
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error) || (error instanceof Error)) {
+                handleApiError(error);
+                return error
+            } else {
+                console.error(error)
             }
         }
+    }
 
-        getTable()
-
+    React.useEffect(() => {
+        getUploadHistoryTableStructrue()
     }, [])
-
 
     return (
         <Layout>
+
             {/* ===== Top Heading ===== */}
             <Layout.Header>
                 <div className='flex justify-between w-full'>
+
                     <Breadcrumb className="flex">
                         <BreadcrumbList>
                             <BreadcrumbItem>
@@ -92,7 +91,7 @@ export default function Projects() {
                             </BreadcrumbItem>
                             <BreadcrumbSeparator />
                             <BreadcrumbItem>
-                                <BreadcrumbPage>Projects</BreadcrumbPage>
+                                <BreadcrumbPage>Upload History</BreadcrumbPage>
                             </BreadcrumbItem>
                         </BreadcrumbList>
                     </Breadcrumb>
@@ -106,13 +105,12 @@ export default function Projects() {
 
             {/* ===== Main ===== */}
             <Layout.Body>
-
-                {/* <div className=' border-dotted bg-primary/50'>IS this NIce</div> */}
-
                 <div className='mb-6'>
-                    <h2 className='text-2xl font-bold tracking-tight'>Registered Projects <Building2 className='h-6 w-6 inline ms-2' /></h2>
+                    <h2 className='text-2xl font-bold tracking-tight'>
+                        Projects Upload History <FileClock className='text-secondary h-7 w-7 inline ms-2' />
+                    </h2>
                     <p className='text-muted-foreground font-light'>
-                        You can add new project or edit any existing one!
+                        Here are all projects sheets you have uploaded
                     </p>
                 </div>
 
@@ -122,6 +120,10 @@ export default function Projects() {
 
 
             </Layout.Body>
+
         </Layout>
     )
-};
+
+}
+
+export default UploadHistory

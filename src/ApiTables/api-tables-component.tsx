@@ -17,10 +17,11 @@ import TableNewRowActions from "./core/table-new-row-actions";
 import { PlusCircle } from 'lucide-react';
 
 
-function ApiTablesComponent({ customElement, tableNewRowComponent }: any) {
+function ApiTablesComponent({ customElement }: any) {
     const { bulkActions } = useTableBulkActions()
     const { structureFilters } = useTableCore()
     const { selectedRows } = useTableColumns()
+
 
     return (
 
