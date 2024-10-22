@@ -55,12 +55,19 @@ export default function AddNewProjectsByExcel({ handleCloseModal }: any) {
                                     aria-setsize={steps.length}
                                     aria-selected={stepper.current.id === step.id}
                                     className="flex size-10 items-center justify-center rounded-full cursor-default"
-                                    onClick={() => stepper.goTo(step.id)}
+                                // onClick={() => stepper.goTo(step.id)}
+                                // onClick={() => step.id === "downloadTemplate" && stepper.goTo(step.id)}
                                 >
                                     {index + 1}
                                 </Button>
-                                <span className="text-sm font-medium">{step.label}</span>
+                                <div className="flex flex-col">
+                                    <span className="text-sm font-medium">{step.label}</span>
+                                    {step.id === "downloadTemplate" && (
+                                        <span className="text-xs text-muted-foreground">(optional)</span>
+                                    )}
+                                </div>
                             </li>
+
                             {index < array.length - 1 && (
                                 <Separator
                                     className={`flex-shrink flex-grow md:w-20 ${index < stepper.current.index ? 'bg-primary' : 'bg-muted'

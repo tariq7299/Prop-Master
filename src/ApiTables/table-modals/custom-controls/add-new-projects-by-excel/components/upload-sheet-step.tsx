@@ -93,7 +93,8 @@ export default function UploadSheetStep({ handleCloseModal, stepper }: any) {
 
 
                 {/* Modal Footer */}
-                <div className="fixed bottom-0 right-0 p-2 pt-3 bg-background w-full flex  justify-end sm:space-x-2 gap-2">
+                <div className="fixed bottom-0 right-0 p-2 pt-3 bg-background w-full flex  justify-end gap-2">
+                    <Button type="submit" variant="outline" onClick={() => stepper.prev()} >Back</Button>
                     <Button type="submit" loading={isUploadingSheet} disabled={!form.getValues("file")} onClick={() => { }} >
                         Upload file
                     </Button>

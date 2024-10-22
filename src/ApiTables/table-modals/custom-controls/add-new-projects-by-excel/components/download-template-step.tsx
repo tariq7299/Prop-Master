@@ -59,7 +59,8 @@ export default function DownloadTemplateStep({ handleCloseModal, stepper }: any)
             </Link>
 
             {/* Modal Footer */}
-            <div className="fixed bottom-0 right-0 p-2 pt-3 bg-background w-full flex  justify-end sm:space-x-2 gap-2 ">
+            <div className="fixed bottom-0 right-0 p-2 pt-3 bg-background w-full flex  justify-end gap-2 ">
+
                 <Button type="submit" onClick={() => stepper.next()} >Next</Button>
                 <Button type="button" onClick={handleCloseModal} variant="outline">Cancel</Button>
             </div>
