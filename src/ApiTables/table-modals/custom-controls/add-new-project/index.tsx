@@ -9,6 +9,7 @@ import useSendRequest from "@/hooks/api/use-send-request";
 
 
 
+
 const { useStepper, Scoped, steps } = defineStepper(
     { id: 'proejctDetails', label: 'Project Details' },
     { id: 'projectImages', label: 'Project Images' },
@@ -21,6 +22,7 @@ export default function AddNewProject({ handleCloseModal }: any) {
     const stepper = useStepper();
 
     // Create an array of refs using useRef
+
     // Write types
     const stepsRefs = React.useRef(Array.from({ length: stepper.all.length }, () => React.createRef()));
 
@@ -32,8 +34,9 @@ export default function AddNewProject({ handleCloseModal }: any) {
     }, [stepper.current.id])
 
     // Write comments
-    const { resData: newProject, isLoading: isSubmittingNewProject, sendRequest: addNewProject } = useSendRequest();
+    const { resData, isLoading: isSubmittingNewProject, sendRequest: addNewProject } = useSendRequest();
 
+    const newProject = resData?.data || null
 
     return (
         <Scoped>
@@ -58,7 +61,7 @@ export default function AddNewProject({ handleCloseModal }: any) {
                                     aria-setsize={steps.length}
                                     aria-selected={stepper.current.id === step.id}
                                     className="flex size-10 items-center justify-center rounded-full cursor-default"
-                                // onClick={() => stepper.goTo(step.id)}
+                                    onClick={() => stepper.goTo(step.id)}
                                 >
                                     {index + 1}
                                 </Button>
@@ -77,7 +80,7 @@ export default function AddNewProject({ handleCloseModal }: any) {
             <div className="space-y-4 overflow-auto h-full">
                 {stepper.switch({
                     proejctDetails: () => <ProjectDetailsStep addNewProject={addNewProject} isSubmittingNewProject={isSubmittingNewProject} newProject={newProject} handleCloseModal={handleCloseModal} stepper={stepper} />,
-                    projectImages: () => <ProjectImagesUploadStep newProject={newProject} handleCloseModal={handleCloseModal} stepper={stepper} />,
+                    projectImages: () => <ProjectImagesUploadStep newProject={newProject} stepper={stepper} />,
                     completed: () => <div className="flex flex-col justify-center items-center py-6 gap-y-2">
                         <Check className="w-1/4 max-w-40 h-auto rounded-full text-success " />
                         <p className="md:text-lg font-bold tracking-wider text-success-600">Project Added</p>

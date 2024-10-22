@@ -1,6 +1,6 @@
 
 import type { ToastActionElement, ToastProps } from '@/components/ui/toast'
-import { Messages } from './types';
+import { Messages } from '../types/api';
 
 type ToasterToast = ToastProps & {
     id: string

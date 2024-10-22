@@ -33,7 +33,7 @@ export default function FinishedUploadingStep() {
 
             <p className="italic text-warning-600 text-sm">
                 You will be redirected to the <span className="font-bold tracking-wider">Upload History</span> page in
-                <span className=" font-bold text-warning-600"> {timeRemaining} seconds</span>.
+                <span className=" font-bold text-warning-600"><span className="text-xl"> {timeRemaining} </span>seconds</span>.
                 Please wait...
             </p>
 

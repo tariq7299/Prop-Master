@@ -11,11 +11,46 @@ import {
     FormMessage,
 } from '@/components/ui/form'
 import useSendRequest from "@/hooks/api/use-send-request";
-import { ReqOptions } from "@/helper/api/types";
-import { ApiResFuncArgs } from "@/helper/api/types";
+import { ReqOptions } from "@/helper/types/api";
+import { ApiResFuncArgs } from "@/helper/types/api";
+import { Image as ImageType } from "@/components/custom/image-upload";
+import { Stepper } from "@stepperize/react";
+
+
+type NewProject = {
+    id: number,
+    name: string,
+    delivery_time: string,
+    acres: number,
+    status: string
+}
+
+type ProjectImagesUploadStepProps = {
+    newProject: NewProject
+    stepper: Stepper<[{
+        readonly id: "proejctDetails";
+        readonly label: "Project Details";
+    }, {
+        readonly id: "projectImages";
+        readonly label: "Project Images";
+    }, {
+        readonly id: "completed";
+        readonly label: "Completed";
+    }]>
+}
 
 // Write types
-export default function ProjectImagesUploadStep({ newProject, stepper }: any) {
+export default function ProjectImagesUploadStep({ newProject, stepper }: ProjectImagesUploadStepProps) {
+
+
+
+    if (!(newProject)) {
+        return (
+            <div className="min-h-36 flex justify-center items-center">
+                No project found ! Please create project and come back again
+            </div>
+        )
+    }
 
     // Write types
     const form = useForm<any>({
@@ -25,7 +60,7 @@ export default function ProjectImagesUploadStep({ newProject, stepper }: any) {
     })
 
     const onSubmit = (data: any) => {
-
+        console.log("dataa", data)
         const newUploadedImages = data?.images
         newUploadedImages.map((newImage) => {
             handleUploadingImage(newImage)
@@ -40,19 +75,21 @@ export default function ProjectImagesUploadStep({ newProject, stepper }: any) {
     const sendRequestProps = useSendRequest();
     const { isLoading: isSubmittingImage, sendRequest: uploadOneImage } = sendRequestProps
 
-    const handleUploadingImage = (image: ImageWithCoverKey) => {
+    const handleUploadingImage = (image: ImageType) => {
 
         if (image?.uploadingStatus !== "succeeded") {
 
             // Write comments
+            // Write types
             const formData = new FormData();
             formData.append('image', image);
-            formData.append('is_cover', image?.isCover);
+            formData.append('is_cover', image?.isCover.toString());
+
 
             Object.assign(image, { uploadingStatus: "uploading" });
 
             // Write type of newProject coming after create the new project
-            const reqOptions: ReqOptions = { method: "POST", url: `/admin/projects/store-image/${newProject?.data?.id}`, header: { 'Content-Type': 'multipart/form-data' }, data: formData }
+            const reqOptions: ReqOptions = { method: "POST", url: `/admin/projects/store-image/${newProject?.id}`, header: { 'Content-Type': 'multipart/form-data' }, data: formData }
 
             const apiResFuncArgs: ApiResFuncArgs = {
                 successCallback: (res: any) => {
@@ -61,6 +98,9 @@ export default function ProjectImagesUploadStep({ newProject, stepper }: any) {
                     Object.assign(image, { uploadingStatus: "failed" });
                 }
             }
+
+
+            console.log("reqOptions", reqOptions)
             uploadOneImage({ reqOptions, apiResFuncArgs })
         }
     }
@@ -97,9 +137,9 @@ export default function ProjectImagesUploadStep({ newProject, stepper }: any) {
                                     <FormControl>
                                         {/* Write Types */}
                                         <ImageUpload
-                                            sendRequestProps={sendRequestProps}
+                                            // sendRequestProps={sendRequestProps}
                                             handleUploadingImage={handleUploadingImage}
-                                            newProject={newProject}
+                                            // newProject={newProject}
                                             maxImageSize={maxImageSize}
                                             maxImagesSlots={maxImagesSlots}
                                             field={field}

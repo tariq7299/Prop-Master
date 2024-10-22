@@ -1,8 +1,6 @@
-import { SuccessApiResponse } from './types';
+import { SuccessApiResponse } from '../types';
 import { toastApiMsgs } from './toastApiMsgs';
-import { SuccessCallback } from './types';
-import { toast } from '@/components/ui/use-toast'
-
+import { SuccessCallback } from '../types';
 
 function handleApiSuccess(
     successResponse: SuccessApiResponse,

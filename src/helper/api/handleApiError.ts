@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { toastApiMsgs } from './toastApiMsgs';
 import axios from 'axios';
-import { ErrorCallback } from './types';
+import { ErrorCallback } from '../types';
 // import { toast } from '@/components/ui/use-toast'
 import { toast } from "sonner"
 

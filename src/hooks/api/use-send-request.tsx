@@ -4,7 +4,7 @@ import { handleApiSuccess } from "@/helper/api/handleApiSuccess"
 import { useApp } from "../app/app-provider"
 import { axiosPrivate } from "@/helper/api/axiosInstances"
 import axios from "axios"
-import { SendRequest } from "@/helper/api/types"
+import { SendRequest } from "@/helper/types/api"
 
 function useSendRequest() {
 

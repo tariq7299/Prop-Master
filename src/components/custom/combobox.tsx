@@ -1,8 +1,5 @@
-"use client"
-
 import * as React from "react"
 import { Check, ChevronsUpDown } from "lucide-react"
-
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -19,13 +16,12 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import { useFormContext } from "react-hook-form"
+import { ComboboxProps } from "@/helper/types"
+import { FieldValues, FieldPath } from "react-hook-form"
 
+export function Combobox<TFieldValues extends FieldValues, TName extends FieldPath<TFieldValues>>({ values, field, className, placeholder = "Search..." }: ComboboxProps<TFieldValues, TName>) {
 
-// Write Types
-export function Combobox({ values, field, className, placeholder = "Search..." }) {
     const [open, setOpen] = React.useState(false)
-    // const [value, setValue] = React.useState("")
 
     return (
         <Popover open={open} onOpenChange={setOpen} >
@@ -48,7 +44,6 @@ export function Combobox({ values, field, className, placeholder = "Search..." }
                         return 1
                     }
                     return 0
-
                 }}
                 >
                     <CommandInput placeholder={placeholder} />
@@ -64,11 +59,10 @@ export function Combobox({ values, field, className, placeholder = "Search..." }
                                         {values.map((value: { id: number, name: string }) => (
                                             <CommandItem
                                                 key={value.id}
-                                                value={value.id}
+                                                value={value.name}
                                                 onSelect={() => {
-                                                    field.onChange(value.id)
-                                                    setOpen(false)
-                                                    // setValue(currentValue === value ? "" : currentValue)
+                                                    field.onChange(value.id);
+                                                    setOpen(false);
                                                 }}
                                             >
                                                 <Check

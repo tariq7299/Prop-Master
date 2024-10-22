@@ -14,8 +14,8 @@ import {
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import useSendRequest from "@/hooks/api/use-send-request";
-import { ReqOptions } from "@/helper/api/types";
-import { ApiResFuncArgs } from "@/helper/api/types";
+import { ReqOptions } from "@/helper/types/api";
+import { ApiResFuncArgs } from "@/helper/types/api";
 
 
 const sheetSchema = z.object({

@@ -69,10 +69,8 @@ type NewProjectSchema = z.infer<typeof newProjectSchema>
 
 export default function ProjectDetailsStep({ handleCloseModal, addNewProject, isSubmittingNewProject, newProject, stepper }: any) {
 
-    // Write types
     const [contractors, setContractors] = React.useState<{ id: number, name: string }[]>([])
 
-    // Write types
     const [destinations, setDestinations] = React.useState<{ id: number, name: string }[]>([])
 
     const getAllContractors = async () => {
@@ -200,10 +198,10 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
                                             <FormLabel>Delivery Time</FormLabel> <CalendarClock className="h-5 w-5 text-secondary" />
                                         </div>
                                         <FormControl>
-                                            <DatePicker onChange={field.onChange} value={field.value} ></DatePicker>
+                                            <DatePicker onChange={field.onChange} value={field.value}></DatePicker>
                                         </FormControl>
                                         <FormDescription>
-                                            Type when the project will be deliverd
+                                            Type when the project will be delivered
                                         </FormDescription>
                                         <FormMessage />
                                     </FormItem>

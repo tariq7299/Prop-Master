@@ -2,7 +2,7 @@ import { axiosPrivate } from "./axiosInstances";
 import { handleApiError } from "./handleApiError";
 import { handleApiSuccess } from "./handleApiSuccess";
 import axios from "axios";
-import { SuccessApiResponse } from "./types";
+import { SuccessApiResponse } from "../types/api";
 
 
 async function handleGettingRouteData(route: string, showToast: boolean = true): Promise<SuccessApiResponse | Error | void> {

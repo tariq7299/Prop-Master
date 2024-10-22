@@ -64,7 +64,7 @@ function SheetAnalysis() {
 
                 <div className='mb-6'>
                     <h2 className='text-2xl font-bold tracking-tight'>
-                        Sheet Analysis <ChartBarDecreasing className='text-secondary h-7 w-7 inline ms-1 me-3' /> File <span className="text-secondary font-bold text-3xl">#{sheetId}</span>
+                        Sheet Analysis: File <span className="text-secondary font-bold text-3xl">#{sheetId}</span>
                     </h2>
                     <p className='text-muted-foreground font-light'>
                         Here you can see data import summary of your sheet
