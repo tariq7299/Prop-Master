@@ -11,8 +11,8 @@ jobs:
       - name: Send Slack notification
         uses: 8398a7/action-slack@v3
         with:
-          config: .github/config/slack.yml
-          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          # config: .github/config/slack.yml
+          # webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
           status: ${{ job.status }}
           channel: '#prop-master--issues'
           fields: repo,message,commit,author,action,eventName
