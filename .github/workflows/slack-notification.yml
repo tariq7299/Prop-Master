@@ -1,0 +1,35 @@
+name: Issue Notification to Slack
+
+on:
+  issues:
+    types: [opened, closed, reopened]
+
+jobs:
+  notify_slack:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Slack notification
+        uses: 8398a7/action-slack@v3
+        with:
+          config: .github/config/slack.yml
+          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          status: ${{ job.status }}
+          channel: '#prop-master--issues'
+          fields: repo,message,commit,author,action,eventName
+          custom_payload: |
+            {
+              "attachments": [{
+                "color": "${{ github.event.action == 'opened' && '#36a64f' || '#ff0000' }}",
+                "blocks": [
+                  {
+                    "type": "section",
+                    "text": {
+                      "type": "mrkdwn",
+                      "text": "*Issue ${{ github.event.action }}*\n*Repository:* ${{ github.repository }}\n*Issue Title:* ${{ github.event.issue.title }}\n*By:* ${{ github.event.issue.user.login }}\n*Link:* ${{ github.event.issue.html_url }}"
+                    }
+                  }
+                ]
+              }]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
