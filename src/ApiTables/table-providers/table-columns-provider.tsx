@@ -1,6 +1,6 @@
 import * as React from "react"
 import { createContext, useReducer, useContext } from 'react';
-import { BooleanCell, DataListCell, HTMLCell, LinkCell, TextCell } from "../general-components/column-cell-types"
+import { BooleanCell, DataListCell, HTMLCell, ImageCell, LinkCell, TextCell } from "../general-components/column-cell-types"
 import { truncateStart } from "../table-utils/utils"
 import TableRowActions from '../core/table-row-actions';
 
@@ -72,11 +72,14 @@ function tableColumnsReducer(state: any, action: any) {
                                             <HTMLCell col={col} row={row} />
                                         ) : col?.type === 'datalist' ? (
                                             <DataListCell col={col} row={row} />
+                                        ) : col?.type === 'image' ? (
+                                            <ImageCell row={row} col={col} />
                                         ) : col?.type === 'actions' && (
                                             row?.actions && Object.keys(row?.actions)?.length > 0 && (
                                                 <TableRowActions row={row} col={col} />
                                             )
                                         )}
+
                                     </>
                                 )}
                             </div>

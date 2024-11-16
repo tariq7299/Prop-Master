@@ -7,7 +7,27 @@ import RowActionsProvider from "./table-providers/row-actions-provider.tsx"
 import NewRowActionsProvider from "./table-providers/new-row-actions-provider.tsx"
 import ApiTablesController from "./api-tables-controller.tsx"
 
-export default function ReactApiTable({ table, controller, children, params }: any) {
+// export default function ReactApiTable({ table, controller, children, params }: any) {
+//     return (
+//         <>
+//             <TableCoreProvider>
+//                 <TableColumnsProvider>
+//                     <BulkActionsProvider>
+//                         <RowActionsProvider>
+//                             <NewRowActionsProvider>
+//                                 {children}
+//                                 {controller || <ApiTablesController table={table} params={params} />}
+//                             </NewRowActionsProvider>
+//                         </RowActionsProvider>
+//                     </BulkActionsProvider>
+//                 </TableColumnsProvider>
+//             </TableCoreProvider>
+//         </>
+//     )
+// }
+
+const ReactApiTable = React.memo(({ table, controller, children, params }: any) => {
+
     return (
         <>
             <TableCoreProvider>
@@ -24,5 +44,7 @@ export default function ReactApiTable({ table, controller, children, params }: a
             </TableCoreProvider>
         </>
     )
-}
+})
+
+export default ReactApiTable
 

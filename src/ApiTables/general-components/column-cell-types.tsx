@@ -1,6 +1,14 @@
 import * as React from "react"
 import { copyToClipboard } from "../table-utils/utils"
 import { useTableColumns } from "../table-providers/table-columns-provider"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+import { Building } from "lucide-react"
+import { HandCoins, DollarSign, TicketCheck, CalendarClock, CalendarDays } from 'lucide-react';
+import { Button } from "@/components/custom/button"
 
 export function TextCell({ col, row }: any) {
     return (
@@ -91,41 +99,111 @@ export function HTMLCell({ col, row }: any) {
 
 export function DataListCell({ col, row }: any) {
     const { tableColumnsDispatcher } = useTableColumns()
+    console.log("row", row)
+    console.log("col", col)
+    console.log("Object.entries(row[col?.data_src]", Object.entries(row[col?.data_src]))
+    return (
+
+        < Popover >
+            <PopoverTrigger asChild>
+                <Button variant="outline">Show Installment</Button>
+            </PopoverTrigger>
+            <PopoverContent className='grid space-y-2 w-full px-7'>
+                <h2 className="text-md font-bold">Installment Details</h2>
 
 
+                {Object.entries(row[col?.data_src])?.map((installmentDetails, index) => {
+                    // Check if the current entry's key is "amount"
+                    return installmentDetails[0] === "amount"
+                        ? (
+                            <div key={installmentDetails[0]} className='flex gap-2'>
+                                <HandCoins size={23} className=" text-primary" />
+                                <p className="italic font-semibold ">{installmentDetails[1]}</p>
+                            </div>
+                        )
+                        : installmentDetails[0] === "currency"
+                            ? (
+                                <div key={installmentDetails[0]} className='flex gap-2'>
+                                    <DollarSign size={23} className="text-primary" />
+                                    <p className="italic font-semibold ">{installmentDetails[1]}</p>
+                                </div>
+                            )
+                            : installmentDetails[0] === "down_payment"
+                                ? (
+                                    <div key={installmentDetails[0]} className='flex gap-2'>
+                                        <TicketCheck size={23} className="text-primary" />
+                                        <p className="italic font-semibold ">{installmentDetails[1]}</p>
+                                    </div>
+                                )
+                                : installmentDetails[0] === "duration"
+                                    ? (
+                                        <div key={installmentDetails[0]} className='flex gap-2'>
+                                            <CalendarClock size={23} className="text-primary" />
+                                            <p className="italic font-semibold ">{installmentDetails[1]}</p>
+                                        </div>
+                                    )
+                                    : installmentDetails[0] === "freq"
+                                        ? (
+                                            <div key={installmentDetails[0]} className='flex gap-2'>
+                                                <CalendarDays size={23} className="text-primary" />
+                                                <p className="italic font-semibold ">{installmentDetails[1]}</p>
+                                            </div>
+                                        )
+                                        :
+                                        (null)
+                })}
+
+            </PopoverContent>
+        </ Popover>
+
+
+    )
+}
+// export function DataListCell({ col, row }: any) {
+//     const { tableColumnsDispatcher } = useTableColumns()
+
+//     return (
+//         col?.linkStyle === 'button' ? (
+//             <button
+//                 className={`btn btn-opac-${col?.linkColor === 'default' ? 'secondary' : col?.linkColor || 'primary'} btn-sm`}
+//                 onClick={() => {
+//                     tableColumnsDispatcher({
+//                         type: 'SET_ROW_SELECTED_MODAL',
+//                         payload: {
+//                             label: col?.label,
+//                             value: row[col?.data_src]
+//                         }
+//                     })
+//                 }}
+//             >
+//                 {col?.linkText}
+//             </button>
+//         ) : col?.linkStyle === 'link' && (
+//             <a
+//                 className={`btn btn-link p-0 shadow-0 text-${col?.linkColor === 'default' ? 'secondary' : col?.linkColor || 'primary'} btn-sm`}
+//                 href="#!"
+//                 onClick={() => {
+//                     tableColumnsDispatcher({
+//                         type: 'SET_ROW_SELECTED_MODAL',
+//                         payload: {
+//                             label: col?.label,
+//                             value: row[col?.data_src]
+//                         }
+//                     })
+//                 }}
+//             >
+//                 {col?.linkText}
+//             </a>
+//         )
+//     )
+// }
+
+export function ImageCell({ row, col }: any) {
 
     return (
-        col?.linkStyle === 'button' ? (
-            <button
-                className={`btn btn-opac-${col?.linkColor === 'default' ? 'secondary' : col?.linkColor || 'primary'} btn-sm`}
-                onClick={() => {
-                    tableColumnsDispatcher({
-                        type: 'SET_ROW_SELECTED_MODAL',
-                        payload: {
-                            label: col?.label,
-                            value: row[col?.data_src]
-                        }
-                    })
-                }}
-            >
-                {col?.linkText}
-            </button>
-        ) : col?.linkStyle === 'link' && (
-            <a
-                className={`btn btn-link p-0 shadow-0 text-${col?.linkColor === 'default' ? 'secondary' : col?.linkColor || 'primary'} btn-sm`}
-                href="#!"
-                onClick={() => {
-                    tableColumnsDispatcher({
-                        type: 'SET_ROW_SELECTED_MODAL',
-                        payload: {
-                            label: col?.label,
-                            value: row[col?.data_src]
-                        }
-                    })
-                }}
-            >
-                {col?.linkText}
-            </a>
-        )
+        <div className="p-2">
+            <img src={`https://prop-master.venom-hook.com/storage/${row[col?.data_src]}`} alt="developer_i" />
+        </div>
     )
+
 }

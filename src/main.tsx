@@ -7,12 +7,10 @@ import router from '@/router'
 import '@/index.css'
 import AuthProvider from './hooks/auth/auth-provider'
 import AppProvider from './hooks/app/app-provider'
-import { Toaster } from 'sonner'
 
 
 
 if (import.meta.env.VITE_ENV === "Development") {
-
 
   ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>

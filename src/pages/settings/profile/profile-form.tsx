@@ -97,6 +97,7 @@ export default function ProfileForm() {
     changeProfileInfo({ reqOptions, apiResFuncArgs })
 
   }
+  console.log("ds")
 
   function handleSubmittingNewPassword(data: PasswordFormValues) {
 

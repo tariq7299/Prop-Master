@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { CirclePlus } from 'lucide-react';
 import TableNewRowActions from "./core/table-new-row-actions";
 import { PlusCircle } from 'lucide-react';
+import { ProfilingWrapper } from "@/helper/performance/profiler-wrapper";
 
 
 function ApiTablesComponent({ customElement }: any) {
@@ -26,9 +27,15 @@ function ApiTablesComponent({ customElement }: any) {
     return (
 
         <>
+
+            {/* <ProfilingWrapper id="table-filters"> */}
             {structureFilters && structureFilters?.length > 0 && (
-                <TableFilters />
+                <>
+
+                    <TableFilters />
+                </>
             )}
+            {/* </ProfilingWrapper> */}
             <div className="pt-1">
                 <TableSorting />
 

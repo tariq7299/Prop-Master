@@ -9,22 +9,29 @@ import { Badge } from "@/components/ui/badge.tsx";
 function AppliedFilters({ setValue, resetField }: any) {
     const { renderedFilters, tableCoreDispatcher } = useTableCore()
 
+    // console.log("renderedFilters", renderedFilters)
+
 
     function handleClearRenderedFilters(key: any, props: any, type: any) {
 
         const filteredRenderedFilters = renderedFilters?.filter((filter: any) => filter?.key !== key)
-        if (type !== 'date') {
+        if (type === 'date') {
+            resetField(`${key}.fieldValue`)
+        } else if (type === "multiple_select") {
+            setValue(`${key}.fieldValue`, [], { shouldDirty: true, shouldValidate: true })
+        } else if (type === "range") {
+            setValue(`${key}.from.fieldValue`, "", { shouldDirty: true, shouldValidate: true })
+            setValue(`${key}.to.fieldValue`, "", { shouldDirty: true, shouldValidate: true })
+        } else {
             setValue(`${key}.fieldValue`, '', { shouldDirty: true, shouldValidate: true })
             setValue(`${key}.operator`, props?.operators[0], { shouldDirty: true, shouldValidate: true })
-        } else {
-
-            resetField(`${key}.fieldValue`)
         }
         tableCoreDispatcher({ type: 'SET_RENDERED_FILTERS', payload: filteredRenderedFilters })
         tableCoreDispatcher({ type: 'SET_APPLIED_FILTERS', payload: filteredRenderedFilters })
         tableCoreDispatcher({ type: 'SET_CURRENT_PAGE', payload: 1 })
 
     }
+    // console.log("renderedFilters", renderedFilters)
 
     return (
         <>
@@ -34,6 +41,7 @@ function AppliedFilters({ setValue, resetField }: any) {
                     {renderedFilters?.map((filter: any, index: any) => (
                         <div className="text-nowrap" key={index}>
                             <Badge className="bg-teal-500 text-background py-0.5 px-1.5  rounded-3xl mx-1 text-2xs">
+
                                 <Button
                                     size="sm"
                                     className="p-0 m-0 h-fit"
@@ -44,17 +52,25 @@ function AppliedFilters({ setValue, resetField }: any) {
                                 >
                                     <RiCloseCircleFill className="h-3 w-3" />
                                 </Button>
+
                                 <span className="mx-1 font-bold ">{filter?.label}:</span>
-                                <span className="">{
 
-                                    filter?.type !== 'date' ? filter?.valueLable
-                                        :
-                                        `${formatDateNoTime(new Date(filter?.value?.from))} - ${formatDateNoTime(new Date(filter?.value?.to))} `
+                                <span className="">
 
-                                }</span>
+                                    {
 
-                                {/* <span className="">{
-                                filter?.type !== 'date' ? filter?.valueLable : formatDateNoTime(new Date(filter?.value))  }</span> */}
+                                        filter?.type === 'date' ? `${formatDateNoTime(new Date(filter?.value?.from))} - ${formatDateNoTime(new Date(filter?.value?.to))} `
+
+                                            : filter?.type === 'multiple_select' ?
+                                                //  We want to take the value array and then concatentat every value withe each other and add a , between them
+                                                filter?.valueLable.join(", ")
+
+                                                : filter?.valueLable
+
+
+                                    }</span>
+
+
                             </Badge>
                         </div>
                     ))}

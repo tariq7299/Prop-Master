@@ -69,7 +69,7 @@ export function objectToArrayKey(obj: any) {
 
 export function objectToArrayKeyVal(obj: any) {
     return obj ? Object.keys(obj).map((key) => ({
-        key: obj[key],
+        label: obj[key],
         value: key
     })) : []
 }
@@ -206,22 +206,47 @@ export function restructureSelectedFilters(data: any, dirtyFields: any, structur
     const submittedData = objectToArrayKey(dirtyFields)
 
     const filteredObject = Object.fromEntries(Object.entries(data)?.filter(([key, value]: any) => {
-
-        return typeof value?.fieldValue === 'string' ? submittedData?.includes(key) && value?.fieldValue.trim() !== '' && value?.fieldValue : submittedData?.includes(key) && value?.fieldValue !== '' && value?.fieldValue
+        if (typeof value?.fieldValue === 'string') {
+            return submittedData?.includes(key) && value?.fieldValue.trim() !== '' && value?.fieldValue
+        } else if (Array.isArray(value?.fieldValue)) {
+            return value?.fieldValue.length > 0
+        } else if (value?.from?.fieldValue) {
+            return submittedData?.includes(key) && value?.from.fieldValue !== '' && value?.from.fieldValue
+        } else if (value?.to?.fieldValue) {
+            return submittedData?.includes(key) && value?.to.fieldValue !== '' && value?.to.fieldValue
+        } else {
+            return submittedData?.includes(key) && value?.fieldValue !== '' && value?.fieldValue
+        }
     })
     );
+
     const renderedFilters = Object.keys(filteredObject)?.map((key: any) => {
 
         const targetFilter = structureFilters?.find((filter: any) => filter?.filter_name === key);
-
         return {
+
             key: key,
-            value: targetFilter?.type === 'date' ? { from: filteredObject[key]?.fieldValue.from.getTime(), to: filteredObject[key]?.fieldValue.to.getTime() } : filteredObject[key]?.fieldValue,
+            value:
+                targetFilter?.type === 'date' ?
+                    { from: filteredObject[key]?.fieldValue.from.getTime(), to: filteredObject[key]?.fieldValue.to.getTime() }
+                    : targetFilter?.type === 'range' ?
+                        `${filteredObject[key]?.from.fieldValue}---${filteredObject[key]?.to.fieldValue}`
+                        :
+                        filteredObject[key]?.fieldValue,
             label: targetFilter?.label,
             type: targetFilter?.type,
-            valueLable: targetFilter?.props?.select_options ? targetFilter?.props?.select_options[filteredObject[key]?.fieldValue] : filteredObject[key]?.fieldValue,
+            valueLable:
+                targetFilter?.type === 'multiple_select' ?
+                    filteredObject[key]?.fieldValue.map(key => targetFilter?.props?.select_options[key]) :
+                    targetFilter?.type === 'select' ?
+                        targetFilter?.props?.select_options[filteredObject[key]?.fieldValue] :
+                        targetFilter?.type === 'range' ?
+                            `${filteredObject[key]?.from.fieldValue}---${filteredObject[key]?.to.fieldValue}` :
+                            filteredObject[key]?.fieldValue,
+
             operator: targetFilter?.type === 'date' ? targetFilter?.props?.operators[0] : filteredObject[key]?.operator,
             props: targetFilter?.props
+
         }
     })
 

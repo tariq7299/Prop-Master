@@ -22,7 +22,7 @@ import {
   IconUsers,
   IconLock,
 } from '@tabler/icons-react'
-import { Building2, FileClock, LayoutGrid } from 'lucide-react';
+import { Building2, FileClock, LayoutGrid, Building } from 'lucide-react';
 
 export interface NavLink {
   title: string
@@ -120,6 +120,26 @@ export const sidelinks: SideLink[] = [
         title: 'Upload History',
         label: '',
         href: '/projects-upload-history',
+        icon: <FileClock size={18} />,
+      },
+    ]
+  },
+  {
+    title: 'Properties',
+    label: '',
+    href: '',
+    icon: <Building size={18} />,
+    sub: [
+      {
+        title: 'All Properties',
+        label: '',
+        href: '/properties',
+        icon: <LayoutGrid size={18} />,
+      },
+      {
+        title: 'Upload History',
+        label: '',
+        href: '/properties-upload-history',
         icon: <FileClock size={18} />,
       },
     ]

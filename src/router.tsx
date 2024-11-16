@@ -99,6 +99,13 @@ const router = createBrowserRouter([
               },
             ]
           },
+          {
+            path: 'properties',
+            lazy: async () => ({
+              Component: (await import('@/pages/properties/all-properties.tsx')).default,
+            }),
+          },
+
 
           // {
           //   path: 'users',

@@ -23,6 +23,7 @@ function TableBody() {
         Object.keys(column).length > 0 && tableCoreDispatcher({ type: 'SET_TABLE_SORTING', payload: { label: column?.name?.props?.children, direction: sortDirection, [column?.colIdentifier]: sortDirection } })
     }
 
+
     useEffect(() => {
         tableColumnsDispatcher({
             type: 'SET_TABLE_COLUMNS', payload: structureColumns?.filter((col: any) => col?.showable)

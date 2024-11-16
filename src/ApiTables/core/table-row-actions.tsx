@@ -32,7 +32,6 @@ function TableRowActions({ row, col }: any) {
         }
     }, [row, actionsInRegularCells, col])
 
-    console.log("rowActions", rowActions)
 
     useEffect(() => {
         if (selectedRows?.length > 0) {

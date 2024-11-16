@@ -14,9 +14,15 @@ import {
 } from "@/components/ui/breadcrumb"
 import uploadTableStructure from "../data-2/upload-table-structure";
 import { useParams } from 'react-router-dom';
+import axios from "axios";
+import { handleApiError } from "@/helper/api/handleApiError";
+import { handleApiSuccess } from "@/helper/api/handleApiSuccess";
+import { axiosPrivate } from "@/helper/api/axiosInstances";
 
 
 function SheetAnalysis() {
+
+    const [tableStructure, setTableStructure] = React.useState({})
 
     React.useEffect(() => {
         document.title = 'Prop Master - Sheet Analysis';
@@ -24,6 +30,30 @@ function SheetAnalysis() {
             document.title = 'Prop Master';
         }
     }, []);
+
+    React.useEffect(() => {
+        const getTable = async () => {
+
+            try {
+                const response = await axiosPrivate("/admin/import-sheet-dt")
+
+
+                handleApiSuccess(response?.data, false, "", () => {
+                    setTableStructure({ ...tableStructure, ...response?.data?.data })
+                    // console.log("{ ...tableStructure, ...response?.data?.data }", { ...tableStructure, ...response?.data?.data })
+                })
+
+            } catch (error: unknown) {
+                if (axios.isAxiosError(error) || (error instanceof Error)) {
+                    handleApiError(error);
+                    return error
+                } else {
+                    console.error(error)
+                }
+            }
+        }
+        getTable()
+    }, [])
 
     const { sheetId } = useParams();
 
@@ -72,7 +102,7 @@ function SheetAnalysis() {
                 </div>
 
                 <div>
-                    <ReactApiTable table={uploadTableStructure.table_test}></ReactApiTable>
+                    {/* <ReactApiTable table={uploadTableStructure.table_test}></ReactApiTable> */}
                 </div>
 
 
