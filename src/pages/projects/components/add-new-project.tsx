@@ -2,12 +2,11 @@ import * as React from "react";
 import { Button } from "@/components/custom/button";
 import { Separator } from '@/components/ui/separator';
 import { defineStepper } from '@stepperize/react';
-import ProjectDetailsStep from "./components/project-details-step";
-import ProjectImagesUploadStep from "./components/project-images-upload-step";
+import ProjectImagesUploadForm from "@/pages/projects/components/project-images-upload-form";
 import { Check } from 'lucide-react';
 import useSendRequest from "@/hooks/api/use-send-request";
-
-
+import ProjectDetailsForm from "@/pages/projects/components/project-details-form";
+import { useTableRowActions } from "@/ApiTables/table-providers/row-actions-provider";
 
 
 const { useStepper, Scoped, steps } = defineStepper(
@@ -17,10 +16,14 @@ const { useStepper, Scoped, steps } = defineStepper(
 );
 
 // Write types
-export default function AddNewProject({ handleCloseModal }: any) {
+export default function AddNewProject({ action, handleCloseModal }: any) {
+
+    const { rowActionsPostHandler, rowActionPostLoading } = useTableRowActions()
+
 
     const stepper = useStepper();
 
+    console.log("action", action)
     // Create an array of refs using useRef
 
     // Write types
@@ -61,7 +64,7 @@ export default function AddNewProject({ handleCloseModal }: any) {
                                     aria-setsize={steps.length}
                                     aria-selected={stepper.current.id === step.id}
                                     className="flex size-10 items-center justify-center rounded-full cursor-default"
-                                    onClick={() => stepper.goTo(step.id)}
+                                // onClick={() => stepper.goTo(step.id)}
                                 >
                                     {index + 1}
                                 </Button>
@@ -79,8 +82,8 @@ export default function AddNewProject({ handleCloseModal }: any) {
             </nav>
             <div className="space-y-4 overflow-auto h-full">
                 {stepper.switch({
-                    proejctDetails: () => <ProjectDetailsStep addNewProject={addNewProject} isSubmittingNewProject={isSubmittingNewProject} newProject={newProject} handleCloseModal={handleCloseModal} stepper={stepper} />,
-                    projectImages: () => <ProjectImagesUploadStep newProject={newProject} stepper={stepper} />,
+                    proejctDetails: () => <ProjectDetailsForm action={action} handleSubmittingProject={addNewProject} isSubmittingProject={isSubmittingNewProject} handleCloseModal={handleCloseModal} stepper={stepper} formType="add" />,
+                    projectImages: () => <ProjectImagesUploadForm action={action} newProject={newProject} stepper={stepper} formType="add" handleSubmittingImages={rowActionsPostHandler} isSubmittingImags={rowActionPostLoading} />,
                     completed: () => <div className="flex flex-col justify-center items-center py-6 gap-y-2">
                         <Check className="w-1/4 max-w-40 h-auto rounded-full text-success " />
                         <p className="md:text-lg font-bold tracking-wider text-success-600">Project Added</p>
@@ -93,6 +96,21 @@ export default function AddNewProject({ handleCloseModal }: any) {
                     </div>
                 )
                 }
+                {/* {stepper.switch({
+                    proejctDetails: () => <ProjectDetailsStep  addNewProject={addNewProject} isSubmittingNewProject={isSubmittingNewProject} newProject={newProject} handleCloseModal={handleCloseModal} stepper={stepper} />,
+                    projectImages: () => <ProjectImagesUploadForm newProject={newProject} stepper={stepper} />,
+                    completed: () => <div className="flex flex-col justify-center items-center py-6 gap-y-2">
+                        <Check className="w-1/4 max-w-40 h-auto rounded-full text-success " />
+                        <p className="md:text-lg font-bold tracking-wider text-success-600">Project Added</p>
+                    </div>,
+                })}
+                {stepper.isLast && (
+                    <div className="flex justify-end gap-2">
+                        <Button className="" onClick={stepper.reset}>Add new project</Button>
+                        <Button type="button" onClick={handleCloseModal} variant="outline">Close</Button>
+                    </div>
+                )
+                } */}
             </div>
         </Scoped>
     )

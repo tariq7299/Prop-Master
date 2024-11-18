@@ -69,6 +69,8 @@ export default function Projects() {
         }
     })
 
+    console.log("tableStructure", tableStructure)
+
     useEffect(() => {
         const getTable = async () => {
 

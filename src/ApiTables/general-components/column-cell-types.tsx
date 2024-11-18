@@ -9,6 +9,7 @@ import {
 import { Building } from "lucide-react"
 import { HandCoins, DollarSign, TicketCheck, CalendarClock, CalendarDays } from 'lucide-react';
 import { Button } from "@/components/custom/button"
+import InstallmentDetailsList from "@/pages/properties/components/installment-details-list"
 
 export function TextCell({ col, row }: any) {
     return (
@@ -28,8 +29,6 @@ export function TextCell({ col, row }: any) {
         )
     )
 }
-
-
 
 export function LinkCell({ col, row }: any) {
     return (
@@ -60,7 +59,6 @@ export function LinkCell({ col, row }: any) {
     )
 }
 
-
 export function BooleanCell({ row, col }: any) {
     if (row[col?.data_src] === true) {
         return <span className={`status ${col?.values_formating?.revert_values ? 'in-active' : 'active'}`}>
@@ -74,7 +72,6 @@ export function BooleanCell({ row, col }: any) {
         </span>
     )
 }
-
 
 export function HTMLCell({ col, row }: any) {
     const { tableColumnsDispatcher } = useTableColumns()
@@ -96,69 +93,38 @@ export function HTMLCell({ col, row }: any) {
     )
 }
 
-
 export function DataListCell({ col, row }: any) {
     const { tableColumnsDispatcher } = useTableColumns()
     console.log("row", row)
     console.log("col", col)
     console.log("Object.entries(row[col?.data_src]", Object.entries(row[col?.data_src]))
-    return (
 
-        < Popover >
+    const cell = row[col?.data_src]
+    const colType = col?.data_src
+
+    return (
+        <Popover>
             <PopoverTrigger asChild>
-                <Button variant="outline">Show Installment</Button>
+                <Button variant="outline">
+                    {
+                        colType === "default_installment"
+                            ? "Show Installment"
+                            : "Details"
+                    }
+                </Button>
             </PopoverTrigger>
             <PopoverContent className='grid space-y-2 w-full px-7'>
-                <h2 className="text-md font-bold">Installment Details</h2>
 
-
-                {Object.entries(row[col?.data_src])?.map((installmentDetails, index) => {
-                    // Check if the current entry's key is "amount"
-                    return installmentDetails[0] === "amount"
-                        ? (
-                            <div key={installmentDetails[0]} className='flex gap-2'>
-                                <HandCoins size={23} className=" text-primary" />
-                                <p className="italic font-semibold ">{installmentDetails[1]}</p>
-                            </div>
-                        )
-                        : installmentDetails[0] === "currency"
-                            ? (
-                                <div key={installmentDetails[0]} className='flex gap-2'>
-                                    <DollarSign size={23} className="text-primary" />
-                                    <p className="italic font-semibold ">{installmentDetails[1]}</p>
-                                </div>
-                            )
-                            : installmentDetails[0] === "down_payment"
-                                ? (
-                                    <div key={installmentDetails[0]} className='flex gap-2'>
-                                        <TicketCheck size={23} className="text-primary" />
-                                        <p className="italic font-semibold ">{installmentDetails[1]}</p>
-                                    </div>
-                                )
-                                : installmentDetails[0] === "duration"
-                                    ? (
-                                        <div key={installmentDetails[0]} className='flex gap-2'>
-                                            <CalendarClock size={23} className="text-primary" />
-                                            <p className="italic font-semibold ">{installmentDetails[1]}</p>
-                                        </div>
-                                    )
-                                    : installmentDetails[0] === "freq"
-                                        ? (
-                                            <div key={installmentDetails[0]} className='flex gap-2'>
-                                                <CalendarDays size={23} className="text-primary" />
-                                                <p className="italic font-semibold ">{installmentDetails[1]}</p>
-                                            </div>
-                                        )
-                                        :
-                                        (null)
-                })}
-
+                {
+                    colType === "default_installment"
+                        ? (<InstallmentDetailsList cell={cell} />)
+                        : "default list"
+                }
             </PopoverContent>
-        </ Popover>
-
-
+        </Popover>
     )
 }
+
 // export function DataListCell({ col, row }: any) {
 //     const { tableColumnsDispatcher } = useTableColumns()
 
@@ -201,9 +167,10 @@ export function DataListCell({ col, row }: any) {
 export function ImageCell({ row, col }: any) {
 
     return (
-        <div className="p-2">
+        <div className="p-2 max-w-72 ">
             <img src={`https://prop-master.venom-hook.com/storage/${row[col?.data_src]}`} alt="developer_i" />
         </div>
     )
 
 }
+

@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Input } from "@/components/ui/input";
-import DatePicker from "@/components/custom/date-picker";
 import {
     Select,
     SelectContent,
@@ -12,7 +11,7 @@ import {
 } from "@/components/ui/select";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/custom/button";
-import { Building2, CalendarClock, Activity, LandPlot, BriefcaseBusiness, MapPinHouse } from 'lucide-react';
+import { Building2, Activity, LandPlot, BriefcaseBusiness, MapPinHouse } from 'lucide-react';
 import {
     Form,
     FormControl,
@@ -28,20 +27,20 @@ import { handleApiSuccess } from "@/helper/api/handleApiSuccess";
 import axios from "axios";
 import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod";
-import { formatDateToMMYYYY } from '@/helper/utils/dateUtils';
 import { Combobox } from "@/components/custom/combobox";
+import { projectStatuses } from "../data/project-statuses";
 
 
-const newProjectSchema = z
+const projectSchema = z
     .object({
         name: z
             .string()
             .min(1, { message: "Please enter a name for the project" })
             .min(5, { message: "Project name must be at least 5 characters" })
             .max(90, { message: "Project name must't exceed 90 characters long" }),
-        delivery_time: z
-            .date()
-            .refine((date) => date > new Date(), { message: "Delivery time can't be in the past" }),
+        // delivery_time: z
+        //     .date()
+        //     .refine((date) => date > new Date(), { message: "Delivery time can't be in the past" }),
         // images: z
         //     .any(),
         acres: z
@@ -64,10 +63,12 @@ const newProjectSchema = z
             .string(),
     })
 
-type NewProjectSchema = z.infer<typeof newProjectSchema>
+type ProjectSchema = z.infer<typeof projectSchema>
 
 
-export default function ProjectDetailsStep({ handleCloseModal, addNewProject, isSubmittingNewProject, newProject, stepper }: any) {
+export default function ProjectDetailsForm({ action, handleCloseModal, handleSubmittingProject, isSubmittingProject, stepper, formType }: any) {
+
+    console.log("action", action)
 
     const [contractors, setContractors] = React.useState<{ id: number, name: string }[]>([])
 
@@ -93,6 +94,7 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
 
         }
     }
+
     const getAllDestinations = async () => {
 
         try {
@@ -116,18 +118,19 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
         }
     }
 
-    const defaultValues: NewProjectSchema = {
+    const defaultValues: ProjectSchema = {
         name: "",
-        delivery_time: new Date(),
+        // delivery_time: new Date(),
         acres: 0,
         status: "active",
         contractor_company_id: null,
         destination_id: null
     };
 
-    const form = useForm<NewProjectSchema>({
-        resolver: zodResolver(newProjectSchema),
-        defaultValues
+    const form = useForm<ProjectSchema>({
+        resolver: zodResolver(projectSchema),
+        defaultValues,
+        values: action?.payload?.project
         // defaultValues: {
         //     ...defaultValues,
         //     contractor_company_id: contractors[0]?.id || 1,
@@ -135,26 +138,36 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
         // }
     })
 
+    console.log("form.watch()", form.watch())
+
     React.useEffect(() => {
         getAllContractors()
         getAllDestinations()
     }, [])
 
 
-    const onSubmit = (data: NewProjectSchema) => {
+    const onSubmit = (data: ProjectSchema) => {
 
         console.log("data", data)
+        console.log("action", action)
 
-        const formatedData = { ...data, delivery_time: formatDateToMMYYYY(data.delivery_time) }
+        if (formType === "add") {
 
-        const reqOptions = { method: "POST", url: "/admin/projects", data: formatedData }
-        const apiResFuncArgs = {
-            successCallback: (res: any) => {
-                stepper.next()
+            const reqOptions = { method: "POST", url: "/admin/projects", data: data }
+            const apiResFuncArgs = {
+                successCallback: (res: any) => {
+                    stepper && stepper.next()
+                }
             }
+            const fullPageLoader = { isLoading: true, loadingMsg: "Saving Project...", loadingIconName: "loader--1" }
+
+            handleSubmittingProject({ reqOptions, fullPageLoader, apiResFuncArgs })
+
+        } else if (formType === "update") {
+
+            handleSubmittingProject(action?.method, action?.url?.web, data, action, "", true)
+
         }
-        const fullPageLoader = { isLoading: true, loadingMsg: "Saving Project...", loadingIconName: "loader--1" }
-        addNewProject({ reqOptions, fullPageLoader, apiResFuncArgs })
 
     }
 
@@ -187,29 +200,6 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
                             />
                         </div>
 
-                        <div className="space-y-2 w-full max-w-sm">
-
-                            <FormField
-                                control={form.control}
-                                name='delivery_time'
-                                render={({ field }) => (
-                                    <FormItem className='space-y-1'>
-                                        <div className="flex items-center space-x-2">
-                                            <FormLabel>Delivery Time</FormLabel> <CalendarClock className="h-5 w-5 text-secondary" />
-                                        </div>
-                                        <FormControl>
-                                            <DatePicker onChange={field.onChange} value={field.value}></DatePicker>
-                                        </FormControl>
-                                        <FormDescription>
-                                            Type when the project will be delivered
-                                        </FormDescription>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-
-                        </div>
 
                         <div className="space-y-2 w-full max-w-sm">
                             <FormField
@@ -230,9 +220,9 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     <SelectGroup>
+
                                                         <SelectLabel>Choose Status</SelectLabel>
-                                                        <SelectItem value="active" >Active</SelectItem>
-                                                        <SelectItem value="inactive" >Inactive</SelectItem>
+                                                        {projectStatuses?.map((status) => { return (<SelectItem key={status.value} value={status.value} >{status.label}</SelectItem>) })}
                                                     </SelectGroup>
                                                 </SelectContent>
                                             </Select>
@@ -248,7 +238,6 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
 
                         <div className="space-y-2 w-full max-w-sm">
                             <FormField
-
                                 control={form.control}
                                 name='acres'
                                 render={({ field }) => (
@@ -315,7 +304,8 @@ export default function ProjectDetailsStep({ handleCloseModal, addNewProject, is
 
                     {/* Modal Footer */}
                     <div className="fixed bottom-0 right-0 p-2 pt-3 bg-background w-full flex  justify-end sm:space-x-2 gap-2 ">
-                        <Button loading={isSubmittingNewProject} disabled={isSubmittingNewProject || !form.formState.isDirty} type="submit" >Add Project</Button>
+                        {/* <Button type="submit" >Update Project</Button> */}
+                        <Button loading={isSubmittingProject} disabled={isSubmittingProject || !form.formState.isDirty} type="submit" >{formType === "add" ? "Add Project" : "Update Project"}</Button>
                         <Button type="button" onClick={handleCloseModal} variant="outline">Cancel</Button>
                     </div>
                 </form>

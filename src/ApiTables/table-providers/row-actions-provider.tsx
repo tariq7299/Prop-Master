@@ -93,6 +93,8 @@ export default function RowActionsProvider({ children }: any) {
     }
 
     function handleCommonCases(type: any, response: any) {
+        // console.log("type", type)
+        // console.log("response", response)
         if (type === 'deleteRow' || type === 'reload') {
             // router.reload()
             window.location.reload()
@@ -107,6 +109,8 @@ export default function RowActionsProvider({ children }: any) {
             })
             resetClickedRowAction()
         } else if (type === 'refetchRow') {
+            console.log("type", type)
+            console.log("response", response)
             tableCoreDispatcher({
                 type: 'GET_TABLE_DATA',
                 payload: tableData?.map((item: any) => {
@@ -135,7 +139,7 @@ export default function RowActionsProvider({ children }: any) {
     }
 
     // ... 🎯 Row Actions API Handler
-    async function rowActionsPostHandler(method: any, url: any, payload: any, action: any, customHeader: any) {
+    async function rowActionsPostHandler(method: any, url: any, payload: any, action: any, customHeader: any, showToast: boolean = false, customSuccessMsg: string | null = null,) {
 
         // . Start the inline loader
         rowActionsDispatcher({ type: 'SET_ROW_ACTION_POST_LOADING', payload: true })
@@ -173,7 +177,7 @@ export default function RowActionsProvider({ children }: any) {
             //     rowActionsDispatcher({ type: 'GET_CUSTOM_CONTROL_REQUEST', payload: mockPayload })
             // }
 
-            handleApiSuccess(response.data, true, '', function () {
+            handleApiSuccess(response.data, showToast, customSuccessMsg, function () {
                 if (action?.action_type !== 'custom_control') {
                     rowActionsDispatcher({ type: 'GET_CLICKED_ROW_ACTION_RESPONSE', payload: response?.data })
                 } else if (action?.action_type === 'custom_control') {
@@ -211,9 +215,7 @@ export default function RowActionsProvider({ children }: any) {
 
         } catch (err) {
             if (axios.isAxiosError(err) || (err instanceof Error)) {
-                handleApiError(err, '', function () {
-                    resetClickedRowAction()
-                })
+                handleApiError(err, '')
             } else {
                 console.error(err)
             }

@@ -1,6 +1,5 @@
 import * as React from "react"
 import { useEffect } from "react"
-import { HiArrowsUpDown } from 'react-icons/hi2';
 import DataTable from 'react-data-table-component';
 // import { Checkbox } from "../general-components/checkbox.tsx";
 import { Checkbox } from "@/components/ui/checkbox.tsx";
@@ -9,9 +8,8 @@ import { useTableColumns } from "../table-providers/table-columns-provider.tsx";
 import { useTableCore } from "../table-providers/table-core-provider.tsx";
 import { useTableBulkActions } from "../table-providers/bulk-actions-provider.tsx";
 import { useTableRowActions } from "../table-providers/row-actions-provider.tsx";
-import ExpandedRow from "./expanded-row.tsx";
 import { ArrowUpDown } from 'lucide-react'
-import { Skeleton } from "@/components/ui/skeleton.tsx";
+
 
 function TableBody() {
     const { bulkActions } = useTableBulkActions()
@@ -22,6 +20,8 @@ function TableBody() {
     function sortingTableHandler(column: any, sortDirection: any) {
         Object.keys(column).length > 0 && tableCoreDispatcher({ type: 'SET_TABLE_SORTING', payload: { label: column?.name?.props?.children, direction: sortDirection, [column?.colIdentifier]: sortDirection } })
     }
+
+    console.log("tableData", tableData)
 
 
     useEffect(() => {

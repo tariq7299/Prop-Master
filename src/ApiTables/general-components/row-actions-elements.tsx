@@ -92,7 +92,7 @@ export const GeneralRowActionElement = ({ action, isBulk = false }: any) => {
             disabled={rowActionPostLoading}
             onClick={() => { fireRowAction(action) }}
         >
-            {clickedRowAction?.action_key === action?.action_key ? 'برجاء الإنتظار...' : action?.button?.label}
+            {clickedRowAction?.action_key === action?.action_key ? 'Loading...' : action?.button?.label}
         </Button>
     )
 }

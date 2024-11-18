@@ -24,6 +24,8 @@ function ApiTablesComponent({ customElement }: any) {
     const { selectedRows } = useTableColumns()
 
 
+
+
     return (
 
         <>

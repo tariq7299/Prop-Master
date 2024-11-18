@@ -24,6 +24,7 @@ type ImageUplaodProps<TFieldValues extends FieldValues, TName extends FieldPath<
     imagePlaceHolderText: string,
     titleIcon?: React.ReactNode,
     imagePlaceHolderIcon?: React.ReactNode
+    deleted_images_ids: { current: string[] }
 }
 
 export type Image = File & {
@@ -31,7 +32,7 @@ export type Image = File & {
     isCover: boolean
 }
 
-export default function ImageUpload<TFieldValues extends FieldValues, TName extends FieldPath<TFieldValues>>({ maxImagesSlots, maxImageSize, field, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon, handleUploadingImage }: ImageUplaodProps<TFieldValues, TName>) {
+export default function ImageUpload<TFieldValues extends FieldValues, TName extends FieldPath<TFieldValues>>({ maxImagesSlots, maxImageSize, field, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon, handleUploadingImage, deleted_images_ids }: ImageUplaodProps<TFieldValues, TName>) {
 
 
     // // I added this line because the ref 
@@ -138,6 +139,12 @@ export default function ImageUpload<TFieldValues extends FieldValues, TName exte
         const existingImages: Image[] = getValues("images")
         const imageToRemove = existingImages.find(existingImage => existingImage.name === imageName)
 
+        // Store image id !
+        // If it is found 
+        // As the array/list will be send later to api in order to delete them
+        // this case is with already existing images only!! (in "update images modal")  
+        imageToRemove?.id && deleted_images_ids.current.push(imageToRemove?.id)
+
         let newImages: Image[];
         if (imageToRemove && imageToRemove.isCover) {
             newImages = existingImages.filter((existingImage) => existingImage?.name !== imageToRemove.name)
@@ -225,6 +232,14 @@ export default function ImageUpload<TFieldValues extends FieldValues, TName exte
         }
     }
 
+    if (getValues("images")[1]) {
+        const test2 = URL.createObjectURL(getValues("images")[1])
+        console.log('test2', test2)
+
+    }
+
+
+
 
     return (
         <TooltipProvider>
@@ -275,7 +290,6 @@ export default function ImageUpload<TFieldValues extends FieldValues, TName exte
 
                 <div className="grid grid-flow-row auto-rows-max gap-5 justify-items-stretch grid-cols-[repeat(3,_minmax(70px,_100px))] justify-center p-4">
                     {/* <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-y-3 gap-x-3 justify-items-center"> */}
-
                     {/* Write some comments here  */}
                     {Array.from({ length: maxImagesSlots }, (_, i) => {
 
@@ -283,7 +297,13 @@ export default function ImageUpload<TFieldValues extends FieldValues, TName exte
                             return (
                                 <div key={i} className={`relative flex bg-muted justify-center items-center aspect-square w-full  rounded-lg group overflow-hidden transform transition duration-300 ease-in-out hover:-translate-y-3 hover:drop-shadow-lg ${getValues("images")[i]?.uploadingStatus === "uploading" ? "motion-safe:animate-bounce" : ""}`}>
 
-                                    <img src={URL.createObjectURL(getValues("images")[i])} alt="" className="" />
+                                    <img
+                                        src={
+                                            getValues("images")[i]?.url
+                                                ? `https://prop-master.venom-hook.com/storage/${getValues("images")[i]?.url}` :
+                                                URL.createObjectURL(getValues("images")[i])
+                                        } alt="" className="" />
+
 
                                     {getValues("images")[i]?.uploadingStatus === "pending"
                                         ? (
@@ -359,9 +379,7 @@ export default function ImageUpload<TFieldValues extends FieldValues, TName exte
                             )
                         }
                     })}
-
                 </div>
-
             </div >
         </TooltipProvider>
 

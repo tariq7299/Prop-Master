@@ -27,6 +27,7 @@ function UploadHistory() {
         }
     }, []);
 
+
     const [tableStructure, setTableStructure] = React.useState({
         "newRowActions": {
             "addNewProjectByExcel": {

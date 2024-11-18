@@ -2,9 +2,9 @@ import * as React from "react";
 import { Button } from "@/components/custom/button";
 import { Separator } from '@/components/ui/separator';
 import { defineStepper } from '@stepperize/react';
-import DownloadTemplateStep from "./components/download-template-step";
-import UploadSheetStep from "./components/upload-sheet-step";
-import FinishedUploadingStep from "./components/finished-uploading-step";
+import DownloadTemplateStep from "./download-template-step";
+import UploadSheetStep from "./upload-sheet-step";
+import FinishedUploadingStep from "./finished-uploading-step";
 
 const { useStepper, Scoped, steps } = defineStepper(
     { id: 'downloadTemplate', label: 'Download template' },
