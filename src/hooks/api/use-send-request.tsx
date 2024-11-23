@@ -16,7 +16,9 @@ function useSendRequest() {
     const [resData, setResData] = useState(null)
 
     // Add types to theeese parameters
-    async function sendRequest({ reqOptions, apiResFuncArgs, fullPageLoader, finalCallback }: SendRequest) {
+    const sendRequest: SendRequest = async ({ reqOptions, apiResFuncArgs, fullPageLoader, finalCallback }) => {
+
+        console.log("apiResFuncArgs", apiResFuncArgs)
 
         setIsLoading(true)
         appDispatch({ type: "FULL_PAGE_LOADING", payload: { isLoading: fullPageLoader?.isLoading || false, loadingMsg: fullPageLoader?.loadingMsg || "Processing...", loadingIconName: fullPageLoader?.loadingIconName || "loader--1" } })
@@ -26,12 +28,13 @@ function useSendRequest() {
                 ...reqOptions,
                 method: reqOptions?.method || 'POST'
             })
-            handleApiSuccess(response?.data, apiResFuncArgs?.showToast || true, apiResFuncArgs?.customMsg || '', function () {
+            handleApiSuccess(response?.data, apiResFuncArgs?.showToast ?? true, apiResFuncArgs?.customMsg || '', function () {
                 setResData(response?.data)
                 if (apiResFuncArgs?.successCallback && typeof apiResFuncArgs.successCallback === 'function') {
                     apiResFuncArgs.successCallback(response?.data)
                 }
             })
+            return "succeeded"
         } catch (error) {
             if (axios.isAxiosError(error) || (error instanceof Error)) {
                 handleApiError(error, apiResFuncArgs?.customMsg, function () {
@@ -42,6 +45,7 @@ function useSendRequest() {
             } else {
                 console.error(error)
             }
+            return "failed"
         } finally {
             finalCallback && finalCallback()
             setIsLoading(false)

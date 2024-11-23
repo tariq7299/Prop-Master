@@ -1,5 +1,4 @@
 import * as React from "react";
-import { ChartBarDecreasing } from 'lucide-react';
 import { Layout } from '@/components/custom/layout'
 import ReactApiTable from "@/ApiTables/react-api-table";
 import { UserNav } from '@/components/user-nav'
@@ -12,7 +11,6 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import uploadTableStructure from "../data-2/upload-table-structure";
 import { useParams } from 'react-router-dom';
 import axios from "axios";
 import { handleApiError } from "@/helper/api/handleApiError";
@@ -23,7 +21,6 @@ import { axiosPrivate } from "@/helper/api/axiosInstances";
 function SheetAnalysis() {
 
     const [tableStructure, setTableStructure] = React.useState({})
-
 
 
     React.useEffect(() => {
@@ -104,7 +101,7 @@ function SheetAnalysis() {
                 </div>
 
                 <div>
-                    {/* <ReactApiTable table={uploadTableStructure.table_test}></ReactApiTable> */}
+                    <ReactApiTable table={tableStructure}></ReactApiTable>
                 </div>
 
 

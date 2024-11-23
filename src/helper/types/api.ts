@@ -44,9 +44,9 @@ export type ApiResFuncArgs = {
   errorCallBack?: ErrorCallback,
 }
 
-export type SendRequest = {
+export type SendRequest = (params: {
   reqOptions: ReqOptions,
-  apiResFuncArgs?: Partial<ApiResFuncArgs>
+  apiResFuncArgs?: Partial<ApiResFuncArgs>,
   fullPageLoader?: Partial<FullPageLoader>,
-  finalCallback?: (arg0?: any) => void
-}
+  finalCallback?: (response?: any) => void
+}) => Promise<"succeeded" | "failed">

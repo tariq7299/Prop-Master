@@ -1,13 +1,34 @@
 import { useTableRowActions } from "@/ApiTables/table-providers/row-actions-provider"
 import ProjectImagesUploadForm from "./project-images-upload-form"
+import { CustomControlAction } from "@/ApiTables/types/table-actions"
 
-export default function UpdateProjectImages({ action, handleCloseModal }) {
+type ImageFileInfo = {
+    id: number;
+    project_id: number;
+    url: string;
+    caption: string;
+    created_at?: string;
+    updated_at?: string;
+    is_cover: boolean;
+};
+
+type CustomControlActionPayload = {
+    project_id: number;
+    project_images: ImageFileInfo[];
+};
+
+type UpdateProjectDetailsProps = {
+    action: CustomControlAction<CustomControlActionPayload>
+    handleCloseModal: () => void
+}
+
+export default function UpdateProjectImages({ action, handleCloseModal }: UpdateProjectDetailsProps) {
 
     const { rowActionsPostHandler, rowActionPostLoading } = useTableRowActions()
 
     return (
         <>
-            <ProjectImagesUploadForm isSubmittingImags={rowActionPostLoading} handleSubmittingImages={rowActionsPostHandler} action={action} handleCloseModal={handleCloseModal} formType="update" />
+            <ProjectImagesUploadForm isSubmittingModal={rowActionPostLoading} handleSubmittingModal={rowActionsPostHandler} action={action} handleCloseModal={handleCloseModal} formType="update" />
         </>
     )
-};
+}; 

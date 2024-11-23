@@ -13,7 +13,7 @@ function ApiTablesController({ table, params, customElement }: any) {
     // const { appAuth } = useAut
     // const { accessibilitySettings } = useApp()
     const { bulkActionsDispatcher } = useTableBulkActions()
-    const { appliedFilters, currentPage, tableSorting, pageSize, tableCoreDispatcher, tableName } = useTableCore()
+    const { appliedFilters, currentPage, tableSorting, pageSize, tableCoreDispatcher, tableName, triggerTableFetcher } = useTableCore()
     const { rowActionsDispatcher } = useTableRowActions()
     const { tableFetchingHandler } = useTableFetcher()
     const { newRowActionsDispatcher } = useTableNewRowActions();
@@ -76,7 +76,7 @@ function ApiTablesController({ table, params, customElement }: any) {
             controller.abort()
         }
 
-    }, [tableName, currentPage, pageSize, allFiltersValues, tableSorting])
+    }, [tableName, currentPage, pageSize, allFiltersValues, tableSorting, triggerTableFetcher])
 
 
     return <ApiTablesComponent customElement={customElement} />

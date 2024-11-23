@@ -6,6 +6,8 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { Badge } from '@/components/ui/badge';
+import React from 'react';
 
 /**
  * Represents an installment configuration
@@ -29,6 +31,33 @@ type InstallmentDetailsListProps = {
     cell: InstallmentCell,
 }
 
+interface DataRowProp {
+    data: string
+    toolTipContent: string
+    icon: React.ReactNode
+}
+
+
+function DataRow({ data, toolTipContent, icon }: DataRowProp) {
+
+    return (
+        <Tooltip >
+            <TooltipTrigger asChild>
+                <div className='flex gap-2'>
+                    <Badge variant={"outline"} className='flex items-center gap-2 font-bold italic'>{icon}<span className=''>{data}</span></Badge>
+                    {/* <p className="italic font-semibold ">{data}</p> */}
+                </div>
+            </TooltipTrigger>
+
+            <TooltipContent className="bg-warning text-warning-900 font-bold border-2">
+                <p className="text-wrap">{toolTipContent}</p>
+            </TooltipContent>
+
+
+
+        </Tooltip>)
+}
+
 export default function InstallmentDetailsList({ cell }: InstallmentDetailsListProps) {
 
     if (Object.keys(cell).length === 0) {
@@ -39,97 +68,47 @@ export default function InstallmentDetailsList({ cell }: InstallmentDetailsListP
 
     return (
         <TooltipProvider>
+            <div className='grid space-y-2 w-full '>
+                <h2 className="text-sm font-bold pb-1">Installment</h2>
+                {Object.entries(cell)?.map((installmentDetails) => {
 
-            <h2 className="text-md font-bold">Installment Details</h2>
-            {Object.entries(cell)?.map((installmentDetails) => {
-                // Check if the current entry's key is "amount"
-                return installmentDetails[0] === "amount"
-                    ? (
-                        <Tooltip key={installmentDetails[0]}>
-
-                            <TooltipTrigger asChild>
-                                <div key={installmentDetails[0]} className='flex gap-2'>
-                                    <HandCoins size={23} className=" text-primary" />
-                                    <p className="italic font-semibold ">{installmentDetails[1]}</p>
-                                </div>
-                            </TooltipTrigger>
-
-                            <TooltipContent className="bg-warning text-warning-900 font-bold border-2">
-                                <p className="text-wrap">Amount</p>
-                            </TooltipContent>
-
-
-
-                        </Tooltip>
-                    )
-                    : installmentDetails[0] === "currency"
+                    // Check if the current entry's key is "amount"
+                    return installmentDetails[0] === "amount"
                         ? (
-                            <Tooltip key={installmentDetails[0]}>
-                                <TooltipTrigger asChild>
-                                    <div key={installmentDetails[0]} className='flex gap-2'>
-                                        <DollarSign size={23} className="text-primary" />
-                                        <p className="italic font-semibold ">{installmentDetails[1]}</p>
-                                    </div>
-                                </TooltipTrigger>
-
-                                <TooltipContent className="bg-warning text-warning-900 font-bold border-2">
-                                    <p className="text-wrap">Currency</p>
-                                </TooltipContent>
-                            </Tooltip>
-
+                            <React.Fragment key={installmentDetails[0]}>
+                                <DataRow icon={(<HandCoins size={18} className=" text-primary" />)} data={installmentDetails[1]} toolTipContent='Amount'></DataRow>
+                            </React.Fragment>
                         )
-                        : installmentDetails[0] === "down_payment"
+                        : installmentDetails[0] === "currency"
                             ? (
-                                <Tooltip key={installmentDetails[0]}>
-
-                                    <TooltipTrigger asChild>
-                                        <div key={installmentDetails[0]} className='flex gap-2'>
-                                            <TicketCheck size={23} className="text-primary" />
-                                            <p className="italic font-semibold ">{installmentDetails[1]}</p>
-                                        </div>
-                                    </TooltipTrigger>
-
-                                    <TooltipContent className="bg-warning text-warning-900 font-bold border-2">
-                                        <p className="text-wrap">Down Payment</p>
-                                    </TooltipContent>
-                                </Tooltip>
-
+                                <React.Fragment key={installmentDetails[0]}>
+                                    <DataRow icon={(<DollarSign size={18} className="text-primary" />)} data={installmentDetails[1]} toolTipContent='Currency'></DataRow>
+                                </React.Fragment>
                             )
-                            : installmentDetails[0] === "duration"
+                            : installmentDetails[0] === "down_payment"
                                 ? (
-                                    <Tooltip key={installmentDetails[0]}>
-                                        <TooltipTrigger asChild>
-                                            <div key={installmentDetails[0]} className='flex gap-2'>
-                                                <CalendarClock size={23} className="text-primary" />
-                                                <p className="italic font-semibold ">{installmentDetails[1]}</p>
-                                            </div>
-                                        </TooltipTrigger>
-
-                                        <TooltipContent className="bg-warning text-warning-900 font-bold border-2">
-                                            <p className="text-wrap">Duration</p>
-                                        </TooltipContent>
-                                    </Tooltip>
-
+                                    <React.Fragment key={installmentDetails[0]}>
+                                        <DataRow icon={(<TicketCheck size={18} className="text-primary" />)} data={installmentDetails[1]} toolTipContent='Down Payment'></DataRow>
+                                    </React.Fragment>
                                 )
-                                : installmentDetails[0] === "freq"
+                                : installmentDetails[0] === "duration"
                                     ? (
-                                        <Tooltip key={installmentDetails[0]}>
-                                            <TooltipTrigger asChild className=''>
-                                                <div className='flex gap-2'>
-                                                    <CalendarDays size={23} className="text-primary" />
-                                                    <p className="italic font-semibold ">{installmentDetails[1]}</p>
-                                                </div>
-                                            </TooltipTrigger>
-
-                                            <TooltipContent className="bg-warning text-warning-900 font-bold border-2">
-                                                <p className="text-wrap">Frequency</p>
-                                            </TooltipContent>
-                                        </Tooltip>
+                                        <React.Fragment key={installmentDetails[0]}>
+                                            <DataRow icon={(<CalendarClock size={18} className="text-primary" />)} data={installmentDetails[1]} toolTipContent='Duration'></DataRow>
+                                        </React.Fragment>
 
                                     )
-                                    :
-                                    (null)
-            })}
+                                    : installmentDetails[0] === "freq"
+                                        ? (
+                                            <React.Fragment key={installmentDetails[0]}>
+                                                <DataRow icon={(<CalendarDays size={18} className="text-primary" />)} data={installmentDetails[1]} toolTipContent='Frequency'></DataRow>
+                                            </React.Fragment>
+                                        )
+                                        :
+                                        (null)
+                })}
+
+            </div>
         </TooltipProvider>
     )
 }

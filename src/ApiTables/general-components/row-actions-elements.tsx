@@ -7,6 +7,7 @@ import { useTableColumns } from "../table-providers/table-columns-provider.tsx"
 import { Switch } from "@/components/ui/switch.tsx"
 import { Label } from "@/components/ui/label.tsx"
 import { Button } from "@/components/custom/button.tsx"
+import { RowActionPostHandlerArgs } from "../types/table-actions.ts"
 
 
 // ... 🐼 Check if the bulk action needs a modal form
@@ -20,11 +21,21 @@ export const ToggleRowActionElement = ({ action, isBulk = false }: any) => {
 
     // ... 🐼 Bulk Action API Post Handler
     function fireRowAction(action: any) {
+
+        console.log("actionadsads", action)
+
         if (requireModal(action)) {
             rowActionsDispatcher({ type: 'GET_CLICKED_ROW_ACTION', payload: { ...action, ...(isBulk && { isBulk: true }) } })
         } else {
-            rowActionsPostHandler(action?.method, isBulk ? action?.bulk_actions_url?.web : action?.action.web, { selected_ids: selectedIds }, { ...action, ...(isBulk && { isBulk: true }) }
-            )
+            const RowActionPostHandlerArgs: Partial<RowActionPostHandlerArgs> = {
+                method: action?.method,
+                url: isBulk ? action?.bulk_actions_url?.web : action?.action.web,
+                payload: { selected_ids: selectedIds },
+                action: { ...action, ...(isBulk && { isBulk: true }) }
+            }
+            rowActionsPostHandler(RowActionPostHandlerArgs)
+            // rowActionsPostHandler(action?.method, isBulk ? action?.bulk_actions_url?.web : action?.action.web, { selected_ids: selectedIds }, { ...action, ...(isBulk && { isBulk: true }) }
+            // )
         }
     }
 
@@ -72,13 +83,26 @@ export const GeneralRowActionElement = ({ action, isBulk = false }: any) => {
             rowActionsDispatcher({ type: 'GET_CLICKED_ROW_ACTION', payload: { ...action, ...(isBulk && { isBulk: true }) } })
 
             if (action?.action_type === 'custom_control') {
-                rowActionsPostHandler(action?.method, isBulk ? action?.bulk_actions_url?.web : action?.action.web, { selected_ids: selectedIds }, action
-                )
+
+                const RowActionPostHandlerArgs: Partial<RowActionPostHandlerArgs> = {
+                    method: action?.method,
+                    url: isBulk ? action?.bulk_actions_url?.web : action?.action.web,
+                    payload: { selected_ids: selectedIds },
+                    action: action
+                }
+                rowActionsPostHandler(RowActionPostHandlerArgs)
+                // rowActionsPostHandler(action?.method, isBulk ? action?.bulk_actions_url?.web : action?.action.web, { selected_ids: selectedIds }, action)
             }
 
         } else {
-            rowActionsPostHandler(action?.method, isBulk ? action?.bulk_actions_url?.web : action?.action.web, { selected_ids: selectedIds }, { ...action, ...(isBulk && { isBulk: true }) }
-            )
+            const RowActionPostHandlerArgs: Partial<RowActionPostHandlerArgs> = {
+                method: action?.method,
+                url: isBulk ? action?.bulk_actions_url?.web : action?.action.web,
+                payload: { selected_ids: selectedIds },
+                action: { ...action, ...(isBulk && { isBulk: true }) }
+            }
+            rowActionsPostHandler(RowActionPostHandlerArgs)
+            // rowActionsPostHandler(action?.method, isBulk ? action?.bulk_actions_url?.web : action?.action.web, { selected_ids: selectedIds }, { ...action, ...(isBulk && { isBulk: true }) })
         }
     }
     console.log("action?.button?.btnClasses?.join(' ')", action?.button?.btnClasses?.join(' '))

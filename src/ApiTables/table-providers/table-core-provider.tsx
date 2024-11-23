@@ -13,7 +13,8 @@ const initialState = {
     currentPage: 1,
     pageSize: 10,
     tablePagination: null,
-    tableFetchingLoading: true
+    tableFetchingLoading: true,
+    triggerTableFetcher: false
 };
 
 // Reducer function
@@ -84,6 +85,12 @@ function tableCoreReducer(state: any, action: any) {
         return {
             ...state,
             pageSize: action?.payload
+        }
+    }
+    if (action.type === 'TRIGGER_REFETCH_DATA') {
+        return {
+            ...state,
+            triggerTableFetcher: !state.triggerTableFetcher
         }
     }
 

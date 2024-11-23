@@ -11,6 +11,7 @@ import { handleApiError } from '@/helper/api/handleApiError.ts';
 import { useTableCore } from "./table-core-provider.tsx";
 import { useTableColumns } from "./table-columns-provider.tsx";
 import axios from 'axios';
+import { RowActionPostHandlerArgs } from "../types/table-actions.ts";
 
 const initialState = {
     structureRowActions: [],
@@ -79,7 +80,7 @@ export function useTableRowActions() {
 // Provider component
 export default function RowActionsProvider({ children }: any) {
     // const { axiosPrivate } = useAuth()
-    const { tableData, tableCoreDispatcher } = useTableCore()
+    const { tableData, tableCoreDispatcher, triggerTableFetcher } = useTableCore()
     const { tableColumnsDispatcher, toggledClearRows } = useTableColumns()
     const [state, rowActionsDispatcher] = useReducer(tableRowActionsReducer, initialState);
 
@@ -92,13 +93,16 @@ export default function RowActionsProvider({ children }: any) {
         tableColumnsDispatcher({ type: 'SET_SELECTED_ROWS', payload: [] })
     }
 
-    function handleCommonCases(type: any, response: any) {
+    function handleCommonCases(type: any, response: any, affectModalOpeningClosing: boolean) {
         // console.log("type", type)
         // console.log("response", response)
         if (type === 'deleteRow' || type === 'reload') {
             // router.reload()
-            window.location.reload()
-            resetClickedRowAction()
+            // window.location.reload()
+            tableCoreDispatcher({
+                type: 'TRIGGER_REFETCH_DATA'
+            })
+            affectModalOpeningClosing && resetClickedRowAction()
         } else if (type === 'refetchData') {
             tableCoreDispatcher({
                 type: 'GET_TABLE_DATA',
@@ -107,13 +111,15 @@ export default function RowActionsProvider({ children }: any) {
                     return matchingItem ? matchingItem : item;
                 })
             })
-            resetClickedRowAction()
+            affectModalOpeningClosing && resetClickedRowAction()
         } else if (type === 'refetchRow') {
             console.log("type", type)
             console.log("response", response)
+
             tableCoreDispatcher({
                 type: 'GET_TABLE_DATA',
                 payload: tableData?.map((item: any) => {
+                    1
                     if (item?.id !== response?.data?.row?.id) {
                         return item
                     } else {
@@ -121,25 +127,25 @@ export default function RowActionsProvider({ children }: any) {
                     }
                 })
             })
-            resetClickedRowAction()
+            affectModalOpeningClosing && resetClickedRowAction()
         } else if (type === 'downloadData') {
             downloadURL(response?.data?.file, response?.data?.name)
-            resetClickedRowAction()
+            affectModalOpeningClosing && resetClickedRowAction()
         }
     }
 
     // ... Function to take different actions on the table based on the row action reponse
-    function handleRowActionRepsonse(action: any, response: any) {
+    function handleRowActionRepsonse(action: any, response: any, affectModalOpeningClosing: boolean) {
 
         if (action?.isBulk) {
-            handleCommonCases(action?.onBulkSuccess, response)
+            handleCommonCases(action?.onBulkSuccess, response, affectModalOpeningClosing)
         } else {
-            handleCommonCases(action?.onSuccess, response)
+            handleCommonCases(action?.onSuccess, response, affectModalOpeningClosing)
         }
     }
 
     // ... 🎯 Row Actions API Handler
-    async function rowActionsPostHandler(method: any, url: any, payload: any, action: any, customHeader: any, showToast: boolean = false, customSuccessMsg: string | null = null,) {
+    async function rowActionsPostHandler({ method, url, payload, action, customHeader = {}, showToast = false, customSuccessMsg = null, successCallback, errorCallBack, finalCallback, affectModalOpeningClosing = true }: RowActionPostHandlerArgs) {
 
         // . Start the inline loader
         rowActionsDispatcher({ type: 'SET_ROW_ACTION_POST_LOADING', payload: true })
@@ -148,7 +154,7 @@ export default function RowActionsProvider({ children }: any) {
 
         try {
             const response = await axiosPrivate({
-                method, url, data: { ...payload }, ...(customHeader && {
+                method, url, data: { ...payload }, ...(Object.keys(customHeader).length > 0 && {
                     headers: { ...customHeader }
                 })
             })
@@ -178,12 +184,24 @@ export default function RowActionsProvider({ children }: any) {
             // }
 
             handleApiSuccess(response.data, showToast, customSuccessMsg, function () {
-                if (action?.action_type !== 'custom_control') {
-                    rowActionsDispatcher({ type: 'GET_CLICKED_ROW_ACTION_RESPONSE', payload: response?.data })
-                } else if (action?.action_type === 'custom_control') {
-                    rowActionsDispatcher({ type: 'GET_CUSTOM_CONTROL_REQUEST', payload: response?.data })
+
+                // Some times i pass this as false, so it won't close the modal after submitting a request to api
+                if (affectModalOpeningClosing) {
+
+                    // This will store the action in a state
+                    // This controls the opening and closing of the modal on screen
+                    if (action?.action_type !== 'custom_control') {
+                        rowActionsDispatcher({ type: 'GET_CLICKED_ROW_ACTION_RESPONSE', payload: response?.data })
+                    } else if (action?.action_type === 'custom_control') {
+                        rowActionsDispatcher({ type: 'GET_CUSTOM_CONTROL_REQUEST', payload: response?.data })
+                    }
+
                 }
-                handleRowActionRepsonse(action, response?.data)
+
+                // This implement the onSuccess that is found in the "action" 
+                handleRowActionRepsonse(action, response?.data, affectModalOpeningClosing)
+
+                successCallback?.();
 
                 // . In case of a fail response => Remove the row action from state
             })
@@ -215,7 +233,7 @@ export default function RowActionsProvider({ children }: any) {
 
         } catch (err) {
             if (axios.isAxiosError(err) || (err instanceof Error)) {
-                handleApiError(err, '')
+                handleApiError(err, '', errorCallBack?.())
             } else {
                 console.error(err)
             }
@@ -226,6 +244,7 @@ export default function RowActionsProvider({ children }: any) {
         } finally {
             // . End the inline loader
             rowActionsDispatcher({ type: 'SET_ROW_ACTION_POST_LOADING', payload: false })
+            finalCallback?.()
         }
     }
 

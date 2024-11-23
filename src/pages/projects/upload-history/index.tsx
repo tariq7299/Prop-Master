@@ -76,6 +76,7 @@ function UploadHistory() {
         getUploadHistoryTableStructrue()
     }, [])
 
+
     return (
         <Layout>
 

@@ -13,6 +13,8 @@ import {
 import { toast } from "sonner"
 import { useFormContext } from "react-hook-form";
 import { ControllerRenderProps, FieldValues, FieldPath } from "react-hook-form"
+import autoAnimate from '@formkit/auto-animate'
+
 
 type ImageUplaodProps<TFieldValues extends FieldValues, TName extends FieldPath<TFieldValues>> = {
     handleUploadingImage: (arg0: Image) => void,
@@ -24,18 +26,38 @@ type ImageUplaodProps<TFieldValues extends FieldValues, TName extends FieldPath<
     imagePlaceHolderText: string,
     titleIcon?: React.ReactNode,
     imagePlaceHolderIcon?: React.ReactNode
-    deleted_images_ids: { current: string[] }
+    validImageTypes: ValidImageTypes
+    handleDeletingImage: (imageName: string) => void
+    deleteImageUrl: string
 }
 
 export type Image = File & {
-    uploadingStatus: "pending" | "uploading" | "succeeded" | "failed"
+    uploadingStatus: "pending" | "uploading" | "succeeded" | "failed" | "deleting"
     isCover: boolean
+    id?: string
+    url?: string
 }
 
-export default function ImageUpload<TFieldValues extends FieldValues, TName extends FieldPath<TFieldValues>>({ maxImagesSlots, maxImageSize, field, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon, handleUploadingImage, deleted_images_ids }: ImageUplaodProps<TFieldValues, TName>) {
+type ValidImageTypes = {
+    jpg: string;
+    jpeg: string;
+    png: string;
+};
 
 
-    // // I added this line because the ref 
+
+export function ImageUpload<TFieldValues extends FieldValues, TName extends FieldPath<TFieldValues>>({ maxImagesSlots, maxImageSize, field, title, description, imagePlaceHolderText, titleIcon, imagePlaceHolderIcon, handleUploadingImage, validImageTypes, handleDeletingImage }: ImageUplaodProps<TFieldValues, TName>) {
+
+
+    // This will be used by AutoAnimate lib to animate my images when users deletes an iageor adds an image
+    const parent = React.useRef(null)
+    React.useEffect(() => {
+        parent.current && autoAnimate(parent.current)
+    }, [parent])
+
+
+
+    // I added this line because the ref 
     const _ = React.useRef(null)
 
     const { setValue, watch, getValues, setError, clearErrors } = useFormContext()
@@ -102,14 +124,14 @@ export default function ImageUpload<TFieldValues extends FieldValues, TName exte
 
     const validateImageType = (uploadedImagesArray: File[], validImageTypes: string[]) => {
 
-        const isAnyImageHasInvalidType = uploadedImagesArray.some(uploadedImage => !validImageTypes.includes(uploadedImage.type))
+        const isAnyImageHasInvalidType = uploadedImagesArray.some(uploadedImage => !Object.values(validImageTypes).includes(uploadedImage.type))
         if (isAnyImageHasInvalidType) {
             toast.warning("Invalid type", {
                 description: "Some of the images didn't got upladed as has an invalid image type!, Valid types are [.png, .jpg, .jpeg]",
 
             })
         }
-        return uploadedImagesArray.filter(uploadedImage => validImageTypes.includes(uploadedImage.type))
+        return uploadedImagesArray.filter(uploadedImage => Object.values(validImageTypes).includes(uploadedImage.type))
     }
 
     const handleDroppingImages = (droppedImages: FileList, onChange: (e: Image[]) => void) => {
@@ -134,35 +156,6 @@ export default function ImageUpload<TFieldValues extends FieldValues, TName exte
 
     }
 
-    const handleRemovingImage = (imageName: string) => {
-
-        const existingImages: Image[] = getValues("images")
-        const imageToRemove = existingImages.find(existingImage => existingImage.name === imageName)
-
-        // Store image id !
-        // If it is found 
-        // As the array/list will be send later to api in order to delete them
-        // this case is with already existing images only!! (in "update images modal")  
-        imageToRemove?.id && deleted_images_ids.current.push(imageToRemove?.id)
-
-        let newImages: Image[];
-        if (imageToRemove && imageToRemove.isCover) {
-            newImages = existingImages.filter((existingImage) => existingImage?.name !== imageToRemove.name)
-            newImages = newImages.map((newImage, index) => {
-                if (index === 0) {
-                    newImage.isCover = true
-                    return newImage
-                } else {
-                    return newImage
-                }
-            })
-            setValue("images", newImages)
-        } else {
-            newImages = existingImages.filter((existingImage) => existingImage?.name !== imageName)
-            setValue("images", newImages)
-        }
-
-    }
 
     const handleImagesChange = (uploadedImages: FileList | null, onChange: (e: Image[]) => void) => {
 
@@ -175,17 +168,15 @@ export default function ImageUpload<TFieldValues extends FieldValues, TName exte
             let uploadedImagesArray = Array.from(uploadedImages)
 
             const existingImages: Image[] = watch("images")
-            const validImageTypes = ["image/png", "image/jpg", "image/jpeg"]
             const uploadedImagesCount = uploadedImagesArray.length
             const existingImageCount = existingImages.length
 
             // Validation
             // Validate and return filtered array with correct values/images !
-            uploadedImagesArray = validateImageType(uploadedImagesArray, validImageTypes)
+            uploadedImagesArray = validateImageType(uploadedImagesArray, Object.values(validImageTypes))
             uploadedImagesArray = validateMaxImageSize(uploadedImagesArray, maxImageSize)
             uploadedImagesArray = validateMaxNubmerOfImages(existingImages, uploadedImagesArray, uploadedImagesCount, existingImageCount)
 
-            // This
             let newUploadedImages: Image[];
 
             // First check if existingImages has any images becasue if not just use the uploadedImagesArray directily !
@@ -232,17 +223,8 @@ export default function ImageUpload<TFieldValues extends FieldValues, TName exte
         }
     }
 
-    if (getValues("images")[1]) {
-        const test2 = URL.createObjectURL(getValues("images")[1])
-        console.log('test2', test2)
-
-    }
-
-
-
-
     return (
-        <TooltipProvider>
+        <TooltipProvider >
 
             <div className="grid gap-4 max-w-lg" >
 
@@ -288,14 +270,13 @@ export default function ImageUpload<TFieldValues extends FieldValues, TName exte
                     </CardContent>
                 </Card>
 
-                <div className="grid grid-flow-row auto-rows-max gap-5 justify-items-stretch grid-cols-[repeat(3,_minmax(70px,_100px))] justify-center p-4">
-                    {/* <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-y-3 gap-x-3 justify-items-center"> */}
+                <div ref={parent} className="grid grid-flow-row auto-rows-max gap-5 justify-items-stretch grid-cols-[repeat(3,_minmax(70px,_100px))] justify-center p-4">
                     {/* Write some comments here  */}
                     {Array.from({ length: maxImagesSlots }, (_, i) => {
 
-                        if (getValues("images").find((_, index) => index === i)) {
+                        if (getValues("images").find((_: Image, index: number) => index === i)) {
                             return (
-                                <div key={i} className={`relative flex bg-muted justify-center items-center aspect-square w-full  rounded-lg group overflow-hidden transform transition duration-300 ease-in-out hover:-translate-y-3 hover:drop-shadow-lg ${getValues("images")[i]?.uploadingStatus === "uploading" ? "motion-safe:animate-bounce" : ""}`}>
+                                <div key={i} className={`relative flex bg-muted justify-center items-center aspect-square w-full  rounded-lg group overflow-hidden transform transition duration-300 ease-in-out hover:-translate-y-3 hover:drop-shadow-lg ${getValues("images")[i]?.uploadingStatus === "uploading" || getValues("images")[i]?.uploadingStatus === "deleting" ? "motion-safe:animate-bounce" : ""}`}>
 
                                     <img
                                         src={
@@ -309,7 +290,7 @@ export default function ImageUpload<TFieldValues extends FieldValues, TName exte
                                         ? (
                                             <>
                                                 <Button type="button" size="sm" variant="outline" className="absolute top-2 right-2 w-max h-max p-1 block md:hidden group-hover:block"
-                                                    onClick={() => handleRemovingImage(getValues("images")[i]?.name || "")}
+                                                    onClick={() => handleDeletingImage(getValues("images")[i]?.name || "")}
                                                 >
                                                     <X className="h-3 w-3 md:h-4 md:w-4 text-destructive " />
 
@@ -332,38 +313,48 @@ export default function ImageUpload<TFieldValues extends FieldValues, TName exte
                                                     </div>
                                                 </div>
                                             )
-                                            : getValues("images")[i]?.uploadingStatus === "succeeded" ?
+                                            : getValues("images")[i]?.uploadingStatus === "deleting" ?
                                                 (
-
                                                     <div className={`absolute h-full w-full z-40 bg-muted-foreground/80 dark:bg-muted/60 inset-0 flex flex-col justify-center items-center gap-y-2 `}>
-                                                        {/* <Loader className="animate-spin z-50 text-primary-500 w-1/3 h-1/3" /> */}
-                                                        <BadgeCheck className="w-1/3 h-auto rounded-full  text-success z-50 " />
+
+                                                        <Loader className="animate-spin z-50 text-destructive w-1/3 h-1/3" />
                                                         <div className="text-nowrap flex z-50">
-                                                            <span className="text-xs text-success font-semibold">Uploaded</span>
+                                                            <span className="text-xs text-destructive font-semibold italic">Deleting</span>
+                                                            <Ellipsis className="animate-pulse text-destructive  " />
                                                         </div>
                                                     </div>
-                                                ) : getValues("images")[i]?.uploadingStatus === "failed" ?
-                                                    (<div className={`absolute h-full w-full z-40 bg-muted-foreground/80 dark:bg-muted/60 inset-0 flex flex-col justify-center items-center gap-y-2 `}>
+                                                )
+                                                : getValues("images")[i]?.uploadingStatus === "succeeded" ?
+                                                    (
 
-                                                        <BadgeAlert className="w-1/4 h-auto rounded-full  text-destructive z-50 " />
-                                                        <div className="text-nowrap flex z-50">
-                                                            <span className="text-xs text-destructive font-semibold">Failed</span>
+                                                        <div className={`absolute h-full w-full z-40 bg-muted-foreground/80 dark:bg-muted/60 inset-0 flex flex-col justify-center items-center gap-y-2 `}>
+                                                            <BadgeCheck className="w-1/3 h-auto rounded-full  text-success z-50 " />
+                                                            <div className="text-nowrap flex z-50">
+                                                                <span className="text-xs text-success font-semibold">Uploaded</span>
+                                                            </div>
                                                         </div>
+                                                    ) : getValues("images")[i]?.uploadingStatus === "failed" ?
+                                                        (<div className={`absolute h-full w-full z-40 bg-muted-foreground/80 dark:bg-muted/60 inset-0 flex flex-col justify-center items-center gap-y-2 `}>
 
-                                                        <div className="flex gap-x-2">
-                                                            <Button type="button" size="sm" variant="outline" className="p-x-1  text-xs h-7"
-                                                                onClick={() => handleRemovingImage(getValues("images")[i]?.name || "")}
-                                                            >
-                                                                <Trash2 className="h-3 w-3 md:h-4 md:w-4 text-destructive " />
-                                                            </Button>
-                                                            <Button type="button" size="sm" variant="outline" className="p-x-1  text-xs h-7"
-                                                                onClick={() => handleUploadingImage(getValues("images")[i])}
-                                                            >
-                                                                <Repeat2 className="h-3 w-3 md:h-4 md:w-4 text-destructive " />
-                                                            </Button>
+                                                            <BadgeAlert className="w-1/4 h-auto rounded-full  text-destructive z-50 " />
+                                                            <div className="text-nowrap flex z-50">
+                                                                <span className="text-xs text-destructive font-semibold">Failed</span>
+                                                            </div>
+
+                                                            <div className="flex gap-x-2">
+                                                                <Button type="button" size="sm" variant="outline" className="p-x-1  text-xs h-7"
+                                                                    onClick={() => handleDeletingImage(getValues("images")[i]?.name || "")}
+                                                                >
+                                                                    <Trash2 className="h-3 w-3 md:h-4 md:w-4 text-destructive " />
+                                                                </Button>
+                                                                <Button type="button" size="sm" variant="outline" className="p-x-1  text-xs h-7"
+                                                                    onClick={() => handleUploadingImage(getValues("images")[i])}
+                                                                >
+                                                                    <Repeat2 className="h-3 w-3 md:h-4 md:w-4 text-destructive " />
+                                                                </Button>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    ) : (null)
+                                                        ) : (null)
                                     }
                                     {getValues("images")[i]?.isCover && (
                                         <div className="bg-primary w-full absolute bottom-4 left-[-25px]  text-background font-bold text-2xs md:text-xs text-center rotate-45 tracking-widest " ><p>COVER</p></div>
@@ -382,6 +373,5 @@ export default function ImageUpload<TFieldValues extends FieldValues, TName exte
                 </div>
             </div >
         </TooltipProvider>
-
     )
 }

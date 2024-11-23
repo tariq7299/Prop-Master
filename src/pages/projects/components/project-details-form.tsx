@@ -29,7 +29,7 @@ import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Combobox } from "@/components/custom/combobox";
 import { projectStatuses } from "../data/project-statuses";
-
+import { RowActionPostHandlerArgs } from "@/ApiTables/types/table-actions";
 
 const projectSchema = z
     .object({
@@ -150,12 +150,13 @@ export default function ProjectDetailsForm({ action, handleCloseModal, handleSub
 
         console.log("data", data)
         console.log("action", action)
+        console.log("formType", formType)
 
         if (formType === "add") {
 
             const reqOptions = { method: "POST", url: "/admin/projects", data: data }
             const apiResFuncArgs = {
-                successCallback: (res: any) => {
+                successCallback: () => {
                     stepper && stepper.next()
                 }
             }
@@ -165,11 +166,13 @@ export default function ProjectDetailsForm({ action, handleCloseModal, handleSub
 
         } else if (formType === "update") {
 
-            handleSubmittingProject(action?.method, action?.url?.web, data, action, "", true)
+            const RowActionPostHandlerArgs: Partial<RowActionPostHandlerArgs> = { method: action.method, url: action.url.web, payload: data, action: action, showToast: true, affectModalOpeningClosing: true }
+            handleSubmittingProject && handleSubmittingProject(RowActionPostHandlerArgs)
 
         }
 
     }
+
 
     return (
         <>

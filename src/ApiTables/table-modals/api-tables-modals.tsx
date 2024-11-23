@@ -6,7 +6,6 @@ import DrawerDialog from "@/components/custom/drawer-dialog.tsx"
 import AddNewProject from "@/pages/projects/components/add-new-project.tsx"
 import AddNewProjectsByExcel from "@/pages/projects/components/add-new-project-by-excel.tsx"
 import UpdateProjectDetails from "@/pages/projects/components/update-project-details.tsx"
-import ProjectImagesUploadForm from "@/pages/projects/components/project-images-upload-form.tsx"
 import UpdateProjectImages from "@/pages/projects/components/update-project-images.tsx"
 
 function ApiTablesModals() {
@@ -64,12 +63,10 @@ function ApiTablesModals() {
             </DrawerDialog >
             <DrawerDialog
                 className="w-[50%]"
-                // action={customControlAction}
                 handleCloseModal={handleCloseModal}
                 status={customControlAction?.action_key === "edit_project"}
                 modalTitle={(<p className="text-xl">Update Project details</p>)} modalDescription="Write a nice discription here"
                 hasCloseButton={false}
-            // modalFooter={(<Button >Add Project</Button>)}
             >
                 <UpdateProjectDetails action={customControlAction} handleCloseModal={handleCloseModal} />
             </DrawerDialog >

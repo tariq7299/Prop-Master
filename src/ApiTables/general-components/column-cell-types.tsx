@@ -6,10 +6,10 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import { Building } from "lucide-react"
-import { HandCoins, DollarSign, TicketCheck, CalendarClock, CalendarDays } from 'lucide-react';
 import { Button } from "@/components/custom/button"
 import InstallmentDetailsList from "@/pages/properties/components/installment-details-list"
+import { DefaultDataList, type DataList, type DataValueStyle, type DataListCellValue } from "@/ApiTables/general-components/default-data-list-cell";
+
 
 export function TextCell({ col, row }: any) {
     return (
@@ -94,31 +94,43 @@ export function HTMLCell({ col, row }: any) {
 }
 
 export function DataListCell({ col, row }: any) {
-    const { tableColumnsDispatcher } = useTableColumns()
-    console.log("row", row)
-    console.log("col", col)
-    console.log("Object.entries(row[col?.data_src]", Object.entries(row[col?.data_src]))
+
+    interface MaherCell {
+        label: string
+        value: string[]
+    }
+
 
     const cell = row[col?.data_src]
     const colType = col?.data_src
 
+    const retrun_desired_Cell_temp_until_meher_send_correct_cell = (cell: MaherCell, dataStyle: DataValueStyle) => {
+        return {
+            cellLabel: cell.label,
+            cellValue: cell.value?.map(value => { return { iconName: null, label: null, value, style: dataStyle } }) || []
+        }
+    }
+
+    const desiredCell = React.useMemo(() => retrun_desired_Cell_temp_until_meher_send_correct_cell(cell, "destructive"), [cell, row])
+
+
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button variant="outline">
+                <Button size="sm" variant="outline">
                     {
                         colType === "default_installment"
-                            ? "Show Installment"
-                            : "Details"
+                            ? "Installment"
+                            : cell.label || "Details"
                     }
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className='grid space-y-2 w-full px-7'>
+            <PopoverContent className='w-full'>
 
                 {
                     colType === "default_installment"
                         ? (<InstallmentDetailsList cell={cell} />)
-                        : "default list"
+                        : (<DefaultDataList cell={desiredCell} />)
                 }
             </PopoverContent>
         </Popover>

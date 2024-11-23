@@ -18,6 +18,7 @@ import { handleApiError } from '@/helper/api/handleApiError'
 import axios from 'axios'
 
 
+
 export default function Projects() {
 
     // I have added the object of newRowActions manually here instead of backend 
@@ -133,6 +134,8 @@ export default function Projects() {
 
             {/* ===== Main ===== */}
             <Layout.Body>
+
+
 
                 <div className='mb-6'>
                     <h2 className='text-2xl font-bold tracking-tight'>

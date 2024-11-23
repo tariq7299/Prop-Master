@@ -20,6 +20,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import { RowActionPostHandlerArgs } from "../types/table-actions.ts"
 
 
 // ... Show More Info About the row
@@ -68,9 +69,13 @@ export function ConfirmationModal({ status, handleCloseModal, className = "", co
     const { selectedIds } = useTableColumns()
 
     function fireRowAction() {
-        if (confirmationFor === 'rowAction')
-            rowActionsPostHandler(clickedRowAction?.method, clickedRowAction?.isBulk ? clickedRowAction?.bulk_actions_url?.web : clickedRowAction?.action?.web, { selected_ids: selectedIds }, clickedRowAction)
-        if (confirmationFor === 'bulkAction') {
+        if (confirmationFor === 'rowAction') {
+
+            const RowActionPostHandlerArgs: Partial<RowActionPostHandlerArgs> = { method: clickedRowAction?.method, url: clickedRowAction?.isBulk ? clickedRowAction?.bulk_actions_url?.web : clickedRowAction?.action?.web, payload: { selected_ids: selectedIds }, action: clickedRowAction }
+            rowActionsPostHandler && rowActionsPostHandler(RowActionPostHandlerArgs)
+        }
+        // rowActionsPostHandler(clickedRowAction?.method, clickedRowAction?.isBulk ? clickedRowAction?.bulk_actions_url?.web : clickedRowAction?.action?.web, { selected_ids: selectedIds }, clickedRowAction)
+        else if (confirmationFor === 'bulkAction') {
             bulkActionsPostHandler(
                 selectedBulkAction?.method,
                 selectedBulkAction?.action.web,
@@ -81,18 +86,19 @@ export function ConfirmationModal({ status, handleCloseModal, className = "", co
         }
     }
 
+    console.log("clickedRowAction", clickedRowAction)
+
     return (
-        <AlertDialog className={className} open={status} onOpenChange={handleCloseModal}>
-            <AlertDialogContent onCloseAutoFocus={(event) => {
+        <AlertDialog open={status} onOpenChange={handleCloseModal}>
+            <AlertDialogContent className={className} onCloseAutoFocus={(event) => {
                 event.preventDefault();
                 // I had to manually reset the pointerEvents for the document after closing and i don't know why !!
                 document.body.style.pointerEvents = 'auto';
             }}>
                 <AlertDialogHeader>
                     <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                    {/* <AlertDialogDescription>
-                        This action cannot be undone.
-                    </AlertDialogDescription> */}
+                    <AlertDialogDescription>
+                    </AlertDialogDescription>
                 </AlertDialogHeader>
 
                 <AlertDialogFooter>
@@ -106,7 +112,7 @@ export function ConfirmationModal({ status, handleCloseModal, className = "", co
 
 }
 
-// // ... Row Action Confirmation Modal
+// // ... Row Action Confirmation Modalrow
 // export function ConfirmationModal({ closeModal, confirmationFor }: any) {
 //     const { clickedRowAction, rowActionPostLoading, rowActionsPostHandler } = useTableRowActions()
 //     const { appliedFilters } = useTableCore()
