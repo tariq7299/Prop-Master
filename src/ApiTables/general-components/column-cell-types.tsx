@@ -100,7 +100,6 @@ export function DataListCell({ col, row }: any) {
         value: string[]
     }
 
-
     const cell = row[col?.data_src]
     const colType = col?.data_src
 
@@ -177,12 +176,8 @@ export function DataListCell({ col, row }: any) {
 // }
 
 export function ImageCell({ row, col }: any) {
-
     return (
-        <div className="p-2 max-w-72 ">
-            <img src={`https://prop-master.venom-hook.com/storage/${row[col?.data_src]}`} alt="developer_i" />
-        </div>
+        <img className="max-w-40 max-h-32 p-2" src={`https://prop-master.venom-hook.com/storage/${row[col?.data_src]}`} alt="developer_i" />
     )
-
 }
 

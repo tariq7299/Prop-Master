@@ -57,7 +57,7 @@ export default function DrawerDialog({ status, handleCloseModal, modalTitle, mod
 
     return (
 
-        <DrawerTest open={status} modalTitle={modalTitle} modalDescription={modalDescription} >
+        <DrawerTest open={status} onOpenChange={handleCloseModal} modalTitle={modalTitle} modalDescription={modalDescription} hasCloseButton={hasCloseButton} >
             {children}
         </DrawerTest>
 

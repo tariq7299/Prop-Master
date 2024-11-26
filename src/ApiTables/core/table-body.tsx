@@ -78,6 +78,7 @@ function TableBody() {
                                 cells: {
                                     style: {
                                         justifyContent: 'center',
+                                        maxWidth: "5px"
                                     }
                                 },
                                 headCells: {

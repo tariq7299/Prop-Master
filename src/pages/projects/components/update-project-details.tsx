@@ -2,14 +2,14 @@ import ProjectDetailsForm from "./project-details-form"
 import { useTableRowActions } from "@/ApiTables/table-providers/row-actions-provider"
 
 // Write types
-export default function UpdateProjectDetails({ action, handleCloseModal }) {
+export default function UpdateProjectDetails({ action, handleCloseModal, loadingModalData }) {
 
     const { rowActionsPostHandler, rowActionPostLoading } = useTableRowActions()
 
 
     return (
         <>
-            <ProjectDetailsForm isSubmittingProject={rowActionPostLoading} handleSubmittingProject={rowActionsPostHandler} action={action} handleCloseModal={handleCloseModal} formType="update" />
+            <ProjectDetailsForm isSubmittingProject={rowActionPostLoading} handleSubmittingProject={rowActionsPostHandler} action={action} handleCloseModal={handleCloseModal} formType="update" loadingModalData={loadingModalData} />
         </>
     )
 };

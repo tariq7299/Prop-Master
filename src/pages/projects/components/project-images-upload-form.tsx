@@ -13,7 +13,7 @@ import useSendRequest from "@/hooks/api/use-send-request";
 import { ReqOptions, ApiResFuncArgs } from "@/helper/types/api";
 import { Image as ImageType } from "@/components/custom/image-upload";
 import { Stepper } from "@stepperize/react";
-import { RowActionPostHandlerArgs, CustomControlAction } from "@/ApiTables/types/table-actions";
+import { RowActionPostHandlerArgs, CustomControlActionResponse } from "@/ApiTables/types/table-actions";
 import { ConfirmationAlert, ConfirmationAlertStatus, Button, ImageUpload } from "@/components/custom";
 
 type ImageFileInfo = {
@@ -43,7 +43,7 @@ type NewProject = {
 }
 
 type ProjectImagesUploadFormProps = {
-    action: CustomControlAction<CustomControlActionPayload>
+    action: CustomControlActionResponse<CustomControlActionPayload>
     newProject?: NewProject
     stepper?: Stepper<[{
         readonly id: "proejctDetails";

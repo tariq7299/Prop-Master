@@ -21,7 +21,26 @@ import {
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { RowActionPostHandlerArgs } from "../types/table-actions.ts"
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/custom/table"
+import { ClickedRowActionResponse } from "../types/table-actions.ts"
+import { Nullable } from "@/helper/utils/type-utils.ts"
+interface RowDataPayload {
+    label: string
+    value: string
+}
 
+export interface RowDataProps extends React.HTMLAttributes<HTMLDivElement> {
+    rowActionResponse: Nullable<ClickedRowActionResponse<RowDataPayload[]>>
+    isLoadingModalData: boolean
+}
 
 // ... Show More Info About the row
 export function ViewRowData({ data }: any) {
@@ -59,7 +78,6 @@ export function ViewRowData({ data }: any) {
     )
 }
 
-
 // ... Row Action Confirmation Modal
 export function ConfirmationModal({ status, handleCloseModal, className = "", confirmationFor }: any) {
 
@@ -86,8 +104,6 @@ export function ConfirmationModal({ status, handleCloseModal, className = "", co
         }
     }
 
-    console.log("clickedRowAction", clickedRowAction)
-
     return (
         <AlertDialog open={status} onOpenChange={handleCloseModal}>
             <AlertDialogContent className={className} onCloseAutoFocus={(event) => {
@@ -111,6 +127,57 @@ export function ConfirmationModal({ status, handleCloseModal, className = "", co
     )
 
 }
+
+// Write types
+export const RowData = ({ rowActionResponse, isLoadingModalData }: RowDataProps) => {
+
+    // Iam checking if 'action is null' because I want the laoding to only appear when user opens up the modal and not when closing or submitting !!! so i a have to check for both (rowActionPostLoading and action === null)
+    if (isLoadingModalData && !rowActionResponse) {
+        return (
+            <div className="min-h-16 flex flex-col justify-center items-center pb-9">
+                <h1 className="mb-4 text-xl font-bold">Loading data...</h1>
+                <div className="loader--3" />
+            </div>
+        )
+    }
+
+    return (
+        <>
+            {rowActionResponse
+                ? (<div className={`pb-9 md:pb-4 transition-all duration-300 ease-in-out transform ${rowActionResponse?.data?.length > 0 ? "opacity-100" : "opacity-0"} `}>
+                    {rowActionResponse?.data?.length > 0 && (
+                        <Table containerClassName="pb-2" className=" ">
+                            <TableCaption>A row of uploaded sheet</TableCaption>
+                            <TableHeader>
+                                <TableRow>
+                                    {rowActionResponse.data.map((header) => {
+                                        return (
+                                            <TableHead key={header.label} className="">{header.label}</TableHead>
+                                        )
+                                    })}
+                                </TableRow >
+                            </TableHeader >
+                            <TableBody>
+                                <TableRow>
+                                    {rowActionResponse.data.map((row, index) => (
+                                        <>
+                                            <TableCell key={`${row.label}-rowValue`} className="">{row.value}</TableCell>
+                                        </>
+                                    ))}
+                                </TableRow>
+                            </TableBody>
+                        </Table >
+                    )}
+                </div >)
+                :
+                (<h1> No Data Founde !</h1>)
+            }
+
+        </>
+
+
+    )
+};
 
 // // ... Row Action Confirmation Modalrow
 // export function ConfirmationModal({ closeModal, confirmationFor }: any) {

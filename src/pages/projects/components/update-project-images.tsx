@@ -1,6 +1,6 @@
 import { useTableRowActions } from "@/ApiTables/table-providers/row-actions-provider"
 import ProjectImagesUploadForm from "./project-images-upload-form"
-import { CustomControlAction } from "@/ApiTables/types/table-actions"
+import { CustomControlActionResponse } from "@/ApiTables/types/table-actions"
 
 type ImageFileInfo = {
     id: number;
@@ -18,7 +18,7 @@ type CustomControlActionPayload = {
 };
 
 type UpdateProjectDetailsProps = {
-    action: CustomControlAction<CustomControlActionPayload>
+    action: CustomControlActionResponse<CustomControlActionPayload>
     handleCloseModal: () => void
 }
 
