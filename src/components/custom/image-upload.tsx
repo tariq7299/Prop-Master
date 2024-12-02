@@ -55,6 +55,8 @@ export function ImageUpload<TFieldValues extends FieldValues, TName extends Fiel
         parent.current && autoAnimate(parent.current)
     }, [parent])
 
+
+
     // I added this line because the ref 
     const _ = React.useRef(null)
 
@@ -154,6 +156,7 @@ export function ImageUpload<TFieldValues extends FieldValues, TName extends Fiel
 
     }
 
+
     const handleImagesChange = (uploadedImages: FileList | null, onChange: (e: Image[]) => void) => {
 
         if (uploadedImages) {
@@ -236,40 +239,38 @@ export function ImageUpload<TFieldValues extends FieldValues, TName extends Fiel
                     </p>
 
                 </div>
-                {
-                    getValues("images").length < 6 && (
 
-                        <Card>
-                            <CardContent className="grid gap-4 p-4">
-                                <div onDrop={(e) => { e.preventDefault(); handleDroppingImages(e.dataTransfer.files, field.onChange) }} onDragOver={(event) => event.preventDefault()}>
-                                    <div>
-                                        <Tooltip>
-                                            <TooltipTrigger asChild>
-                                                <div className="flex flex-col items-center justify-center h-48 border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-700 transform transition hover:bg-muted/40 hover:drop-shadow-lg hover:-translate-y-2">
-                                                    <Upload className="w-10 h-10 text-gray-400 dark:text-gray-500" />
-                                                    <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">{imagePlaceHolderText}</p>
-                                                </div>
-                                            </TooltipTrigger>
-                                            <TooltipContent className="bg-warning text-warning-700 border-2">
-                                                <p className="text-wrap">Drag and drop images here, supported files(.png, .jpg, jpeg)</p>
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </div>
-                                </div>
+                {/* We can use this to hide the input of upload if all images placeholders are taken */}
+                {/* getValues("images").length < 6 */}
+                <Card>
+                    <CardContent className="grid gap-4 p-4">
+                        <div onDrop={(e) => { e.preventDefault(); handleDroppingImages(e.dataTransfer.files, field.onChange) }} onDragOver={(event) => event.preventDefault()}>
+                            <div>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <div className="flex flex-col items-center justify-center h-48 border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-700 transform transition hover:bg-muted/40 hover:drop-shadow-lg hover:-translate-y-2">
+                                            <Upload className="w-10 h-10 text-gray-400 dark:text-gray-500" />
+                                            <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">{imagePlaceHolderText}</p>
+                                        </div>
+                                    </TooltipTrigger>
+                                    <TooltipContent className="bg-warning text-warning-700 border-2">
+                                        <p className="text-wrap">Drag and drop images here, supported files(.png, .jpg, jpeg)</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </div>
+                        </div>
 
-                                <div className="flex justify-end">
-                                    <label htmlFor="file-input" className="button button-sm">
-                                        <Upload className="mr-2 h-4 w-4" />
-                                        Select Files
-                                        <Input {...field} value={field.value.fileName} onChange={(e) => handleImagesChange(e.target.files, field.onChange)} id="file-input" type="file" multiple className="hidden" accept="image/png, image/jpg, image/jpeg" />
+                        <div className="flex justify-end">
+                            <label htmlFor="file-input" className="button button-sm">
+                                <Upload className="mr-2 h-4 w-4" />
+                                Select Files
+                                <Input {...field} value={field.value.fileName} onChange={(e) => handleImagesChange(e.target.files, field.onChange)} id="file-input" type="file" multiple className="hidden" accept="image/png, image/jpg, image/jpeg" />
 
-                                    </label>
-                                </div>
+                            </label>
+                        </div>
 
-                            </CardContent>
-                        </Card>
-                    )
-                }
+                    </CardContent>
+                </Card>
 
                 <div ref={parent} className="grid grid-flow-row auto-rows-max gap-5 justify-items-stretch grid-cols-[repeat(3,_minmax(70px,_100px))] justify-center p-4">
                     {/* Write some comments here  */}
@@ -372,7 +373,6 @@ export function ImageUpload<TFieldValues extends FieldValues, TName extends Fiel
                         }
                     })}
                 </div>
-
             </div >
         </TooltipProvider>
     )

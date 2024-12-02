@@ -64,8 +64,6 @@ type ProjectImagesUploadFormProps = {
 
 export default function ProjectImagesUploadForm({ action, newProject, stepper, formType, handleSubmittingModal, isSubmittingModal, handleCloseModal }: ProjectImagesUploadFormProps) {
 
-    const [isPopulationForm, setIsPopulatingForm] = React.useState(false);
-
     const validImageTypes = {
         'jpg': 'image/jpeg',
         'jpeg': 'image/jpeg',
@@ -127,22 +125,14 @@ export default function ProjectImagesUploadForm({ action, newProject, stepper, f
         return file;
     }
 
-    function convertToFileListObject(projectImages: ImageFileInfo[]) {
-        setIsPopulatingForm(true)
-        if (projectImages?.length > 0) {
-            const convertedImages = projectImages.map((imageInfo) => {
-                const image = convertToFileObject(imageInfo)
-                // Assign necessary keys of my "Image" object (IsCover, uploadingStaus, id, url)
-                Object.assign(image, { isCover: imageInfo.is_cover || false, uploadingStatus: "pending", id: imageInfo.id, url: imageInfo.url });
-                return image
-            })
-            setIsPopulatingForm(false)
-            return convertedImages
 
-        } else {
-            setIsPopulatingForm(false)
-            return []
-        }
+    function convertToFileListObject(projectImages: ImageFileInfo[]) {
+        return projectImages?.length > 0 ? projectImages.map((imageInfo) => {
+            const image = convertToFileObject(imageInfo)
+            // Assign necessary keys of my "Image" object (IsCover, uploadingStaus, id, url)
+            Object.assign(image, { isCover: imageInfo.is_cover || false, uploadingStatus: "pending", id: imageInfo.id, url: imageInfo.url });
+            return image
+        }) : []
     }
 
     React.useEffect(() => {
@@ -319,16 +309,6 @@ export default function ProjectImagesUploadForm({ action, newProject, stepper, f
 
     const isSubmitButtonDisabled = React.useMemo(() => isProcessing || !form.formState.isDirty || oneImageAtLeastIsUnderProcessing || !oneImageAtLeastIsPending || isSubmittingModal, [images, imagesStatus])
 
-
-    if (isPopulationForm) {
-        return (
-            <div className="min-h-16 flex flex-col justify-center items-center pb-9">
-                <h1 className="mb-4 text-xl font-bold">Loading data...</h1>
-                <div className="loader--3" />
-            </div>
-        )
-    }
-
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="overflow-y-auto">
@@ -420,5 +400,6 @@ export default function ProjectImagesUploadForm({ action, newProject, stepper, f
 
             </form>
         </Form >
+
     )
 }
