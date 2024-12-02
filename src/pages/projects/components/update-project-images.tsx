@@ -26,6 +26,16 @@ export default function UpdateProjectImages({ action, handleCloseModal }: Update
 
     const { rowActionsPostHandler, rowActionPostLoading } = useTableRowActions()
 
+    // if (rowActionPostLoading && !action) {
+    //     return (
+    //         <div className="min-h-16 flex flex-col justify-center items-center pb-9">
+    //             <h1 className="mb-4 text-xl font-bold">Loading data...</h1>
+    //             <div className="loader--3" />
+    //         </div>
+    //     )
+    // }
+
+
     return (
         <>
             <ProjectImagesUploadForm isSubmittingModal={rowActionPostLoading} handleSubmittingModal={rowActionsPostHandler} action={action} handleCloseModal={handleCloseModal} formType="update" />

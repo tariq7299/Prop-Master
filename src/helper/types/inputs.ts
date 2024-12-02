@@ -4,6 +4,8 @@ import { ControllerRenderProps, FieldValues, FieldPath } from "react-hook-form"
 
 export type ComboboxProps<TFieldValues extends FieldValues, TName extends FieldPath<TFieldValues>> = {
     // 
+    inputPlaceholder: string
+    searchPlaceholder: string
     values: { id: number, name: string }[];
     // This is the useHookForm form.field
     field: ControllerRenderProps<TFieldValues, TName>;

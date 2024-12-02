@@ -33,8 +33,6 @@ export default function DownloadTemplateStep({ handleCloseModal, stepper }: any)
         downloadTemplate()
     }, [])
 
-
-
     return (
         <div className="flex flex-col justify-center items-center py-24 gap-2">
 

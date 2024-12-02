@@ -63,6 +63,15 @@ function ApiTablesModals() {
             <DrawerDialog
                 className="w-[50%]"
                 handleCloseModal={handleCloseModal}
+                status={customControlAction?.action_key === "addNewPropertiesByExcel"}
+                modalTitle={(<p className="text-xl">{customControlAction?.button?.label}</p>)} modalDescription="Follow steps to upload your sheet"
+                hasCloseButton={false}
+            >
+                <AddNewProjectsByExcel handleCloseModal={handleCloseModal} />
+            </DrawerDialog >
+            <DrawerDialog
+                className="w-[50%]"
+                handleCloseModal={handleCloseModal}
                 status={clickedRowAction?.action_key === "edit_project"}
                 modalTitle={(<p className="text-xl">Update Project details</p>)} modalDescription="Write a nice discription here"
                 hasCloseButton={false}

@@ -19,7 +19,7 @@ import {
 import { ComboboxProps } from "@/helper/types"
 import { FieldValues, FieldPath } from "react-hook-form"
 
-export function Combobox<TFieldValues extends FieldValues, TName extends FieldPath<TFieldValues>>({ values, field, className, placeholder = "Search..." }: ComboboxProps<TFieldValues, TName>) {
+export function Combobox<TFieldValues extends FieldValues, TName extends FieldPath<TFieldValues>>({ values, field, className, inputPlaceholder = "Select value...", searchPlaceholder = "Search..." }: ComboboxProps<TFieldValues, TName>) {
 
     const [open, setOpen] = React.useState(false)
 
@@ -34,7 +34,7 @@ export function Combobox<TFieldValues extends FieldValues, TName extends FieldPa
                 >
                     {field.value && values.length > 0
                         ? values.find((value: { id: number, name: string }) => value.id === field.value)?.name
-                        : "Select value..."}
+                        : inputPlaceholder}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
@@ -46,7 +46,7 @@ export function Combobox<TFieldValues extends FieldValues, TName extends FieldPa
                     return 0
                 }}
                 >
-                    <CommandInput placeholder={placeholder} />
+                    <CommandInput placeholder={searchPlaceholder} />
                     <CommandList>
                         {values.length <= 0
                             ? (

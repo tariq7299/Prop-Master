@@ -125,7 +125,6 @@ export default function ProjectImagesUploadForm({ action, newProject, stepper, f
         return file;
     }
 
-
     function convertToFileListObject(projectImages: ImageFileInfo[]) {
         return projectImages?.length > 0 ? projectImages.map((imageInfo) => {
             const image = convertToFileObject(imageInfo)
@@ -400,6 +399,5 @@ export default function ProjectImagesUploadForm({ action, newProject, stepper, f
 
             </form>
         </Form >
-
     )
 }

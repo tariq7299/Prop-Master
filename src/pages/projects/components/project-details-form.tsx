@@ -277,7 +277,7 @@ export default function ProjectDetailsForm({ action, handleCloseModal, handleSub
                                         </div>
                                         <FormControl>
                                             <div className="flex justify-center items-center gap-2 ">
-                                                <Combobox placeholder="Search company..." className="w-full" values={contractors} field={field}></Combobox>
+                                                <Combobox inputPlaceholder="Select a company..." searchPlaceholder="Search company..." className="w-full" values={contractors} field={field}></Combobox>
                                             </div>
                                         </FormControl>
                                         <FormDescription>
@@ -301,7 +301,7 @@ export default function ProjectDetailsForm({ action, handleCloseModal, handleSub
                                             <FormLabel>Destination</FormLabel><MapPinHouse className="h-5 w-5 text-secondary" />
                                         </div>
                                         <FormControl>
-                                            <Combobox placeholder="Search destination..." className="w-full" values={destinations} field={field}></Combobox>
+                                            <Combobox inputPlaceholder="Select a destination..." searchPlaceholder="Search destination..." className="w-full" values={destinations} field={field}></Combobox>
                                         </FormControl>
                                         <FormDescription>
                                             Choose the place where the project exist

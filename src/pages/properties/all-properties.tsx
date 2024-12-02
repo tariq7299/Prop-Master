@@ -26,29 +26,29 @@ export default function Properties() {
     // Then i add it to tableStructure coming from backend --> setTableStructure({ ...tableStructure, ...response?.data?.data })
     const [tableStructure, setTableStructure] = useState({
         "newRowActions": {
-            "addNewProject": {
-                "action_key": "addNewProject",
-                // The real purpose of this key is to not apply the styling of redirect/toggle button and 
-                "action_type": "custom_control",
-                "label": "Add New Project",
-                "action": {
-                    // This should change from API
-                    // "web": "/admin/projects",
-                },
-                "button": {
-                    "label": "Add New Project",
-                    "icon": "Building",
-                    "btnClasses": []
-                },
-                "method": "post",
-                "payload_keys": [],
-                "need_confirmation": false,
-                "action_response": "instant",
-                "onSuccess": "OpenModalForm",
-                "callBack": ""
-            },
-            "addNewProjectByExcel": {
-                "action_key": "addNewProjectsByExcel",
+            // "addNewProject": {
+            //     "action_key": "addNewProject",
+            //     // The real purpose of this key is to not apply the styling of redirect/toggle button and 
+            //     "action_type": "custom_control",
+            //     "label": "Add New Project",
+            //     "action": {
+            //         // This should change from API
+            //         // "web": "/admin/projects",
+            //     },
+            //     "button": {
+            //         "label": "Add New Project",
+            //         "icon": "Building",
+            //         "btnClasses": []
+            //     },
+            //     "method": "post",
+            //     "payload_keys": [],
+            //     "need_confirmation": false,
+            //     "action_response": "instant",
+            //     "onSuccess": "OpenModalForm",
+            //     "callBack": ""
+            // },
+            "addNewPropertiesByExcel": {
+                "action_key": "addNewPropertiesByExcel",
                 // The real purpose of this key is to not apply the styling of redirect/toggle button and 
                 "action_type": "custom_control",
                 "label": "Add New Properties By Excel",
