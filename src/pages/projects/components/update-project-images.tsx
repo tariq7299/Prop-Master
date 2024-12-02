@@ -24,16 +24,16 @@ type UpdateProjectDetailsProps = {
 
 export default function UpdateProjectImages({ action, handleCloseModal }: UpdateProjectDetailsProps) {
 
-    const { rowActionsPostHandler, rowActionPostLoading } = useTableRowActions()
+    const { rowActionsPostHandler, rowActionPostLoading: isLoadingModalData } = useTableRowActions()
 
-    // if (rowActionPostLoading && !action) {
-    //     return (
-    //         <div className="min-h-16 flex flex-col justify-center items-center pb-9">
-    //             <h1 className="mb-4 text-xl font-bold">Loading data...</h1>
-    //             <div className="loader--3" />
-    //         </div>
-    //     )
-    // }
+    if (isLoadingModalData && !action) {
+        return (
+            <div className="min-h-16 flex flex-col justify-center items-center pb-9">
+                <h1 className="mb-4 text-xl font-bold">Loading data...</h1>
+                <div className="loader--3" />
+            </div>
+        )
+    }
 
 
     return (
