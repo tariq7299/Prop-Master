@@ -156,7 +156,6 @@ export function ImageUpload<TFieldValues extends FieldValues, TName extends Fiel
 
     }
 
-
     const handleImagesChange = (uploadedImages: FileList | null, onChange: (e: Image[]) => void) => {
 
         if (uploadedImages) {

@@ -68,7 +68,7 @@ type ProjectSchema = z.infer<typeof projectSchema>
 // Write types
 export default function ProjectDetailsForm({ action, handleCloseModal, handleSubmittingProject, isSubmittingProject, stepper, formType, loadingModalData }: any) {
 
-    // Iam checking if 'action is null' because I want the laoding to only appear when user opens up the modal and not when closing or submitting !!! so i a have to check for both (rowActionPostLoading and action === null)
+    // I am checking if 'action is null' because I want the laoding to only appear when user opens up the modal and not when closing or submitting !!! so i a have to check for both (rowActionPostLoading and action === null)
     if (loadingModalData && !action) {
         return (
             <div className="min-h-16 flex flex-col justify-center items-center pb-9">

@@ -8,6 +8,8 @@ import AddNewProjectsByExcel from "@/pages/projects/components/add-new-project-b
 import UpdateProjectDetails from "@/pages/projects/components/update-project-details.tsx"
 import UpdateProjectImages from "@/pages/projects/components/update-project-images.tsx"
 import { RowData } from "./columns-static-modals.tsx"
+import AddNewProperty from "@/pages/properties/components/add-new-property.tsx"
+
 
 function ApiTablesModals() {
     const { selectedBulkAction, bulkActionsDispatcher } = useTableBulkActions()
@@ -52,6 +54,15 @@ function ApiTablesModals() {
                 <AddNewProject action={customControlAction} handleCloseModal={handleCloseModal} />
             </DrawerDialog >
             <DrawerDialog
+                className="w-[60%]"
+                handleCloseModal={handleCloseModal}
+                status={customControlAction?.action_key === "addNewProperty"}
+                modalTitle={(<p className="text-xl">{customControlAction?.button?.label}</p>)} modalDescription="Fill in the details of the new property"
+                hasCloseButton={false}
+            >
+                <AddNewProperty action={customControlAction} handleCloseModal={handleCloseModal} />
+            </DrawerDialog >
+            <DrawerDialog
                 className="w-[50%]"
                 handleCloseModal={handleCloseModal}
                 status={customControlAction?.action_key === "addNewProjectsByExcel"}
@@ -60,7 +71,7 @@ function ApiTablesModals() {
             >
                 <AddNewProjectsByExcel handleCloseModal={handleCloseModal} />
             </DrawerDialog >
-            <DrawerDialog
+            {/* <DrawerDialog
                 className="w-[50%]"
                 handleCloseModal={handleCloseModal}
                 status={customControlAction?.action_key === "addNewPropertiesByExcel"}
@@ -68,7 +79,7 @@ function ApiTablesModals() {
                 hasCloseButton={false}
             >
                 <AddNewProjectsByExcel handleCloseModal={handleCloseModal} />
-            </DrawerDialog >
+            </DrawerDialog > */}
             <DrawerDialog
                 className="w-[50%]"
                 handleCloseModal={handleCloseModal}

@@ -16,8 +16,6 @@ import { axiosPrivate } from '@/helper/api/axiosInstances'
 import { handleApiSuccess } from '@/helper/api/handleApiSuccess'
 import { handleApiError } from '@/helper/api/handleApiError'
 import axios from 'axios'
-import { ProfilingWrapper } from '@/helper/performance/profiler-wrapper'
-
 
 
 export default function Properties() {
@@ -26,38 +24,17 @@ export default function Properties() {
     // Then i add it to tableStructure coming from backend --> setTableStructure({ ...tableStructure, ...response?.data?.data })
     const [tableStructure, setTableStructure] = useState({
         "newRowActions": {
-            // "addNewProject": {
-            //     "action_key": "addNewProject",
-            //     // The real purpose of this key is to not apply the styling of redirect/toggle button and 
-            //     "action_type": "custom_control",
-            //     "label": "Add New Project",
-            //     "action": {
-            //         // This should change from API
-            //         // "web": "/admin/projects",
-            //     },
-            //     "button": {
-            //         "label": "Add New Project",
-            //         "icon": "Building",
-            //         "btnClasses": []
-            //     },
-            //     "method": "post",
-            //     "payload_keys": [],
-            //     "need_confirmation": false,
-            //     "action_response": "instant",
-            //     "onSuccess": "OpenModalForm",
-            //     "callBack": ""
-            // },
-            "addNewPropertiesByExcel": {
-                "action_key": "addNewPropertiesByExcel",
+            "addNewProperty": {
+                "action_key": "addNewProperty",
                 // The real purpose of this key is to not apply the styling of redirect/toggle button and 
                 "action_type": "custom_control",
-                "label": "Add New Properties By Excel",
+                "label": "Add New Property",
                 "action": {
                     // This should change from API
                     // "web": "/admin/projects",
                 },
                 "button": {
-                    "label": "Add New Properties By Excel",
+                    "label": "Add New Property",
                     "icon": "Building",
                     "btnClasses": []
                 },
@@ -67,7 +44,28 @@ export default function Properties() {
                 "action_response": "instant",
                 "onSuccess": "OpenModalForm",
                 "callBack": ""
-            }
+            },
+            // "addNewPropertiesByExcel": {
+            //     "action_key": "addNewPropertiesByExcel",
+            //     // The real purpose of this key is to not apply the styling of redirect/toggle button and 
+            //     "action_type": "custom_control",
+            //     "label": "Add New Properties By Excel",
+            //     "action": {
+            //         // This should change from API
+            //         // "web": "/admin/projects",
+            //     },
+            //     "button": {
+            //         "label": "Add New Properties By Excel",
+            //         "icon": "Building",
+            //         "btnClasses": []
+            //     },
+            //     "method": "post",
+            //     "payload_keys": [],
+            //     "need_confirmation": false,
+            //     "action_response": "instant",
+            //     "onSuccess": "OpenModalForm",
+            //     "callBack": ""
+            // }
         }
     })
 

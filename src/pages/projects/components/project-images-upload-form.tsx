@@ -138,7 +138,7 @@ export default function ProjectImagesUploadForm({ action, newProject, stepper, f
     React.useEffect(() => {
         if (formType === "update" && action) {
             // Populate the form of ImageUpload, with all existing images coming form backend
-            const existingImages = convertToFileListObject(action.payload.project_images)
+            const existingImages = convertToFileListObject(action?.payload?.project_images)
             existingImages && form.setValue("images", existingImages)
         }
     }, [action])
