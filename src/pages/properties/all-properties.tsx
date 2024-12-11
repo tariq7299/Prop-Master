@@ -28,10 +28,10 @@ export default function Properties() {
                 "action_key": "addNewProperty",
                 // The real purpose of this key is to not apply the styling of redirect/toggle button and 
                 "action_type": "custom_control",
-                "label": "Add New Property",
+                "label": "Add New Property`",
                 "action": {
                     // This should change from API
-                    // "web": "/admin/projects",
+                    "web": "/admin/properties",
                 },
                 "button": {
                     "label": "Add New Property",

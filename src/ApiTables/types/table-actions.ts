@@ -1,3 +1,5 @@
+import { FullPageLoader } from "@/hooks/app/types"
+
 export type RowActionPostHandlerArgs = {
     method: "post" | "get"
     url: string
@@ -10,6 +12,7 @@ export type RowActionPostHandlerArgs = {
     errorCallBack: (...args: any[]) => any
     finalCallback: (...args: any[]) => any
     affectModalOpeningClosing: boolean
+    fullPageLoader: FullPageLoader
 }
 
 export type OnSuccess =

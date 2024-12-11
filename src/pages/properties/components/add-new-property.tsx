@@ -1,14 +1,11 @@
 import * as React from "react";
-import { useTableCore } from "@/ApiTables/table-providers/table-core-provider";
 import PropertyDetailsForm from "./property-details-form";
 
 // Write types
-export default function AddNewProperty({ action, handleCloseModal }: any) {
-
-    const { tableCoreDispatcher } = useTableCore()
+export default function AddNewProperty({ handleCloseModal }: any) {
 
 
     return (
-        <PropertyDetailsForm />
+        <PropertyDetailsForm handleCloseModal={handleCloseModal} />
     )
 }

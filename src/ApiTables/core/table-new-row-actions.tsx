@@ -29,6 +29,7 @@ export default function TableNewRowActions() {
     // ... 🐼 Bulk Action API Post Handler
     function fireRowAction(action: any) {
 
+
         rowActionsDispatcher({ type: 'GET_CUSTOM_CONTROL_REQUEST', payload: action })
         rowActionsDispatcher({ type: 'GET_CLICKED_ROW_ACTION', payload: { ...action } })
 

@@ -12,6 +12,7 @@ import { useTableCore } from "./table-core-provider.tsx";
 import { useTableColumns } from "./table-columns-provider.tsx";
 import axios from 'axios';
 import { RowActionPostHandlerArgs } from "../types/table-actions.ts";
+import { useApp } from "@/hooks/app/app-provider.tsx";
 
 const initialState = {
     structureRowActions: [],
@@ -50,6 +51,7 @@ function tableRowActionsReducer(state: any, action: any) {
         }
     }
     if (action.type === 'GET_CLICKED_ROW_ACTION') {
+        console.log("actionnn", action)
         return {
             ...state,
             clickedRowAction: action?.payload
@@ -83,6 +85,7 @@ export default function RowActionsProvider({ children }: any) {
     const { tableData, tableCoreDispatcher, triggerTableFetcher } = useTableCore()
     const { tableColumnsDispatcher, toggledClearRows } = useTableColumns()
     const [state, rowActionsDispatcher] = useReducer(tableRowActionsReducer, initialState);
+    const { appDispatch, appState } = useApp();
 
     // ... Function to reset the saved row action & its API response
     function resetClickedRowAction() {
@@ -145,12 +148,15 @@ export default function RowActionsProvider({ children }: any) {
     }
 
     // ... 🎯 Row Actions API Handler
-    async function rowActionsPostHandler({ method, url, payload, action, customHeader = {}, showToast = false, customSuccessMsg = null, successCallback, errorCallBack, finalCallback, affectModalOpeningClosing = true }: RowActionPostHandlerArgs) {
+    async function rowActionsPostHandler({ method, url, payload, action, customHeader = {}, showToast = false, customSuccessMsg = null, successCallback, errorCallBack, finalCallback, affectModalOpeningClosing = true, fullPageLoader }: RowActionPostHandlerArgs) {
 
         // . Start the inline loader
         rowActionsDispatcher({ type: 'SET_ROW_ACTION_POST_LOADING', payload: true })
         // . Save the clicked row action to a state
         rowActionsDispatcher({ type: 'GET_CLICKED_ROW_ACTION', payload: action })
+
+        appDispatch({ type: "FULL_PAGE_LOADING", payload: { isLoading: fullPageLoader?.isLoading || false, loadingMsg: fullPageLoader?.loadingMsg || "Processing...", loadingIconName: fullPageLoader?.loadingIconName || "loader--1" } })
+
 
         try {
             const response = await axiosPrivate({
@@ -244,6 +250,7 @@ export default function RowActionsProvider({ children }: any) {
         } finally {
             // . End the inline loader
             rowActionsDispatcher({ type: 'SET_ROW_ACTION_POST_LOADING', payload: false })
+            appDispatch({ type: "FULL_PAGE_LOADING", payload: { ...appState, isLoading: false } })
             finalCallback?.()
         }
     }

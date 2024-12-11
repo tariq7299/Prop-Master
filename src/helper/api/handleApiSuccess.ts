@@ -7,7 +7,7 @@ function handleApiSuccess(
     showToast: boolean = true,
     customSuccessMsg: string | null = null,
     successCallback?: SuccessCallback,
-): void {
+): undefined | any {
 
 
     const { code: statusCode, success, msg } = successResponse;
@@ -35,6 +35,8 @@ function handleApiSuccess(
     }
 
     successCallback?.();
+
+    // return successResponse?.data
 }
 
 

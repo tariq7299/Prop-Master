@@ -44,7 +44,7 @@ const projectSchema = z
         // images: z
         //     .any(),
         acres: z
-            // THis has to be added if want the field value to be parsed and submitted as Number
+            // This has to be added if we want the field value to be parsed and submitted as Number
             .coerce
             .number()
             .positive({ message: "Acres Should be greater than 1" })
@@ -152,7 +152,6 @@ export default function ProjectDetailsForm({ action, handleCloseModal, handleSub
         getAllContractors()
         getAllDestinations()
     }, [])
-
 
     const onSubmit = (data: ProjectSchema) => {
 
