@@ -70,7 +70,8 @@ export default function TableNewRowActions() {
                                     return (
                                         <DropdownMenuItem key={index} onSelect={() => { fireRowAction(newRowAction) }} className="w-full gap-2 ">
                                             {clickedRowAction?.action_key === newRowAction?.action_key ? 'Loading...' : (
-                                                <>{newRowAction?.button?.label}</>
+                                                <><CirclePlus className="h-4 w-4" />{newRowAction?.button?.label}
+                                                </>
                                                 // <><Building2 className="h-4 w-4" />{newRowAction?.button?.label}</>
                                             )}
                                         </DropdownMenuItem>

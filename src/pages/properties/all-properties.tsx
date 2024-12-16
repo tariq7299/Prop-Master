@@ -24,8 +24,8 @@ export default function Properties() {
     // Then i add it to tableStructure coming from backend --> setTableStructure({ ...tableStructure, ...response?.data?.data })
     const [tableStructure, setTableStructure] = useState({
         "newRowActions": {
-            "addNewProperty": {
-                "action_key": "addNewProperty",
+            "add_new_property": {
+                "action_key": "add_new_property",
                 // The real purpose of this key is to not apply the styling of redirect/toggle button and 
                 "action_type": "custom_control",
                 "label": "Add New Property`",

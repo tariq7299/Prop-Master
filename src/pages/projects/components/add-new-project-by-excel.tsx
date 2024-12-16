@@ -29,7 +29,7 @@ export default function AddNewProjectsByExcel({ handleCloseModal }: any) {
     }, [stepper.current.id])
 
     // Write comments
-    // const { resData: newProject, isLoading: isSubmittingNewProject, sendRequest: addNewProject } = useSendRequest();
+    // const { resData: newProject, isLoading: isSubmittingNewProject, sendRequest: add_new_project } = useSendRequest();
 
 
     return (

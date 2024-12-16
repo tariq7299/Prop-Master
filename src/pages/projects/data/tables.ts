@@ -356,8 +356,8 @@ const tables = {
             }
         },
         "newRowActions": {
-            "addNewProject": {
-                "action_key": "addNewProject",
+            "add_new_project": {
+                "action_key": "add_new_project",
                 "label": "Add New Project",
                 "action": {
                     "api": "/api/control-tables/bulk-table-action/shipping_awbs/export_excel",

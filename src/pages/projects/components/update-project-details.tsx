@@ -6,7 +6,6 @@ export default function UpdateProjectDetails({ action, handleCloseModal, loading
 
     const { rowActionsPostHandler, rowActionPostLoading } = useTableRowActions()
 
-
     return (
         <>
             <ProjectDetailsForm isSubmittingProject={rowActionPostLoading} handleSubmittingProject={rowActionsPostHandler} action={action} handleCloseModal={handleCloseModal} formType="update" loadingModalData={loadingModalData} />

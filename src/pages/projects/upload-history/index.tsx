@@ -31,7 +31,7 @@ function UploadHistory() {
     const [tableStructure, setTableStructure] = React.useState({
         "newRowActions": {
             "addNewProjectByExcel": {
-                "action_key": "addNewProjectsByExcel",
+                "action_key": "add_new_projects_by_excel",
                 // The real purpose of this key is to not apply the styling of redirect/toggle button and 
                 "action_type": "custom_control",
                 "label": "Add New Projects By Excel",

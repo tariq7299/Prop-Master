@@ -54,7 +54,7 @@ export default function AddNewProject({ action, handleCloseModal }: any) {
     }, [stepper.current.id])
 
     // Write comments
-    const { resData, isLoading: isSubmittingNewProject, sendRequest: addNewProject } = useSendRequest();
+    const { resData, isLoading: isSubmittingNewProject, sendRequest: add_new_project } = useSendRequest();
 
     const newProject = resData?.data || null
 
@@ -100,7 +100,7 @@ export default function AddNewProject({ action, handleCloseModal }: any) {
             <div className="space-y-4 overflow-auto h-full">
                 {stepper.switch({
 
-                    proejctDetails: () => <ProjectDetailsForm action={action} handleSubmittingProject={addNewProject} isSubmittingProject={isSubmittingNewProject} handleCloseModal={handleCloseModal} stepper={stepper} formType="add" />,
+                    proejctDetails: () => <ProjectDetailsForm action={action} handleSubmittingProject={add_new_project} isSubmittingProject={isSubmittingNewProject} handleCloseModal={handleCloseModal} stepper={stepper} formType="add" />,
 
                     projectImages: () => <ProjectImagesUploadForm action={action} newProject={newProject} stepper={stepper} formType="add" handleCloseModal={handleCloseModal} />,
 
@@ -117,7 +117,7 @@ export default function AddNewProject({ action, handleCloseModal }: any) {
                 )
                 }
                 {/* {stepper.switch({
-                    proejctDetails: () => <ProjectDetailsStep  addNewProject={addNewProject} isSubmittingNewProject={isSubmittingNewProject} newProject={newProject} handleCloseModal={handleCloseModal} stepper={stepper} />,
+                    proejctDetails: () => <ProjectDetailsStep  add_new_project={add_new_project} isSubmittingNewProject={isSubmittingNewProject} newProject={newProject} handleCloseModal={handleCloseModal} stepper={stepper} />,
                     projectImages: () => <ProjectImagesUploadForm newProject={newProject} stepper={stepper} />,
                     completed: () => <div className="flex flex-col justify-center items-center py-6 gap-y-2">
                         <Check className="w-1/4 max-w-40 h-auto rounded-full text-success " />

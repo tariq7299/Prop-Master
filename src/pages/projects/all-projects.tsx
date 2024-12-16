@@ -25,8 +25,8 @@ export default function Projects() {
     // Then i add it to tableStructure coming from backend --> setTableStructure({ ...tableStructure, ...response?.data?.data })
     const [tableStructure, setTableStructure] = useState({
         "newRowActions": {
-            "addNewProject": {
-                "action_key": "addNewProject",
+            "add_new_project": {
+                "action_key": "add_new_project",
                 // The real purpose of this key is to not apply the styling of redirect/toggle button and 
                 "action_type": "custom_control",
                 "label": "Add New Project",
@@ -47,7 +47,7 @@ export default function Projects() {
                 "callBack": ""
             },
             "addNewProjectByExcel": {
-                "action_key": "addNewProjectsByExcel",
+                "action_key": "add_new_projects_by_excel",
                 // The real purpose of this key is to not apply the styling of redirect/toggle button and 
                 "action_type": "custom_control",
                 "label": "Add New Projects By Excel",
