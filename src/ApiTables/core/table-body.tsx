@@ -21,8 +21,6 @@ function TableBody() {
         Object.keys(column).length > 0 && tableCoreDispatcher({ type: 'SET_TABLE_SORTING', payload: { label: column?.name?.props?.children, direction: sortDirection, [column?.colIdentifier]: sortDirection } })
     }
 
-    console.log("tableData", tableData)
-
 
     useEffect(() => {
         tableColumnsDispatcher({

@@ -97,10 +97,7 @@ export default function RowActionsProvider({ children }: any) {
     }
 
     function handleCommonCases(type: any, response: any, affectModalOpeningClosing: boolean) {
-        // console.log("type", type)
-        // console.log("response", response)
         if (type === 'deleteRow' || type === 'reload') {
-            // router.reload()
             // window.location.reload()
             tableCoreDispatcher({
                 type: 'TRIGGER_REFETCH_DATA'
@@ -116,9 +113,6 @@ export default function RowActionsProvider({ children }: any) {
             })
             affectModalOpeningClosing && resetClickedRowAction()
         } else if (type === 'refetchRow') {
-            console.log("type", type)
-            console.log("response", response)
-
             tableCoreDispatcher({
                 type: 'GET_TABLE_DATA',
                 payload: tableData?.map((item: any) => {

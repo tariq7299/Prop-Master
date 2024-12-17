@@ -10,7 +10,6 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import {
-    Form,
     FormControl,
     FormDescription,
     FormField,
@@ -19,16 +18,13 @@ import {
     FormMessage,
 } from '@/components/ui/form'
 import { useFormContext } from 'react-hook-form'
-import { CirclePercent, Trash2, CirclePlus } from 'lucide-react';
-import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { Trash2 } from 'lucide-react';
 import { Label } from '@/components/ui/label'
 import { currencies, frequencies, durations } from '../data/property'
 import { RadioItem } from '@/components/custom/radio-item'
 import { useEffect, useState } from 'react'
-import { Controller } from 'react-hook-form'
 
-export default function InstallmentPlanForm({ index, remove }) {
-
+export default function InstallmentPlanForm({ index, remove, handleChangingFromToInputs }) {
 
     const { control, setValue, getValues, watch } = useFormContext()
 
@@ -83,7 +79,7 @@ export default function InstallmentPlanForm({ index, remove }) {
                                     <FormItem className="w-full">
                                         <FormControl>
                                             <Input step="0.01"
-                                                onWheel={(e) => e.currentTarget.blur()} min={0} type="number" {...field} placeholder="45000..." />
+                                                onWheel={(e) => e.currentTarget.blur()} min={0} type="number" placeholder="45000..." onChange={(e) => handleChangingFromToInputs(Number(e.target.value), field.onChange, `installment_details.${index}.down_payment_from`, `installment_details.${index}.down_payment_to`)} value={field.value} onBlur={field.onBlur} name={field.name} ref={field.ref} />
                                         </FormControl>
                                         <FormDescription>
                                             Choose the starting down payment amount
@@ -100,7 +96,17 @@ export default function InstallmentPlanForm({ index, remove }) {
                                     <FormItem className="w-full">
                                         <FormControl>
                                             <Input step="0.01"
-                                                onWheel={(e) => e.currentTarget.blur()} min={0} type="number" {...field} placeholder="90000..." />
+                                                onWheel={(e) => e.currentTarget.blur()} min={0} type="number" placeholder="90000..."
+                                                onChange={(e) => handleChangingFromToInputs(
+                                                    Number(e.target.value),
+                                                    field.onChange,
+                                                    `installment_details.${index}.down_payment_from`,
+                                                    `installment_details.${index}.down_payment_to`)
+                                                }
+                                                value={field.value}
+                                                onBlur={field.onBlur}
+                                                name={field.name}
+                                                ref={field.ref} />
                                         </FormControl>
                                         <FormDescription>
                                             Choose the starting down payment amount
@@ -122,7 +128,18 @@ export default function InstallmentPlanForm({ index, remove }) {
                                     <FormItem className="w-full">
                                         <FormControl>
                                             <Input step="0.01"
-                                                onWheel={(e) => e.currentTarget.blur()} min={0} type="number" {...field} placeholder="10000..." />
+                                                onWheel={(e) => e.currentTarget.blur()} min={0} type="number" placeholder="10000..."
+                                                onChange={(e) => handleChangingFromToInputs(
+                                                    Number(e.target.value),
+                                                    field.onChange,
+                                                    `installment_details.${index}.amount_from`,
+                                                    `installment_details.${index}.amount_to`)
+                                                }
+                                                value={field.value}
+                                                onBlur={field.onBlur}
+                                                name={field.name}
+                                                ref={field.ref}
+                                            />
                                         </FormControl>
                                         <FormDescription>
                                             Type the start amount of installment
@@ -138,7 +155,19 @@ export default function InstallmentPlanForm({ index, remove }) {
                                     <FormItem className="w-full">
                                         <FormControl>
                                             <Input step="0.01"
-                                                onWheel={(e) => e.currentTarget.blur()} min={0} type="number" {...field} placeholder="20000..." />
+                                                onWheel={(e) => e.currentTarget.blur()} min={0} type="number"
+                                                placeholder="20000..."
+                                                onChange={(e) => handleChangingFromToInputs(
+                                                    Number(e.target.value),
+                                                    field.onChange,
+                                                    `installment_details.${index}.amount_from`,
+                                                    `installment_details.${index}.amount_to`)
+                                                }
+                                                value={field.value}
+                                                onBlur={field.onBlur}
+                                                name={field.name}
+                                                ref={field.ref}
+                                            />
                                         </FormControl>
                                         <FormDescription>
                                             Type the end amount of installment
@@ -170,17 +199,6 @@ export default function InstallmentPlanForm({ index, remove }) {
                                             <SelectGroup>
                                                 <div className='flex justify-between'>
                                                     <SelectLabel>Currency</SelectLabel>
-                                                    {/* <Button
-                                                        disabled={!field?.value}
-                                                        variant="secondary"
-                                                        size="sm"
-                                                        onClick={(e) => {
-                                                            e.stopPropagation()
-                                                            setValue(`installment_details.${index}.currency`, "")
-                                                        }}
-                                                    >
-                                                        Clear
-                                                    </Button> */}
                                                 </div>
                                                 {currencies?.map(opt => (
                                                     <SelectItem value={opt?.id} key={opt?.id}>{opt?.name}</SelectItem>
@@ -216,17 +234,6 @@ export default function InstallmentPlanForm({ index, remove }) {
                                             <SelectGroup>
                                                 <div className='flex justify-between'>
                                                     <SelectLabel>Frequency</SelectLabel>
-                                                    {/* <Button
-                                                        disabled={!field?.value}
-                                                        variant="secondary"
-                                                        size="sm"
-                                                        onClick={(e) => {
-                                                            e.stopPropagation()
-                                                            setValue(`installment_details.${index}.freq`, "")
-                                                        }}
-                                                    >
-                                                        Clear
-                                                    </Button> */}
                                                 </div>
                                                 {frequencies
                                                     ?.map(opt => (
@@ -263,17 +270,6 @@ export default function InstallmentPlanForm({ index, remove }) {
                                             <SelectGroup>
                                                 <div className='flex justify-between'>
                                                     <SelectLabel>Duration</SelectLabel>
-                                                    {/* <Button
-                                                        disabled={!field?.value}
-                                                        variant="secondary"
-                                                        size="sm"
-                                                        onClick={(e) => {
-                                                            e.stopPropagation()
-                                                            setValue(`installment_details.${index}.duration`, "")
-                                                        }}
-                                                    >
-                                                        Clear
-                                                    </Button> */}
                                                 </div>
                                                 {durations?.map(opt => (
                                                     <SelectItem value={opt?.id} key={opt?.id}>{opt?.name}</SelectItem>

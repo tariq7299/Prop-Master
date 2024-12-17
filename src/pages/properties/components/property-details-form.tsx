@@ -23,7 +23,7 @@ import {
 import { Combobox } from "@/components/custom/combobox";
 import { Label } from "@/components/ui/label";
 import { CirclePlus } from 'lucide-react';
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useTransition } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
@@ -53,6 +53,19 @@ type InstallmentPlan = {
     duration: number | string,
     is_default: boolean
 }
+
+type InstallmentIndex = number;
+
+type FromAmountInputNames =
+    "features.price_from"
+    | `installment_details.${InstallmentIndex}.down_payment_from`
+    | `installment_details.${InstallmentIndex}.amount_from`
+
+type ToAmountInputNames =
+    "features.price_to"
+    | `installment_details.${InstallmentIndex}.down_payment_to`
+    | `installment_details.${InstallmentIndex}.amount_to`;
+
 const newPropertyShcema = z
     .object({
         project_id:
@@ -84,9 +97,13 @@ const newPropertyShcema = z
                     .coerce
                     .number()
                     .gte(1, { message: "Please type a correct price" }),
-            }).refine((data) => data.price_from <= data.price_to,
+            })
+            // I am adding the a handleChangingFromToInputs to validate and make sure amount in from input is less than to input again !! down below (line: 313)
+            // Because this .refine function is not working as excepected !, like it only work with from inputs !
+            // You can try to remove or hash the handleChangingFromToInputs function and see by yourself
+            .refine((data) => data.price_from <= data.price_to,
                 {
-                    message: "Price 'from' must be less than or equal to 'to'",
+                    message: "Amount in 'from' input must be less than or equal to 'to' amount",
                     path: ['price_from'],
                 })
         ,
@@ -107,24 +124,18 @@ const newPropertyShcema = z
                 is_default: z.boolean().optional()
             }
         )
+            // Same comment as in (line: 101)
             .refine(
                 (data) => data.down_payment_from <= data.down_payment_to,
                 {
-                    message: "Down payment 'from' must be less than or equal to 'to'",
-                    path: ["down_payment_from"]
-                }
-            )
-            .refine(
-                (data) => data.down_payment_to > data.down_payment_from,
-                {
-                    message: "Down payment 'from' must be less than or equal to 'to'",
+                    message: "Amount in 'from' input must be less than or equal to 'to' amount",
                     path: ["down_payment_from"]
                 }
             )
             .refine(
                 (data) => data.amount_from <= data.amount_to,
                 {
-                    message: "Amount 'from' must be less than or equal to 'to'",
+                    message: "Amount in 'from' input must be less than or equal to 'to' amount",
                     path: ["amount_from"]
                 }
             )
@@ -132,8 +143,8 @@ const newPropertyShcema = z
 
     })
 
-type NewPropertyShcema = z.infer<typeof newPropertyShcema>
 
+type NewPropertyShcema = z.infer<typeof newPropertyShcema>
 
 // Write types
 const PropertyDetailsForm = ({ handleCloseModal, customControlAction, formType }: PropertyDetailsFormProps) => {
@@ -155,11 +166,10 @@ const PropertyDetailsForm = ({ handleCloseModal, customControlAction, formType }
         }
         return quartersOptionsTemp?.sort((a, b) => Number(a?.id) - Number(b?.id))
     }
-    useEffect(() => console.log("rendering Update property form one"), [])
 
+    const [isPending, startTransition] = useTransition();
     const [parent] = useAutoAnimate()
     const currentYear = new Date().getFullYear()
-
     const [isAnimationEnabled, setAnimationEnabled] = useState(false)
     const [quartersOptions, setQuarterOptions] = useState<{ id: number, name: string }[]>(returnQuarterOptions(currentYear))
 
@@ -180,6 +190,7 @@ const PropertyDetailsForm = ({ handleCloseModal, customControlAction, formType }
         }
 
     }
+
 
     function getQuarter(date?: Date): number {
         date = date || new Date();
@@ -225,13 +236,14 @@ const PropertyDetailsForm = ({ handleCloseModal, customControlAction, formType }
         reValidateMode: "onChange"
     })
 
-    const { setValue, watch, getValues, handleSubmit, formState: { isDirty }, control } = form
+    const { setValue, getValues, setError, handleSubmit, clearErrors, formState: { isDirty }, control } = form
 
     const { fields, append, remove, replace } = useFieldArray({
         control,
         name: "installment_details",
     });
 
+    // This was an used to set the default values of the form async, and I was using the isLoading from the useForm to show a loading indecator on the UI, but now I don't use it any more.! But i left it to be as a reference for me If I wanted to set the default values async again
     async function setFormDefaultValues(): Promise<NewPropertyShcema> {
 
         const allProjects = await getAllProjects()
@@ -279,11 +291,13 @@ const PropertyDetailsForm = ({ handleCloseModal, customControlAction, formType }
 
     useEffect(() => {
         if (formType === "update") {
-            setValue("delivery_quarter", String(customControlAction?.payload?.property?.delivery_quarter))
-            const storedDefaultInstallmentPlanIndex = customControlAction?.payload?.property?.installment_details.findIndex((installmentPlan: InstallmentPlan) => installmentPlan.is_default)
-            setValue("is_default", storedDefaultInstallmentPlanIndex)
-            console.log("storedDefaultInstallmentPlanIndex", storedDefaultInstallmentPlanIndex)
-            replace(customControlAction?.payload?.property?.installment_details)
+            startTransition(() => {
+                setValue("delivery_quarter", String(customControlAction?.payload?.property?.delivery_quarter))
+                const storedDefaultInstallmentPlanIndex = customControlAction?.payload?.property?.installment_details.findIndex((installmentPlan: InstallmentPlan) => installmentPlan.is_default)
+                setValue("is_default", storedDefaultInstallmentPlanIndex)
+                replace(customControlAction?.payload?.property?.installment_details)
+
+            });
         }
         setTimeout(() => {
             setAnimationEnabled(true)
@@ -297,17 +311,36 @@ const PropertyDetailsForm = ({ handleCloseModal, customControlAction, formType }
 
 
     const handleChangingYear = (yearValue: string | number, onChange: (yearValue: number | string) => void) => {
-
-        console.log("yearValue", yearValue)
-
         setValue(`delivery_quarter`, "")
-        // return quartersOptionsTemp?.sort((a, b) => Number(a?.id) - Number(b?.id))
         setQuarterOptions(returnQuarterOptions(yearValue))
-        console.log("arrrray", returnQuarterOptions(yearValue))
-
         onChange(yearValue)
     }
 
+    // This function will make sure that amount in "from" inputs is less or equal to "to" inputs
+    // ".refine()" from 'z' above, is not working as excepected !, so thats why I am doing it manually here !
+    const handleChangingFromToInputs = (
+        value: number,
+        onChange: (value: number) => void,
+        fromInputName: FromAmountInputNames,
+        toInputName: ToAmountInputNames
+    ) => {
+        onChange(value);
+        // Iam using setTimeount() here because without it, the setError function is not working !, when you try to type a wrong/invalid amount in "from" input, and only works in "to"
+        setTimeout(() => {
+            const fromAmount = getValues(fromInputName);
+            const toAmount = getValues(toInputName);
+
+            if (fromAmount > toAmount) {
+                setError(fromInputName, {
+                    type: "custom",
+                    message: "Amount in 'from' input must be less than or equal to 'to' amount",
+                });
+            } else {
+                clearErrors(fromInputName)
+            }
+        }, 0);
+
+    };
 
     const onSubmit = (data: NewPropertyShcema) => {
         const fullPageLoader: FullPageLoader = { isLoading: true, loadingMsg: "Saving Property..." }
@@ -315,7 +348,6 @@ const PropertyDetailsForm = ({ handleCloseModal, customControlAction, formType }
             return { ...installment, is_default: data.is_default === index }
         })
         const { is_default, ...rest } = { ...data, installment_details: formattedInstallment }
-        console.log("rest", rest)
         const rowActionsHandlerArgs: Partial<RowActionPostHandlerArgs> = {
             method: clickedRowAction.method,
             url: clickedRowAction.action.web,
@@ -327,7 +359,16 @@ const PropertyDetailsForm = ({ handleCloseModal, customControlAction, formType }
         rowActionsPostHandler(rowActionsHandlerArgs)
     }
 
-    if (rowActionPostLoading && !customControlAction && formType === "update") {
+    // if (rowActionPostLoading && !customControlAction && formType === "update") {
+    //     return (
+    //         <div className="min-h-16 flex flex-col justify-center items-center pb-9">
+    //             <h1 className="mb-4 text-xl font-bold">Loading...</h1>
+    //             <div className="loader--3" />
+    //         </div>
+    //     )
+    // }
+
+    if (isPending) {
         return (
             <div className="min-h-16 flex flex-col justify-center items-center pb-9">
                 <h1 className="mb-4 text-xl font-bold">Loading...</h1>
@@ -391,17 +432,6 @@ const PropertyDetailsForm = ({ handleCloseModal, customControlAction, formType }
                                                                 <SelectGroup>
                                                                     <div className='flex justify-between'>
                                                                         <SelectLabel>Delivery Year</SelectLabel>
-                                                                        {/* <Button
-                                                                            disabled={!field?.value}
-                                                                            variant="secondary"
-                                                                            size="sm"
-                                                                            onClick={(e) => {
-                                                                                e.stopPropagation()
-                                                                                setValue(`delivery_year`, "")
-                                                                            }}
-                                                                        >
-                                                                            Clear
-                                                                        </Button> */}
                                                                     </div>
                                                                     {deliveryYearsOptions?.map(opt => (
                                                                         <SelectItem value={opt?.id} key={opt?.id}>{opt?.name}</SelectItem>
@@ -422,7 +452,6 @@ const PropertyDetailsForm = ({ handleCloseModal, customControlAction, formType }
                                             name='delivery_quarter'
                                             render={({ field }) => (
                                                 <FormItem className="w-full">
-                                                    {/* <FormLabel>Delivery Quarter</FormLabel> */}
                                                     <FormControl>
                                                         <Select value={String(field?.value)} onValueChange={field.onChange}
                                                         >
@@ -435,17 +464,6 @@ const PropertyDetailsForm = ({ handleCloseModal, customControlAction, formType }
                                                                 <SelectGroup>
                                                                     <div className='flex justify-between'>
                                                                         <SelectLabel>Delivery Quarter</SelectLabel>
-                                                                        {/* <Button
-                                                                            disabled={!field?.value}
-                                                                            variant="secondary"
-                                                                            size="sm"
-                                                                            onClick={(e) => {
-                                                                                e.stopPropagation()
-                                                                                setValue(`delivery_quarter`, "")
-                                                                            }}
-                                                                        >
-                                                                            Clear
-                                                                        </Button> */}
                                                                     </div>
                                                                     {quartersOptions?.map(opt => (
                                                                         <SelectItem value={String(opt?.id)} key={opt?.id}>{opt?.name}</SelectItem>
@@ -494,17 +512,6 @@ const PropertyDetailsForm = ({ handleCloseModal, customControlAction, formType }
                                                         <SelectGroup>
                                                             <div className='flex justify-between'>
                                                                 <SelectLabel>Type</SelectLabel>
-                                                                {/* <Button
-                                                                    disabled={!field?.value}
-                                                                    variant="secondary"
-                                                                    size="sm"
-                                                                    onClick={(e) => {
-                                                                        e.stopPropagation()
-                                                                        setValue(`features.TypeOfUnit`, "")
-                                                                    }}
-                                                                >
-                                                                    Clear
-                                                                </Button> */}
                                                             </div>
                                                             {typeOfUnit?.map(opt => (
                                                                 <SelectItem value={opt?.id} key={opt?.id}>{opt?.name}</SelectItem>
@@ -540,17 +547,6 @@ const PropertyDetailsForm = ({ handleCloseModal, customControlAction, formType }
                                                         <SelectGroup>
                                                             <div className='flex justify-between'>
                                                                 <SelectLabel>Number of rooms</SelectLabel>
-                                                                {/* <Button
-                                                                    disabled={!field?.value}
-                                                                    variant="secondary"
-                                                                    size="sm"
-                                                                    onClick={(e) => {
-                                                                        e.stopPropagation()
-                                                                        setValue(`features.NoRooms`, "")
-                                                                    }}
-                                                                >
-                                                                    Clear
-                                                                </Button> */}
                                                             </div>
                                                             {noRooms?.map(opt => (
                                                                 <SelectItem value={opt?.id} key={opt?.id}>{opt?.name}</SelectItem>
@@ -599,7 +595,19 @@ const PropertyDetailsForm = ({ handleCloseModal, customControlAction, formType }
                                                         step="0.01"
                                                         onWheel={(e) => e.currentTarget.blur()}
                                                         min={0}
-                                                        type="number" placeholder='7000000...' {...field} />
+                                                        type="number" placeholder='7000000...'
+                                                        onChange={(e) =>
+                                                            handleChangingFromToInputs
+                                                                (Number(e.target.value),
+                                                                    field.onChange,
+                                                                    `features.price_from`,
+                                                                    `features.price_to`
+                                                                )
+                                                        }
+                                                        value={field.value}
+                                                        onBlur={field.onBlur}
+                                                        name={field.name}
+                                                        ref={field.ref} />
                                                     <FormDescription>
                                                         Type the starting price of the property
                                                     </FormDescription>
@@ -613,10 +621,9 @@ const PropertyDetailsForm = ({ handleCloseModal, customControlAction, formType }
                                             name={`features.price_to`}
                                             render={({ field }) => (
                                                 <FormItem className="w-full">
-                                                    {/* <FormLabel>Price to</FormLabel> */}
                                                     <FormControl>
                                                         <Input step="0.01"
-                                                            onWheel={(e) => e.currentTarget.blur()} min={0} type="number" placeholder='9000000...' {...field} />
+                                                            onWheel={(e) => e.currentTarget.blur()} min={0} type="number" placeholder='9000000...' onChange={(e) => handleChangingFromToInputs(Number(e.target.value), field.onChange, `features.price_from`, `features.price_to`)} value={field.value} onBlur={field.onBlur} name={field.name} ref={field.ref} />
                                                     </FormControl>
                                                     <FormDescription>
                                                         Type the end price of the property
@@ -642,12 +649,12 @@ const PropertyDetailsForm = ({ handleCloseModal, customControlAction, formType }
 
                             <div className="flex items-center space-x-2"><h1 className="text-lg font-bold">Installment details</h1><CirclePercent className="h-6 w-6 text-secondary" /></div>
                             {fields.map((item, index) => (
-                                <InstallmentPlanForm key={item.id} remove={remove} index={index} />
+                                <InstallmentPlanForm key={item.id} remove={remove} index={index} handleChangingFromToInputs={handleChangingFromToInputs} />
                             ))}
 
                             <div className="w-full pt-2">
 
-                                <Button type="button" variant="outline" className=" font-medium flex items-center gap-1"
+                                <Button type="button" variant="outline" className=" font-medium flex items-center gap-2"
                                     onClick={() => append({ down_payment_from: 0, down_payment_to: 0, amount_from: 0, amount_to: 0, currency: "", freq: "", duration: "", is_default: false })}>
                                     <CirclePlus className="w-4 h-4 text-primary" />Add Installment
                                 </Button>
@@ -660,7 +667,7 @@ const PropertyDetailsForm = ({ handleCloseModal, customControlAction, formType }
                     </div>
 
                     {/* Modal Footer */}
-                    <div className="fixed bottom-0 right-0 p-2 pt-3 bg-background w-full flex justify-end sm:space-x-2 gap-2 ">
+                    <div className="fixed bottom-0 right-0 p-2 pt-3 bg-background w-full flex justify-end space-x-2  ">
                         <Button loading={false} disabled={false || !isDirty} type="submit" >Add Property</Button>
                         <Button type="button" onClick={handleCloseModal} variant="outline">Cancel</Button>
                     </div>

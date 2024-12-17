@@ -19,8 +19,6 @@ export function UserNav() {
 
   const { signOut, user } = useAuth();
 
-  console.log("user", user)
-
 
   return (
     <DropdownMenu>

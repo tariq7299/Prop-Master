@@ -391,9 +391,9 @@ export default function ProjectImagesUploadForm({ action, newProject, stepper, f
                     confirmationAlertStatus={confirmationAlertStatus}
                     handleConfirmation={() => handleSendingDeleteImageReq(confirmationAlertStatus.itemToRemove)}
                     alertTitle={(
-                        <>
-                            Are you absolutely sure you want to delete the image <span className="font-bold ">{confirmationAlertStatus.itemToRemove?.name}</span>?
-                        </>
+                        <div className="font-medium">
+                            Are you absolutely sure you want to delete the image <span className="font-bold italic">{confirmationAlertStatus.itemToRemove?.name}</span>?
+                        </div>
                     )}
                     discription={"This image is currently linked to one or more projects in the database."}
                 />

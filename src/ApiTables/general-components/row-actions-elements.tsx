@@ -22,8 +22,6 @@ export const ToggleRowActionElement = ({ action, isBulk = false }: any) => {
     // ... 🐼 Bulk Action API Post Handler
     function fireRowAction(action: any) {
 
-        console.log("actionadsads", action)
-
         if (requireModal(action)) {
             rowActionsDispatcher({ type: 'GET_CLICKED_ROW_ACTION', payload: { ...action, ...(isBulk && { isBulk: true }) } })
         } else {
