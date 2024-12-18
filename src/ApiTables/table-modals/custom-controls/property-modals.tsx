@@ -16,7 +16,7 @@ export default function PropertyModals({ handleCloseModal }: CustomControlModalP
                 className="w-[60%]"
                 handleCloseModal={handleCloseModal}
                 status={customControlAction?.action_key === "add_new_property"}
-                modalTitle={(<p className="text-xl font-roboto-slap">{customControlAction?.button?.label}</p>)} modalDescription="Fill in the details of the new property"
+                modalTitle={(<p className="text-xl font-raleway">{customControlAction?.button?.label}</p>)} modalDescription="Fill in the details of the new property"
                 hasCloseButton={false}
             >
                 <AddNewProperty handleCloseModal={handleCloseModal} />
@@ -27,7 +27,7 @@ export default function PropertyModals({ handleCloseModal }: CustomControlModalP
                 className="w-[60%]"
                 handleCloseModal={handleCloseModal}
                 status={clickedRowAction?.action_key === "edit_property"}
-                modalTitle={(<p className="text-xl font-roboto-slap">{clickedRowAction?.button?.label}</p>)} modalDescription="Fill in the details of property"
+                modalTitle={(<p className="text-xl font-raleway">{clickedRowAction?.button?.label}</p>)} modalDescription="Fill in the details of property"
                 hasCloseButton={false}
             >
                 <UpdateProperty handleCloseModal={handleCloseModal} />

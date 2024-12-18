@@ -57,7 +57,7 @@ export default function InstallmentPlanForm({ index, remove, handleChangingFromT
             <>
 
                 <div className="flex space-x-2 items-center pb-3">
-                    <h1 className="text-md font-bold col-span-2 text-start ">Installment Plan <span className="text-primary">#{index}</span></h1>
+                    <h1 className="text-md font-bold col-span-2 text-start font-raleway">Installment Plan <span className="text-primary">#{index}</span></h1>
 
                     {index != 0 && (
                         <Button type="button" size="icon" variant="destructive" className="  flex items-center" onClick={() => handleDeletingInstallmentPlan(index)}>

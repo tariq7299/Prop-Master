@@ -21,6 +21,7 @@ module.exports = {
     extend: {
       fontFamily: {
         'roboto-slap': ["'Roboto Slab'", 'serif'],
+        'raleway': ["Raleway", 'serif'],
       },
       fontWeight: {
         thin: '200',
