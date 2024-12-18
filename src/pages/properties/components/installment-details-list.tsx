@@ -44,7 +44,7 @@ function DataRow({ data, toolTipContent, icon }: DataRowProp) {
         <Tooltip >
             <TooltipTrigger asChild>
                 <div className='flex gap-2'>
-                    <Badge variant={"outline"} className='flex items-center gap-2 font-bold italic'>{icon}<span className=''>{data}</span></Badge>
+                    <Badge variant={"outline"} className='flex items-center gap-2 font-bold italic text-sm md:text-md'>{icon}<span className=''>{data}</span></Badge>
                     {/* <p className="italic font-semibold ">{data}</p> */}
                 </div>
             </TooltipTrigger>
@@ -67,8 +67,8 @@ export default function InstallmentDetailsList({ cell }: InstallmentDetailsListP
     }
 
     return (
-        <TooltipProvider>
-            <div className='grid space-y-2 w-full '>
+        <TooltipProvider delayDuration={100}>
+            <div className='grid space-y-3 w-full '>
                 <h2 className="text-sm font-bold pb-1">Installment</h2>
                 {Object.entries(cell)?.map((installmentDetails) => {
 
@@ -76,32 +76,32 @@ export default function InstallmentDetailsList({ cell }: InstallmentDetailsListP
                     return installmentDetails[0] === "amount"
                         ? (
                             <React.Fragment key={installmentDetails[0]}>
-                                <DataRow icon={(<HandCoins size={18} className=" text-primary" />)} data={installmentDetails[1]} toolTipContent='Amount'></DataRow>
+                                <DataRow icon={(<HandCoins size={22} className=" text-primary" />)} data={installmentDetails[1]} toolTipContent='Amount'></DataRow>
                             </React.Fragment>
                         )
                         : installmentDetails[0] === "currency"
                             ? (
                                 <React.Fragment key={installmentDetails[0]}>
-                                    <DataRow icon={(<DollarSign size={18} className="text-primary" />)} data={installmentDetails[1]} toolTipContent='Currency'></DataRow>
+                                    <DataRow icon={(<DollarSign size={22} className="text-primary" />)} data={installmentDetails[1]} toolTipContent='Currency'></DataRow>
                                 </React.Fragment>
                             )
                             : installmentDetails[0] === "down_payment"
                                 ? (
                                     <React.Fragment key={installmentDetails[0]}>
-                                        <DataRow icon={(<TicketCheck size={18} className="text-primary" />)} data={installmentDetails[1]} toolTipContent='Down Payment'></DataRow>
+                                        <DataRow icon={(<TicketCheck size={22} className="text-primary" />)} data={installmentDetails[1]} toolTipContent='Down Payment'></DataRow>
                                     </React.Fragment>
                                 )
                                 : installmentDetails[0] === "duration"
                                     ? (
                                         <React.Fragment key={installmentDetails[0]}>
-                                            <DataRow icon={(<CalendarClock size={18} className="text-primary" />)} data={installmentDetails[1]} toolTipContent='Duration'></DataRow>
+                                            <DataRow icon={(<CalendarClock size={22} className="text-primary" />)} data={installmentDetails[1]} toolTipContent='Duration'></DataRow>
                                         </React.Fragment>
 
                                     )
                                     : installmentDetails[0] === "freq"
                                         ? (
                                             <React.Fragment key={installmentDetails[0]}>
-                                                <DataRow icon={(<CalendarDays size={18} className="text-primary" />)} data={installmentDetails[1]} toolTipContent='Frequency'></DataRow>
+                                                <DataRow icon={(<CalendarDays size={22} className="text-primary" />)} data={installmentDetails[1]} toolTipContent='Frequency'></DataRow>
                                             </React.Fragment>
                                         )
                                         :

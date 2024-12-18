@@ -198,9 +198,10 @@
     --success-foreground: 60 9.1% 97.8%;
   }
 
+  html {
+    font-family:  "Mulish", serif;
+  }
 
-
-  /* styles.css */
   .collapsibleDropdown {
     overflow: hidden;
   }

@@ -51,7 +51,6 @@ function tableRowActionsReducer(state: any, action: any) {
         }
     }
     if (action.type === 'GET_CLICKED_ROW_ACTION') {
-        console.log("actionnn", action)
         return {
             ...state,
             clickedRowAction: action?.payload
@@ -172,8 +171,6 @@ export default function RowActionsProvider({ children }: any) {
             //     method: "post",
             //     onSuccess: "refetchRow"
             // }
-
-            console.log("actionnn", action)
 
 
             // Mock the correct return response of new row button action 

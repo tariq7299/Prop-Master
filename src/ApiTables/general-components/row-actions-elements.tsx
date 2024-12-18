@@ -103,7 +103,6 @@ export const GeneralRowActionElement = ({ action, isBulk = false }: any) => {
             // rowActionsPostHandler(action?.method, isBulk ? action?.bulk_actions_url?.web : action?.action.web, { selected_ids: selectedIds }, { ...action, ...(isBulk && { isBulk: true }) })
         }
     }
-    console.log("action?.button?.btnClasses?.join(' ')", action?.button?.btnClasses?.join(' '))
 
     return (
         <Button

@@ -137,7 +137,7 @@ export default function Properties() {
                 {/* <ProfilingWrapper id="properties-page"> */}
 
                 <div className='mb-6'>
-                    <h2 className='text-2xl font-bold tracking-tight'>
+                    <h2 className='text-2xl font-bold tracking-tight font-roboto-slap'>
                         Registered Properties <Building className='h-7 w-7 inline ms-2 text-secondary' />
                     </h2>
                     <p className='text-muted-foreground font-light'>

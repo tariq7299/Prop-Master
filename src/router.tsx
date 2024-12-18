@@ -104,6 +104,19 @@ const router = createBrowserRouter([
             lazy: async () => ({
               Component: (await import('@/pages/properties/all-properties.tsx')).default,
             }),
+
+          },
+          {
+            path: 'properties-upload-history',
+            children: [
+              {
+                index: true,
+                lazy: async () => ({
+                  Component: (await import('@/components/coming-soon')).default,
+                }),
+
+              },
+            ]
           },
 
 

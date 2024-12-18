@@ -191,7 +191,6 @@ const PropertyDetailsForm = ({ handleCloseModal, customControlAction, formType }
 
     }
 
-
     function getQuarter(date?: Date): number {
         date = date || new Date();
         const quarter = Math.ceil((date.getMonth() + 1) / 3);
@@ -309,7 +308,6 @@ const PropertyDetailsForm = ({ handleCloseModal, customControlAction, formType }
         getAllProjects()
     }, [])
 
-
     const handleChangingYear = (yearValue: string | number, onChange: (yearValue: number | string) => void) => {
         setValue(`delivery_quarter`, "")
         setQuarterOptions(returnQuarterOptions(yearValue))
@@ -359,16 +357,7 @@ const PropertyDetailsForm = ({ handleCloseModal, customControlAction, formType }
         rowActionsPostHandler(rowActionsHandlerArgs)
     }
 
-    // if (rowActionPostLoading && !customControlAction && formType === "update") {
-    //     return (
-    //         <div className="min-h-16 flex flex-col justify-center items-center pb-9">
-    //             <h1 className="mb-4 text-xl font-bold">Loading...</h1>
-    //             <div className="loader--3" />
-    //         </div>
-    //     )
-    // }
-
-    if (isPending) {
+    if (isPending || (rowActionPostLoading && !customControlAction && formType === "update")) {
         return (
             <div className="min-h-16 flex flex-col justify-center items-center pb-9">
                 <h1 className="mb-4 text-xl font-bold">Loading...</h1>
@@ -389,7 +378,7 @@ const PropertyDetailsForm = ({ handleCloseModal, customControlAction, formType }
                         <div className="space-y-4 max-w-sm xl:max-w-full ">
                             <div className="flex items-center space-x-2">
 
-                                <h1 className="text-lg font-bold ">Project and delivery date</h1> <NotebookPen className="h-6 w-6 text-secondary" />
+                                <h1 className="text-lg font-bold font-roboto-slap">Project and delivery date</h1> <NotebookPen className="h-6 w-6 text-secondary" />
                             </div>
 
                             <div className="grid grid-cols-1 xl:grid-cols-2 gap-x-3 gap-y-5">
@@ -489,7 +478,7 @@ const PropertyDetailsForm = ({ handleCloseModal, customControlAction, formType }
 
                         <div className="space-y-4 max-w-sm xl:max-w-full ">
 
-                            <div className="flex items-center space-x-2"><h1 className="text-lg font-bold">Property features</h1><ListPlus className="h-6 w-6 text-secondary" /></div>
+                            <div className="flex items-center space-x-2 font-roboto-slap"><h1 className="text-lg font-bold">Property features</h1><ListPlus className="h-6 w-6 text-secondary" /></div>
                             <div className="grid xl:grid-cols-2 gap-x-3 gap-y-5 ">
 
                                 <FormField
@@ -647,7 +636,7 @@ const PropertyDetailsForm = ({ handleCloseModal, customControlAction, formType }
 
                         <div className="space-y-4 max-w-sm xl:max-w-full " ref={isAnimationEnabled ? parent : null}>
 
-                            <div className="flex items-center space-x-2"><h1 className="text-lg font-bold">Installment details</h1><CirclePercent className="h-6 w-6 text-secondary" /></div>
+                            <div className="flex items-center space-x-2 font-roboto-slap"><h1 className="text-lg font-bold">Installment details</h1><CirclePercent className="h-6 w-6 text-secondary" /></div>
                             {fields.map((item, index) => (
                                 <InstallmentPlanForm key={item.id} remove={remove} index={index} handleChangingFromToInputs={handleChangingFromToInputs} />
                             ))}

@@ -74,8 +74,6 @@ function UpdateProperty({ handleCloseModal }) {
         "onSuccess": "refetchRow"
     }
 
-    useEffect(() => console.log("renderingUpdate Property"), [])
-
     return (
         <PropertyDetailsForm handleCloseModal={handleCloseModal} customControlAction={customControlAction} formType="update" />
     )

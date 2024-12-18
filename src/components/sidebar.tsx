@@ -92,7 +92,7 @@ export default function Sidebar({
         {/* Navigation links */}
         <Nav
           id='sidebar-menu'
-          className={`z-40 h-full flex-1 overflow-auto ${navOpened ? 'max-h-screen' : 'max-h-0 py-0 md:max-h-screen md:py-2'}`}
+          className={`z-40 h-full flex-1 overflow-auto font-roboto-slap  ${navOpened ? 'max-h-screen' : 'max-h-0 py-0 md:max-h-screen md:py-2'}`}
           closeNav={() => setNavOpened(false)}
           isCollapsed={isCollapsed}
           links={sidelinks}

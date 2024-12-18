@@ -138,7 +138,7 @@ export default function Projects() {
 
 
                 <div className='mb-6'>
-                    <h2 className='text-2xl font-bold tracking-tight'>
+                    <h2 className='text-2xl font-bold tracking-tight font-roboto-slap'>
                         Registered Projects <Building2 className='h-7 w-7 inline ms-2 text-secondary' />
                     </h2>
                     <p className='text-muted-foreground font-light'>
