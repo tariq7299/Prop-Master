@@ -1,5 +1,18 @@
 # Prop Master
 
+## Running the project
+
+First, run the install deped:
+```bash
+pnpm i
+```
+
+First, run the development server:
+
+```bash
+pnpm run dev
+```
+
 
 # Notes
 
