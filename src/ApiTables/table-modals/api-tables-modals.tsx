@@ -7,6 +7,7 @@ import AddNewProperty from "@/pages/properties/components/add-new-property.tsx"
 import ProjectModals from "./custom-controls/project-modals.tsx"
 import { RowData } from "./columns-static-modals.tsx"
 import PropertyModals from "./custom-controls/property-modals.tsx"
+import AddNewDeveloper from "@/pages/developers/components/add-new-developer.tsx"
 
 function ApiTablesModals() {
     const { selectedBulkAction, bulkActionsDispatcher } = useTableBulkActions()
@@ -18,6 +19,10 @@ function ApiTablesModals() {
         bulkActionsDispatcher({ type: 'GET_SELECTED_BULK_ACTION', payload: null })
         rowActionsDispatcher({ type: 'GET_CUSTOM_CONTROL_REQUEST', payload: null })
     }
+
+
+    console.log("clickedRowAction", clickedRowAction)
+    console.log("customControlAction", customControlAction)
 
     // Note when using modals, pass 'clickedRowAction.action_key' or "customControlAction?.action_key" instead of relying on the url of the response coming after user presses on an action button in the table modal!
     // Because of relyed on the url, this will block the UI !!!, and i will make a bad UX
@@ -47,10 +52,21 @@ function ApiTablesModals() {
             <PropertyModals handleCloseModal={handleCloseModal} />
 
             <DrawerDialog
+                className="w-[60%] max-w-[1100px]"
+                handleCloseModal={handleCloseModal}
+                status={clickedRowAction?.action_key === "add_new_developer"}
+                modalTitle={(<p className="text-xl font-roboto-slap">{clickedRowAction?.label}</p>)}
+                modalDescription="Fill in the form below"
+                hasCloseButton={true}
+            >
+                <AddNewDeveloper />
+            </DrawerDialog>
+
+            <DrawerDialog
                 className="w-[70%]"
                 handleCloseModal={handleCloseModal}
                 status={clickedRowAction?.action_key === "record_data"}
-                modalTitle={(<p className="text-xl">Record Details</p>)} modalDescription=""
+                modalTitle={(<p className="text-xl font-roboto-slap">Record Details</p>)}
                 hasCloseButton={true}
             >
                 <RowData rowActionResponse={clickedRowActionResponse} isLoadingModalData={rowActionPostLoading} />

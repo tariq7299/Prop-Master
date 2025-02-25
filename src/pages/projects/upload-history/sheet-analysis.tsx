@@ -92,7 +92,7 @@ function SheetAnalysis() {
             <Layout.Body>
 
                 <div className='mb-6'>
-                    <h2 className='text-2xl font-bold tracking-tight'>
+                    <h2 className='text-2xl font-bold tracking-tight font-roboto-slap'>
                         Sheet Analysis: File <span className="text-secondary font-bold text-3xl">#{sheetId}</span>
                     </h2>
                     <p className='text-muted-foreground font-light'>

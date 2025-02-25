@@ -10,6 +10,7 @@ export default function ProjectModals({ handleCloseModal }: CustomControlModalPr
 
     const { clickedRowAction, customControlAction, rowActionPostLoading } = useTableRowActions()
 
+
     return (
         <>
             {/* All Projects page Modals */}

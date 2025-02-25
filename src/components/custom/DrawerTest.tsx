@@ -8,7 +8,6 @@ export default function DrawerTest({ open, onOpenChange, children, modalTitle, m
     return (
 
         <>
-                // open && (
 
 
             <div className={`transition-all duration-300 ease-in-out fixed inset-0 z-50 bg-black/80 ${open ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
@@ -21,10 +20,10 @@ export default function DrawerTest({ open, onOpenChange, children, modalTitle, m
                     )}
                     <div className="grid gap-1.5 sm:text-left py-4 text-left"><h2 id="radix-:rg:" className="text-lg font-semibold leading-none tracking-tight">{modalTitle}</h2><p id="radix-:rh:" className="text-sm text-muted-foreground">{modalDescription}</p>
                     </div>
-                    {children}
+
+                    {open && children}
                 </div>
             </div>
-                // )
         </>
 
     )

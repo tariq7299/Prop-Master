@@ -22,7 +22,7 @@ import {
   IconUsers,
   IconLock,
 } from '@tabler/icons-react'
-import { Building2, FileClock, LayoutGrid, Building } from 'lucide-react';
+import { Building2, FileClock, LayoutGrid, Building, BriefcaseBusiness } from 'lucide-react';
 
 export interface NavLink {
   title: string
@@ -143,6 +143,12 @@ export const sidelinks: SideLink[] = [
         icon: <FileClock size={18} />,
       },
     ]
+  },
+  {
+    title: 'Developers',
+    label: '',
+    href: '/developers',
+    icon: <BriefcaseBusiness size={18} />,
   },
   // {
   //   title: 'Requests',

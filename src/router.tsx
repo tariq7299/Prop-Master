@@ -118,6 +118,12 @@ const router = createBrowserRouter([
               },
             ]
           },
+          {
+            path: 'developers',
+            lazy: async () => ({
+              Component: (await import('@/pages/developers/index.tsx')).default,
+            }),
+          },
 
 
           // {

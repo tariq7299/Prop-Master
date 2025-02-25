@@ -284,7 +284,8 @@ export function ImageUpload<TFieldValues extends FieldValues, TName extends Fiel
                                             getValues("images")[i]?.url
                                                 ? `https://prop-master.venom-hook.com/storage/${getValues("images")[i]?.url}` :
                                                 URL.createObjectURL(getValues("images")[i])
-                                        } alt="" className="" />
+                                        } alt="" className=""
+                                    />
 
 
                                     {getValues("images")[i]?.uploadingStatus === "pending"

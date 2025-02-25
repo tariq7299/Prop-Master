@@ -189,6 +189,7 @@ export default function ProjectDetailsForm({ action, handleCloseModal, handleSub
 
                     {/* Modal Body  */}
                     <div className=" py-6 p-1 pb-28 lg:p-6 lg:pb-14 grid grid-cols-1 lg:grid-cols-2 gap-y-10 lg:content-center justify-items-center gap-x-10 h-full   ">
+
                         <div className="space-y-2 w-full max-w-sm">
                             <FormField
                                 control={form.control}
@@ -287,7 +288,6 @@ export default function ProjectDetailsForm({ action, handleCloseModal, handleSub
                                 )}
                             />
                         </div>
-
 
                         <div className="space-y-2 w-full max-w-sm">
 

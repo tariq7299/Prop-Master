@@ -378,7 +378,7 @@ const PropertyDetailsForm = ({ handleCloseModal, customControlAction, formType }
                         <div className="space-y-4 max-w-sm xl:max-w-full ">
                             <div className="flex items-center space-x-2">
 
-                                <h1 className="text-lg font-bold font-roboto-slap">Project and delivery date</h1> <NotebookPen className="h-6 w-6 text-secondary" />
+                                <h1 className="text-lg font-semibold font-raleway">Project and delivery date</h1> <NotebookPen className="h-6 w-6 text-secondary" />
                             </div>
 
                             <div className="grid grid-cols-1 xl:grid-cols-2 gap-x-3 gap-y-5">
@@ -478,7 +478,7 @@ const PropertyDetailsForm = ({ handleCloseModal, customControlAction, formType }
 
                         <div className="space-y-4 max-w-sm xl:max-w-full ">
 
-                            <div className="flex items-center space-x-2 font-roboto-slap"><h1 className="text-lg font-bold">Property features</h1><ListPlus className="h-6 w-6 text-secondary" /></div>
+                            <div className="flex items-center space-x-2 font-raleway"><h1 className="text-lg font-semibold">Property features</h1><ListPlus className="h-6 w-6 text-secondary" /></div>
                             <div className="grid xl:grid-cols-2 gap-x-3 gap-y-5 ">
 
                                 <FormField
@@ -636,7 +636,7 @@ const PropertyDetailsForm = ({ handleCloseModal, customControlAction, formType }
 
                         <div className="space-y-4 max-w-sm xl:max-w-full " ref={isAnimationEnabled ? parent : null}>
 
-                            <div className="flex items-center space-x-2 font-roboto-slap"><h1 className="text-lg font-bold">Installment details</h1><CirclePercent className="h-6 w-6 text-secondary" /></div>
+                            <div className="flex items-center space-x-2 font-raleway"><h1 className="text-lg font-semibold">Installment details</h1><CirclePercent className="h-6 w-6 text-secondary" /></div>
                             {fields.map((item, index) => (
                                 <InstallmentPlanForm key={item.id} remove={remove} index={index} handleChangingFromToInputs={handleChangingFromToInputs} />
                             ))}

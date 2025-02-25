@@ -27,7 +27,7 @@ export default function Settings() {
 
       <Layout.Body className='flex flex-col'>
         <div className='space-y-0.5'>
-          <h1 className='text-2xl font-bold tracking-tight md:text-3xl'>
+          <h1 className='text-2xl font-bold tracking-tight md:text-3xl font-roboto-slap'>
             Settings
           </h1>
           <p className='text-muted-foreground'>

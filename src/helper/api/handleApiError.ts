@@ -77,7 +77,7 @@ function handleApiError(
 
     } else {
         console.log(errResponse)
-        toastApiMsgs(errResponse?.message, "destructive");
+        toastApiMsgs(errResponse?.message || "Error", "destructive");
         errorCallback?.();
 
     }
